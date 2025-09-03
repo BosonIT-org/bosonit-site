@@ -1,0 +1,21 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+const marker = new Date().toISOString();
+const features = [
+  { title: 'Ship faster',  body: 'BosonIT Agents + Workflows reduce time-to-value without compromising quality.' },
+  { title: 'Automate ops', body: 'Everything routes via LM Studio & MCP for reproducible operations.' },
+  { title: 'Scale cleanly',body: 'Future-proof structure for Services, Solutions, Workflows, and beyond.' },
+];
+---
+<MainLayout title="BosonIT — Build. Automate. Scale."
+            description="High-quality automation and AI-driven products, built to grow with you.">
+  <!-- deploy:staging marker -->
+  <meta name="x-deploy-marker" content={marker} />
+  <Hero title="Build. Automate. Scale."
+        subtitle="AI agents + workflow orchestration that deliver outcomes—designed to scale across products and services." />
+  <div class="mt-8">
+    <FeatureGrid items={features} />
+  </div>
+</MainLayout>
