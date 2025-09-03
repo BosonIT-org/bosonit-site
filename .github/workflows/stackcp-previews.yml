@@ -12,6 +12,8 @@ concurrency:
 jobs:
   preview:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     if: github.event.action != 'closed'
     env:
       STACKCP_HOST: ${{ vars.STACKCP_HOST || 'ssh.us.stackcp.com' }}
@@ -47,12 +49,39 @@ jobs:
       - name: Add host to known_hosts
         run: ssh-keyscan -p 22 "$STACKCP_HOST" >> ~/.ssh/known_hosts
 
-      - name: Deploy preview
-        env:
-          BRANCH: ${{ github.head_ref || github.ref_name }}
+      - name: Compute preview slug
+        id: slug
         run: |
-          TARGET="$STACKCP_ROOT_DIR/previews/$BRANCH"
+          ref="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9._-' '-' | sed 's/^-\+//; s/-\+$//')
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy preview
+        run: |
+          TARGET="$STACKCP_ROOT_DIR/previews/${{ steps.slug.outputs.slug }}"
           rsync -avz --delete dist/ "$STACKCP_USER@$STACKCP_HOST:$TARGET/"
+
+      - name: Comment PR with preview URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const slug = process.env.SLUG;
+            const base = process.env.BASE_URL || '';
+            const path = `/previews/${slug}/`;
+            const url = base ? `${base.replace(/\/$/, '')}${path}` : null;
+            const body = url
+              ? `✅ Preview is ready: ${url}`
+              : `✅ Preview is deployed at: ${path} on StackCP (set repo var STACKCP_BASE_URL to post full link).`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+        env:
+          SLUG: ${{ steps.slug.outputs.slug }}
+          BASE_URL: ${{ vars.STACKCP_BASE_URL }}
 
   cleanup:
     runs-on: ubuntu-latest
@@ -72,4 +101,3 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: ssh "$STACKCP_USER@$STACKCP_HOST" "rm -rf \"$STACKCP_ROOT_DIR/previews/$BRANCH\""
-

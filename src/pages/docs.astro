@@ -1,0 +1,88 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+<MainLayout title="BOCC Documentation" description="Interactive chronicles of BosonIT systems and workflows.">
+  <section class="section">
+    <h2>BOCC Documentation Card</h2>
+    <p class="muted">An interactive chronicle of the people, systems, and workflows behind BosonIT. Built with D3.js + Three.js to illustrate architecture, lineage, and operations.</p>
+  </section>
+
+  <section class="section">
+    <h3>Architecture (Three.js)</h3>
+    <p class="muted">High‑level map: data flows orbit core services. Hover to highlight relationships.</p>
+    <div id="docs-orbital" class="panel" style="height: 420px"></div>
+  </section>
+
+  <section class="section">
+    <h3>Workflow Graph (D3.js)</h3>
+    <p class="muted">A force‑directed view of BOCC workflows: provisioning, auth, inbox, forms, CRM, reports, schedule.</p>
+    <div id="docs-graph" class="panel" style="height: 420px; padding: 0 12px"></div>
+  </section>
+
+  <section class="section">
+    <h3>Timeline (D3.js)</h3>
+    <p class="muted">Milestones — plan → bootstrap → secure → scale.</p>
+    <div id="docs-timeline" class="panel" style="height: 220px; padding: 0 12px"></div>
+  </section>
+
+  <script type="module">
+    import * as d3 from 'd3';
+    import initOrbital from '../scripts/stratosphere/orbital.js';
+
+    // Three.js orbital (reuses Stratosphere orbital scene)
+    requestAnimationFrame(()=>initOrbital('#docs-orbital'));
+
+    // D3: force-directed workflow graph
+    (function graph(){
+      const el = document.querySelector('#docs-graph');
+      const W = el.clientWidth || 720, H = el.clientHeight || 420;
+      const svg = d3.select(el).append('svg').attr('width', W).attr('height', H);
+      const g = svg.append('g');
+      const nodes = [
+        {id:'launcher', group:1}, {id:'auth', group:1}, {id:'inbox', group:2}, {id:'forms', group:2},
+        {id:'crm', group:3}, {id:'reports', group:3}, {id:'schedule', group:2}, {id:'automations', group:4}
+      ];
+      const links = [
+        {source:'launcher', target:'auth'}, {source:'launcher', target:'inbox'}, {source:'launcher', target:'forms'},
+        {source:'launcher', target:'crm'}, {source:'launcher', target:'reports'}, {source:'launcher', target:'schedule'},
+        {source:'automations', target:'inbox'}, {source:'automations', target:'forms'}, {source:'reports', target:'crm'}
+      ];
+      const color = d3.scaleOrdinal(["#4cc9f0","#f59e0b","#90EE90","#e879f9"]);
+      const sim = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(links).id(d=>d.id).distance(110))
+        .force('charge', d3.forceManyBody().strength(-260))
+        .force('center', d3.forceCenter(W/2, H/2));
+      const L = g.selectAll('line').data(links).enter().append('line').attr('stroke','#6b7280').attr('stroke-opacity',0.5);
+      const N = g.selectAll('g.node').data(nodes).enter().append('g').attr('class','node').call(d3.drag()
+        .on('start', (e,d)=>{ if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+        .on('drag', (e,d)=>{ d.fx=e.x; d.fy=e.y; })
+        .on('end',  (e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
+      N.append('circle').attr('r', 16).attr('fill', d=>color(d.group));
+      N.append('text').text(d=>d.id).attr('x', 22).attr('y', 5).attr('fill','#e6e6e6').style('font', '12px sans-serif');
+      sim.on('tick', ()=>{
+        L.attr('x1', d=>d.source.x).attr('y1', d=>d.source.y).attr('x2', d=>d.target.x).attr('y2', d=>d.target.y);
+        N.attr('transform', d=>`translate(${d.x},${d.y})`);
+      });
+    })();
+
+    // D3: simple milestone timeline area chart
+    (function timeline(){
+      const el = document.querySelector('#docs-timeline');
+      const W = el.clientWidth || 720, H = el.clientHeight || 220, P = 20;
+      const svg = d3.select(el).append('svg').attr('width', W).attr('height', H);
+      const g = svg.append('g').attr('transform', `translate(${P},${P})`);
+      const w = W-P*2, h = H-P*2;
+      const data = [
+        {t: 'Plan', v: 1}, {t: 'Bootstrap', v: 2}, {t: 'Secure', v: 4}, {t: 'Scale', v: 6}, {t: 'Delight', v: 8}
+      ];
+      const x = d3.scalePoint().domain(data.map(d=>d.t)).range([0,w]);
+      const y = d3.scaleLinear().domain([0, d3.max(data,d=>d.v)]).nice().range([h,0]);
+      const area = d3.area().x(d=>x(d.t)).y0(h).y1(d=>y(d.v)).curve(d3.curveMonotoneX);
+      g.append('path').datum(data).attr('d', area).attr('fill','rgba(76,201,240,0.15)');
+      g.append('path').datum(data).attr('d', d3.line().x(d=>x(d.t)).y(d=>y(d.v)).curve(d3.curveMonotoneX)).attr('fill','none').attr('stroke','#4cc9f0').attr('stroke-width',1.6);
+      g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x));
+      g.append('g').call(d3.axisLeft(y).ticks(4));
+    })();
+  </script>
+</MainLayout>
+
