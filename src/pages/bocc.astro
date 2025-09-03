@@ -1,0 +1,41 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+<MainLayout title="BOCC Stratosphere" description="Astonishing visual experiments for BOCC, adapted to bosonit.org.">
+  <section class="section">
+    <h2>BOCC Stratosphere</h2>
+    <p class="muted">Experimental visuals. Performance-friendly, accessible, and optional.</p>
+  </section>
+
+  <section class="section">
+    <h3>Aurora Background</h3>
+    <div id="aurora-demo" class="panel">
+      <div id="aurora2" class="panel-fill" aria-hidden="true"></div>
+      <div class="panel-content">Graceful ambient system state backdrop.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3>Orbital Topology (Three.js)</h3>
+    <div id="orbital" class="panel" style="height: 360px"></div>
+  </section>
+
+  <section class="section">
+    <h3>Service Microcards (D3 Sparklines)</h3>
+    <div class="microgrid">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div class="microcard">
+          <div class="microtitle">Service {i + 1}</div>
+          <div class="microspark" data-sparkline-id={`demo-${i}`}></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <script type="module">
+    import initAurora from '../scripts/stratosphere/aurora.js';
+    import initOrbital from '../scripts/stratosphere/orbital.js';
+    import initSparklines from '../scripts/stratosphere/sparklines.js';
+    requestAnimationFrame(()=>{ initAurora(['#aurora2']); initOrbital(); initSparklines(); });
+  </script>
+</MainLayout>

@@ -1,19 +1,20 @@
 ---
-layout: "../layouts/MainLayout.astro"
-title: Home
+import { ENV, STRATOSPHERE_ENABLED } from '../config/stratosphere';
+const { title = 'BosonIT', description = '' } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-env={ENV} data-stratosphere={STRATOSPHERE_ENABLED ? '1' : '0'}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  {description && <meta name="description" content={description} />}
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <main>
-    {slot}
+    <slot />
   </main>
 </body>
 </html>

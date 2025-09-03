@@ -1,0 +1,17 @@
+---
+const { title = 'BosonIT', subtitle = '' } = Astro.props;
+---
+<section class="hero">
+  <div id="aurora" class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-content">
+    <h1>{title}</h1>
+    {subtitle && <p>{subtitle}</p>}
+  </div>
+</section>
+
+<script type="module">
+  import initAurora from '../scripts/stratosphere/aurora.js';
+  const enabled = document.documentElement.dataset.stratosphere === '1';
+  if (enabled) requestAnimationFrame(()=>initAurora());
+  // If disabled, still render static content without visuals
+</script>

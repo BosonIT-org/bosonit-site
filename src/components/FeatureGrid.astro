@@ -1,0 +1,19 @@
+---
+const { items = [] } = Astro.props;
+---
+<div class="feature-grid">
+  {items.map((it, idx) => (
+    <article class="card">
+      <header>
+        <h3>{it.title}</h3>
+      </header>
+      <p>{it.body}</p>
+      <div class="sparkline" data-sparkline-id={`s${idx}`}></div>
+    </article>
+  ))}
+  <script type="module">
+    import initSparklines from '../scripts/stratosphere/sparklines.js';
+    const enabled = document.documentElement.dataset.stratosphere === '1';
+    if (enabled) requestAnimationFrame(()=>initSparklines());
+  </script>
+</div>
