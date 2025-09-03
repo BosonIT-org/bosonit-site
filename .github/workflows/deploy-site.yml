@@ -54,7 +54,12 @@ jobs:
       - name: Build (${{ steps.select.outputs.stage }})
         run: |
           if [ "${{ steps.select.outputs.stage }}" = "staging" ]; then
-            npm run build:staging
+            # Fallback to build if build:staging not defined
+            if npm run -s | grep -qE '^\s*build:staging\s*$'; then
+              npm run build:staging
+            else
+              npm run build
+            fi
           else
             npm run build
           fi
