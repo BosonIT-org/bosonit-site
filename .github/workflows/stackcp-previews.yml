@@ -1,0 +1,75 @@
+name: StackCP Previews
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+concurrency:
+  group: previews-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
+    env:
+      STACKCP_HOST: ${{ vars.STACKCP_HOST || 'ssh.us.stackcp.com' }}
+      STACKCP_USER: ${{ vars.STACKCP_USER || 'bosonit.org' }}
+      STACKCP_ROOT_DIR: ${{ vars.STACKCP_ROOT_DIR || 'public_html' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deps
+        run: npm ci
+        working-directory: .
+
+      - name: Build site (staging if available)
+        run: |
+          if npm run -s | grep -qE '^\s*build:staging\s*$'; then
+            npm run build:staging
+          else
+            npm run build
+          fi
+        working-directory: .
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.STACKCP_SSH_KEY }}
+
+      - name: Add host to known_hosts
+        run: ssh-keyscan -p 22 "$STACKCP_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy preview
+        env:
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          TARGET="$STACKCP_ROOT_DIR/previews/$BRANCH"
+          rsync -avz --delete dist/ "$STACKCP_USER@$STACKCP_HOST:$TARGET/"
+
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'closed'
+    env:
+      STACKCP_HOST: ${{ vars.STACKCP_HOST || 'ssh.us.stackcp.com' }}
+      STACKCP_USER: ${{ vars.STACKCP_USER || 'bosonit.org' }}
+      STACKCP_ROOT_DIR: ${{ vars.STACKCP_ROOT_DIR || 'public_html' }}
+    steps:
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.STACKCP_SSH_KEY }}
+      - name: Add host to known_hosts
+        run: ssh-keyscan -p 22 "$STACKCP_HOST" >> ~/.ssh/known_hosts
+      - name: Remove preview directory
+        env:
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: ssh "$STACKCP_USER@$STACKCP_HOST" "rm -rf \"$STACKCP_ROOT_DIR/previews/$BRANCH\""
+

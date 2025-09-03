@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Example vanity redirects (302 by default; switch to 301 when stable)
+RewriteRule ^g$ https://www.google.com/ [R=302,L]
+RewriteRule ^status$ https://status.bosonit.org/ [R=302,L]
+
+# Add more rules as needed:
+# RewriteRule ^promo$ https://www.bosonit.org/bocc/ [R=302,L]
+

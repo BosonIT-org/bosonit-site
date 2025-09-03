@@ -1,0 +1,41 @@
+name: StackCP Sites
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'stackcp/**'
+  workflow_dispatch:
+
+concurrency:
+  group: stackcp-sites-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      STACKCP_HOST: ${{ vars.STACKCP_HOST || 'ssh.us.stackcp.com' }}
+      STACKCP_USER: ${{ vars.STACKCP_USER || 'bosonit.org' }}
+      STACKCP_ROOT_DIR: ${{ vars.STACKCP_ROOT_DIR || 'public_html' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.STACKCP_SSH_KEY }}
+
+      - name: Add host to known_hosts
+        run: ssh-keyscan -p 22 "$STACKCP_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy status
+        run: rsync -avz --delete stackcp/status/ "$STACKCP_USER@$STACKCP_HOST:$STACKCP_ROOT_DIR/status/"
+
+      - name: Deploy maintenance
+        run: rsync -avz --delete stackcp/maintenance/ "$STACKCP_USER@$STACKCP_HOST:$STACKCP_ROOT_DIR/maintenance/"
+
+      - name: Deploy links (.htaccess rules)
+        run: rsync -avz --delete stackcp/links/ "$STACKCP_USER@$STACKCP_HOST:$STACKCP_ROOT_DIR/links/"
+

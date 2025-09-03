@@ -1,0 +1,9 @@
+<IfModule mod_headers.c>
+  Header set Retry-After "120"
+</IfModule>
+# Serve maintenance page with 503 to signal temporary outage
+ErrorDocument 503 /maintenance/index.html
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/maintenance/
+RewriteRule ^.*$ /maintenance/index.html [R=503,L]
+
