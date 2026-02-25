@@ -3,6 +3,8 @@ node_modules/
 .cache/
 .env*
 .DS_Store
+__pycache__/
+*.pyc
 
 
 # Local build artefacts
