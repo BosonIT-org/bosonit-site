@@ -1,0 +1,23 @@
+name: Core Governance Contracts
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  contracts:
+    uses: BosonIT-org/bosonit-habitat-core/.github/workflows/core-governance-contracts.yml@main
+    with:
+      base_ref: ${{ github.base_ref }}
+      head_sha: ${{ github.sha }}
+      project_role: species

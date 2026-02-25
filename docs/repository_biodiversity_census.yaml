@@ -1,0 +1,17 @@
+repository_id: bosonit-species-bosonit-site
+owner: platform-web
+backup_owner: platform-ops
+purpose: bosonit-site-species-runtime-and-deployment
+criticality: high
+data_classes_allowed:
+  - public
+  - internal
+key_capabilities:
+  - web-experience
+  - static-site-build
+  - stackcp-deployment
+  - habitat-warden-gated-changes
+upstream_dependencies:
+  - BosonIT-org/bosonit-habitat-core
+  - BosonIT-org/bosonit-habitat-observatory
+audit_cadence: weekly
