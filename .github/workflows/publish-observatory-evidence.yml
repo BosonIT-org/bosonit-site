@@ -1,0 +1,109 @@
+name: Publish Observatory Evidence
+
+on:
+  workflow_run:
+    workflows:
+      - Habitat Warden
+      - Habitat Warden Docker
+      - Deploy Site
+      - Deploy to StackCP
+      - StackCP Sites
+      - StackCP Previews
+    types:
+      - completed
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: observatory-publish-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event.workflow_run.conclusion != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check observatory push token
+        id: token
+        env:
+          OBS_TOKEN: ${{ secrets.OBSERVATORY_PUSH_TOKEN }}
+        run: |
+          if [ -z "$OBS_TOKEN" ]; then
+            echo "has_token=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::OBSERVATORY_PUSH_TOKEN is not configured; skipping publish."
+          else
+            echo "has_token=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download run artifacts
+        if: steps.token.outputs.has_token == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/source-artifacts
+          merge-multiple: false
+
+      - name: Publish artifacts to observatory repo
+        if: steps.token.outputs.has_token == 'true'
+        env:
+          OBS_TOKEN: ${{ secrets.OBSERVATORY_PUSH_TOKEN }}
+          OBS_REPO: BosonIT-org/bosonit-habitat-observatory
+          SRC_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          WORKFLOW_HTML_URL: ${{ github.event.workflow_run.html_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SANITIZED_WORKFLOW="$(printf '%s' "$WORKFLOW_NAME" | tr '[:upper:]' '[:lower:]' | tr ' /:' '---' | tr -cd 'a-z0-9._-')"
+          TARGET_ROOT="evidence/${SRC_REPO}/${SANITIZED_WORKFLOW}/run-${RUN_ID}-attempt-${RUN_ATTEMPT}"
+
+          git clone "https://x-access-token:${OBS_TOKEN}@github.com/${OBS_REPO}.git" /tmp/observatory
+          mkdir -p "/tmp/observatory/${TARGET_ROOT}"
+
+          if [ -d /tmp/source-artifacts ]; then
+            cp -R /tmp/source-artifacts/. "/tmp/observatory/${TARGET_ROOT}/"
+          fi
+
+          cat > "/tmp/observatory/${TARGET_ROOT}/metadata.json" <<JSON
+          {
+            "source_repository": "${SRC_REPO}",
+            "workflow_name": "${WORKFLOW_NAME}",
+            "workflow_run_id": ${RUN_ID},
+            "workflow_run_attempt": ${RUN_ATTEMPT},
+            "conclusion": "${RUN_CONCLUSION}",
+            "workflow_url": "${WORKFLOW_HTML_URL}",
+            "published_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          JSON
+
+          cd /tmp/observatory
+          git config user.name "bosonit-observatory-bot"
+          git config user.email "automation@bosonit.org"
+          git add "${TARGET_ROOT}"
+
+          if git diff --cached --quiet; then
+            echo "No evidence delta to commit."
+            exit 0
+          fi
+
+          git commit -m "evidence: ${SRC_REPO} ${WORKFLOW_NAME} run ${RUN_ID}/${RUN_ATTEMPT}"
+          git push origin HEAD:main
+
+      - name: Summary
+        shell: bash
+        run: |
+          {
+            echo "## Observatory Publish"
+            echo "- Source repo: \`${{ github.repository }}\`"
+            echo "- Workflow: \`${{ github.event.workflow_run.name }}\`"
+            echo "- Run ID: \`${{ github.event.workflow_run.id }}\`"
+            echo "- Conclusion: \`${{ github.event.workflow_run.conclusion }}\`"
+            echo "- Token configured: \`${{ steps.token.outputs.has_token || 'false' }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
