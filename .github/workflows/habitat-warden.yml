@@ -114,3 +114,5 @@ jobs:
             exit 1
           fi
           echo "Enforcement not triggered (mode=$MODE, verdict=$VERDICT)"
+
+# enforce-mode e2e marker 3
