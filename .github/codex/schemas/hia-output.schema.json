@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HabitatImpactAssessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "conservation_status_change",
+    "critical_habitat_interference",
+    "mitigation_plan_verified",
+    "invasive_pattern_detection",
+    "regulatory_verdict"
+  ],
+  "properties": {
+    "conservation_status_change": {
+      "type": "string",
+      "enum": ["IMPROVED", "DEGRADED", "NEUTRAL"]
+    },
+    "critical_habitat_interference": {
+      "type": "boolean"
+    },
+    "mitigation_plan_verified": {
+      "type": "boolean"
+    },
+    "invasive_pattern_detection": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pattern_name", "severity", "remediation_suggestion"],
+        "properties": {
+          "pattern_name": {"type": "string"},
+          "severity": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH", "EXTINCTION_LEVEL"]
+          },
+          "remediation_suggestion": {"type": "string"}
+        }
+      }
+    },
+    "regulatory_verdict": {
+      "type": "string",
+      "enum": ["APPROVE", "DENY", "REQUIRE_APPROVAL"]
+    }
+  }
+}
