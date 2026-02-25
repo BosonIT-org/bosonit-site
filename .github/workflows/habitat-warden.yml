@@ -1,0 +1,141 @@
+name: Habitat Warden
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: habitat-warden-oauth-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  habitat-warden:
+    name: Habitat Warden Assessment
+    timeout-minutes: 20
+    runs-on:
+      - self-hosted
+      - codex-oauth
+    env:
+      # advisory | enforce
+      WARDEN_ENFORCEMENT_MODE: advisory
+      WARDEN_PROJECT_ROLE: primary
+      CODEX_WARDEN_MODEL: gpt-5.3-codex
+      CODEX_WARDEN_TIMEOUT_SECONDS: "420"
+      CODEX_WARDEN_REQUEST_TIMEOUT_SECONDS: "60"
+      CODEX_WARDEN_RPC_IDLE_TIMEOUT_SECONDS: "5"
+      CODEX_WARDEN_LOG_LEVEL: INFO
+      CODEX_WARDEN_LOG_PATH: /tmp/habitat-warden.log
+      HABITAT_WARDEN_SLO_PATH: .github/codex/habitat-warden-slo.json
+      HABITAT_WARDEN_HISTORY_PATH: /var/tmp/habitat-warden/history.jsonl
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install warden dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .github/scripts/requirements-warden.txt
+
+      - name: Build PR diff inputs
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          git diff --unified=3 "origin/${{ github.base_ref }}...${{ github.sha }}" > /tmp/pr.diff
+          git diff --name-only "origin/${{ github.base_ref }}...${{ github.sha }}" > /tmp/changed_files.txt
+          echo "Changed files:"
+          cat /tmp/changed_files.txt
+
+      - name: Run Codex Habitat Warden
+        id: warden
+        run: |
+          set -euo pipefail
+          : > "${CODEX_WARDEN_LOG_PATH}"
+          python .github/scripts/codex_warden_appserver.py \
+            --diff-path /tmp/pr.diff \
+            --changed-files-path /tmp/changed_files.txt \
+            --policy-path .github/codex/habitat-policy.json \
+            --schema-path .github/codex/schemas/hia-output.schema.json \
+            --output-path /tmp/assessment.json \
+            --cwd "${{ github.workspace }}" \
+            --log-level "${CODEX_WARDEN_LOG_LEVEL}" \
+            --log-path "${CODEX_WARDEN_LOG_PATH}" \
+            --timeout-seconds "${CODEX_WARDEN_TIMEOUT_SECONDS}" \
+            --request-timeout-seconds "${CODEX_WARDEN_REQUEST_TIMEOUT_SECONDS}" \
+            --rpc-idle-timeout-seconds "${CODEX_WARDEN_RPC_IDLE_TIMEOUT_SECONDS}"
+
+      - name: Build Habitat Warden scorecard
+        if: always()
+        id: scorecard
+        run: |
+          set -euo pipefail
+          python .github/scripts/habitat_warden_scorecard.py \
+            --assessment-path /tmp/assessment.json \
+            --log-path "${CODEX_WARDEN_LOG_PATH}" \
+            --slo-path "${HABITAT_WARDEN_SLO_PATH}" \
+            --history-path "${HABITAT_WARDEN_HISTORY_PATH}" \
+            --history-tail-path /tmp/habitat-warden-history-tail.json \
+            --output-path /tmp/habitat-warden-scorecard.json \
+            --summary-path /tmp/habitat-warden-scorecard.md \
+            --window-size 50
+          if [ -f /tmp/habitat-warden-scorecard.md ]; then
+            cat /tmp/habitat-warden-scorecard.md >> "${GITHUB_STEP_SUMMARY}"
+          fi
+
+      - name: Upload assessment artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: habitat-warden-assessment
+          path: |
+            /tmp/assessment.json
+            /tmp/habitat-warden.log
+            /tmp/habitat-warden-scorecard.json
+            /tmp/habitat-warden-scorecard.md
+            /tmp/habitat-warden-history-tail.json
+          if-no-files-found: error
+
+      - name: Enforce verdict in enforce mode
+        if: always() && env.WARDEN_ENFORCEMENT_MODE == 'enforce' && env.WARDEN_PROJECT_ROLE == 'primary'
+        run: |
+          VERDICT="${{ steps.warden.outputs.regulatory_verdict }}"
+          REQUIRES_APPROVAL="${{ steps.warden.outputs.requires_approval }}"
+
+          echo "Enforcement mode active."
+          echo "Verdict: ${VERDICT}"
+          echo "Requires approval: ${REQUIRES_APPROVAL}"
+
+          if [ "${VERDICT}" = "DENY" ]; then
+            echo "::error::Habitat Warden denied this PR."
+            exit 1
+          fi
+
+          if [ "${VERDICT}" = "REQUIRE_APPROVAL" ] || [ "${REQUIRES_APPROVAL}" = "true" ]; then
+            echo "::error::Habitat Warden requires steward approval before merge."
+            exit 1
+          fi
+
+      - name: Advisory mode note
+        if: always() && env.WARDEN_ENFORCEMENT_MODE == 'advisory'
+        run: |
+          echo "Advisory mode active. No merge blocking will occur from this job."
+          echo "Verdict: ${{ steps.warden.outputs.regulatory_verdict }}"
+          echo "Warden health: ${{ steps.scorecard.outputs.warden_health }}"
+          echo "SLO pass: ${{ steps.scorecard.outputs.warden_slo_pass }}"

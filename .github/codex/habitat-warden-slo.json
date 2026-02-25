@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "max_runtime_seconds": 360,
+  "max_fallback_rate": 0.25,
+  "max_timeout_rate": 0.15,
+  "max_error_run_rate": 0.3
+}

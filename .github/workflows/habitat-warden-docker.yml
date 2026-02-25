@@ -1,0 +1,225 @@
+name: Habitat Warden Docker
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: habitat-warden-docker-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  habitat-warden-docker:
+    name: Habitat Warden Assessment (Docker)
+    timeout-minutes: 20
+    runs-on:
+      - self-hosted
+      - linux
+      - bmos-svr0
+    env:
+      # advisory | enforce
+      WARDEN_ENFORCEMENT_MODE: advisory
+      WARDEN_PROJECT_ROLE: canary
+      WARDEN_ALLOW_ENFORCEMENT: "false"
+      CODEX_WARDEN_MODEL: gpt-5.3-codex
+      CODEX_WARDEN_TIMEOUT_SECONDS: "420"
+      CODEX_WARDEN_REQUEST_TIMEOUT_SECONDS: "60"
+      CODEX_WARDEN_RPC_IDLE_TIMEOUT_SECONDS: "5"
+      CODEX_WARDEN_LOG_LEVEL: INFO
+      HABITAT_WARDEN_SLO_PATH: .github/codex/habitat-warden-docker-slo.json
+      HABITAT_WARDEN_HISTORY_PATH: /var/tmp/habitat-warden/docker-history.jsonl
+      DOCKER_WARDEN_IMAGE: bosonit/habitat-warden:${{ github.run_id }}-${{ github.run_attempt }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build PR diff inputs
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          git diff --unified=3 "origin/${{ github.base_ref }}...${{ github.sha }}" > /tmp/pr.diff
+          git diff --name-only "origin/${{ github.base_ref }}...${{ github.sha }}" > /tmp/changed_files.txt
+          echo "Changed files:"
+          cat /tmp/changed_files.txt
+
+      - name: Build warden Docker image
+        run: |
+          set -euo pipefail
+          docker build \
+            --file .github/docker/warden/Dockerfile \
+            --tag "${DOCKER_WARDEN_IMAGE}" \
+            .
+
+      - name: Run Codex Habitat Warden (Docker)
+        run: |
+          set -euo pipefail
+          RUN_TMP="/tmp/habitat-warden-docker"
+          mkdir -p "${RUN_TMP}"
+
+          if [ ! -d "${HOME}/.codex" ]; then
+            echo "::error::OAuth state directory missing at ${HOME}/.codex."
+            echo "::error::Run 'codex login --device-auth' once on bmos-svr0 runner host."
+            exit 1
+          fi
+
+          docker run --rm "${DOCKER_WARDEN_IMAGE}" codex --version >/dev/null
+
+          docker run --rm \
+            -e HOME=/root \
+            -e WARDEN_ENFORCEMENT_MODE \
+            -e CODEX_WARDEN_MODEL \
+            -e CODEX_WARDEN_TIMEOUT_SECONDS \
+            -e CODEX_WARDEN_REQUEST_TIMEOUT_SECONDS \
+            -e CODEX_WARDEN_RPC_IDLE_TIMEOUT_SECONDS \
+            -e CODEX_WARDEN_LOG_LEVEL \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -v "/tmp/pr.diff:/runner-input/pr.diff:ro" \
+            -v "/tmp/changed_files.txt:/runner-input/changed_files.txt:ro" \
+            -v "${RUN_TMP}:/runner-tmp" \
+            -v "${HOME}/.codex:/root/.codex:rw" \
+            -w /workspace \
+            "${DOCKER_WARDEN_IMAGE}" \
+            python /workspace/.github/scripts/codex_warden_appserver.py \
+              --diff-path /runner-input/pr.diff \
+              --changed-files-path /runner-input/changed_files.txt \
+              --policy-path /workspace/.github/codex/habitat-policy.json \
+              --schema-path /workspace/.github/codex/schemas/hia-output.schema.json \
+              --output-path /runner-tmp/assessment.json \
+              --cwd /workspace \
+              --log-level "${CODEX_WARDEN_LOG_LEVEL}" \
+              --log-path /runner-tmp/habitat-warden.log \
+              --timeout-seconds "${CODEX_WARDEN_TIMEOUT_SECONDS}" \
+              --request-timeout-seconds "${CODEX_WARDEN_REQUEST_TIMEOUT_SECONDS}" \
+              --rpc-idle-timeout-seconds "${CODEX_WARDEN_RPC_IDLE_TIMEOUT_SECONDS}"
+
+      - name: Publish warden outputs
+        id: warden
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          assessment_path = Path("/tmp/habitat-warden-docker/assessment.json")
+          if not assessment_path.exists():
+              raise SystemExit("assessment.json missing at /tmp/habitat-warden-docker/assessment.json")
+
+          payload = json.loads(assessment_path.read_text(encoding="utf-8"))
+          verdict = str(payload.get("final_verdict", "REQUIRE_APPROVAL"))
+          requires_approval = bool(payload.get("requires_approval", True))
+          should_block = bool(payload.get("should_block", False))
+          denial_reason = str(payload.get("denial_reason", ""))
+          policy_mode = str(payload.get("policy_mode", "advisory"))
+
+          output_path = os.environ["GITHUB_OUTPUT"]
+          with open(output_path, "a", encoding="utf-8") as f:
+              f.write(f"policy_mode={policy_mode}\n")
+              f.write(f"regulatory_verdict={verdict}\n")
+              f.write(f"requires_approval={'true' if requires_approval else 'false'}\n")
+              f.write(f"should_block={'true' if should_block else 'false'}\n")
+              f.write(f"denial_reason={denial_reason}\n")
+              f.write("assessment_json<<__WARDEN_EOF__\n")
+              f.write(json.dumps(payload, indent=2))
+              f.write("\n__WARDEN_EOF__\n")
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              summary = (
+                  "## Habitat Warden Result (Docker)\n\n"
+                  f"- Policy mode: `{policy_mode}`\n"
+                  f"- Final verdict: `{verdict}`\n"
+                  f"- Requires approval: `{'true' if requires_approval else 'false'}`\n"
+                  f"- Should block: `{'true' if should_block else 'false'}`\n"
+                  f"- Denial reason: `{denial_reason or 'n/a'}`\n\n"
+                  "<details><summary>Assessment JSON</summary>\n\n"
+                  "```json\n"
+                  f"{json.dumps(payload, indent=2)}\n"
+                  "```\n"
+                  "</details>\n"
+              )
+              with open(summary_path, "a", encoding="utf-8") as f:
+                  f.write(summary)
+          PY
+
+      - name: Build Habitat Warden scorecard (Docker)
+        if: always()
+        id: scorecard
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/habitat_warden_scorecard.py \
+            --assessment-path /tmp/habitat-warden-docker/assessment.json \
+            --log-path /tmp/habitat-warden-docker/habitat-warden.log \
+            --slo-path "${HABITAT_WARDEN_SLO_PATH}" \
+            --history-path "${HABITAT_WARDEN_HISTORY_PATH}" \
+            --history-tail-path /tmp/habitat-warden-docker-history-tail.json \
+            --output-path /tmp/habitat-warden-docker-scorecard.json \
+            --summary-path /tmp/habitat-warden-docker-scorecard.md \
+            --window-size 50
+          if [ -f /tmp/habitat-warden-docker-scorecard.md ]; then
+            cat /tmp/habitat-warden-docker-scorecard.md >> "${GITHUB_STEP_SUMMARY}"
+          fi
+
+      - name: Upload assessment artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: habitat-warden-docker-assessment
+          path: |
+            /tmp/habitat-warden-docker/assessment.json
+            /tmp/habitat-warden-docker/habitat-warden.log
+            /tmp/habitat-warden-docker-scorecard.json
+            /tmp/habitat-warden-docker-scorecard.md
+            /tmp/habitat-warden-docker-history-tail.json
+          if-no-files-found: error
+
+      - name: Enforcement guard (Docker canary)
+        if: always() && env.WARDEN_ENFORCEMENT_MODE == 'enforce' && env.WARDEN_ALLOW_ENFORCEMENT != 'true'
+        run: |
+          echo "::warning::Docker warden is canary-only. Set WARDEN_ALLOW_ENFORCEMENT=true to permit blocking."
+
+      - name: Enforce verdict in enforce mode
+        if: always() && env.WARDEN_ENFORCEMENT_MODE == 'enforce' && env.WARDEN_ALLOW_ENFORCEMENT == 'true'
+        run: |
+          VERDICT="${{ steps.warden.outputs.regulatory_verdict }}"
+          REQUIRES_APPROVAL="${{ steps.warden.outputs.requires_approval }}"
+
+          echo "Enforcement mode active."
+          echo "Verdict: ${VERDICT}"
+          echo "Requires approval: ${REQUIRES_APPROVAL}"
+
+          if [ "${VERDICT}" = "DENY" ]; then
+            echo "::error::Habitat Warden (Docker) denied this PR."
+            exit 1
+          fi
+
+          if [ "${VERDICT}" = "REQUIRE_APPROVAL" ] || [ "${REQUIRES_APPROVAL}" = "true" ]; then
+            echo "::error::Habitat Warden (Docker) requires steward approval before merge."
+            exit 1
+          fi
+
+      - name: Advisory mode note
+        if: always() && env.WARDEN_ENFORCEMENT_MODE == 'advisory'
+        run: |
+          echo "Advisory mode active. No merge blocking will occur from this Docker job."
+          echo "Verdict: ${{ steps.warden.outputs.regulatory_verdict }}"
+          echo "Warden health: ${{ steps.scorecard.outputs.warden_health }}"
+          echo "SLO pass: ${{ steps.scorecard.outputs.warden_slo_pass }}"
+
+      - name: Cleanup image
+        if: always()
+        run: |
+          docker image rm "${DOCKER_WARDEN_IMAGE}" || true

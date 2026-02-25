@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "mode": "advisory",
+  "critical_habitat_regex": [
+    "^\\.github/workflows/",
+    "^stackcp/",
+    "^deploy\\.sh$"
+  ],
+  "enforcement": {
+    "deny_on_extinction_level": true,
+    "require_approval_on_unmitigated_critical_change": true
+  }
+}
