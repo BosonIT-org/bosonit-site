@@ -9,6 +9,9 @@ on:
       - opened
       - synchronize
       - reopened
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -16,8 +19,103 @@ permissions:
 
 jobs:
   contracts:
-    uses: BosonIT-org/bosonit-habitat-core/.github/workflows/core-governance-contracts.yml@main
-    with:
-      base_ref: ${{ github.base_ref }}
-      head_sha: ${{ github.sha }}
-      project_role: species
+    name: Validate habitat governance contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build changed-file inventory
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE_REF="${{ github.base_ref }}"
+          HEAD_SHA="${{ github.sha }}"
+
+          if [ -z "$BASE_REF" ]; then
+            BASE_REF="main"
+          fi
+
+          git fetch origin "$BASE_REF" --depth=1
+          git diff --name-only "origin/${BASE_REF}...${HEAD_SHA}" > /tmp/core-governance-changed-files.txt
+
+          echo "changed_files_path=/tmp/core-governance-changed-files.txt" >> "$GITHUB_OUTPUT"
+          echo "base_ref=${BASE_REF}" >> "$GITHUB_OUTPUT"
+          echo "head_sha=${HEAD_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate policy + schema contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          required_files = [
+              Path('.github/codex/habitat-policy.json'),
+              Path('.github/codex/schemas/hia-output.schema.json'),
+              Path('.github/workflows/habitat-warden.yml'),
+          ]
+
+          missing = [str(p) for p in required_files if not p.exists()]
+          if missing:
+              raise SystemExit(f"Missing required governance files: {', '.join(missing)}")
+
+          policy = json.loads(Path('.github/codex/habitat-policy.json').read_text(encoding='utf-8'))
+          schema = json.loads(Path('.github/codex/schemas/hia-output.schema.json').read_text(encoding='utf-8'))
+
+          mode = policy.get('mode')
+          if mode not in {'advisory', 'enforce'}:
+              raise SystemExit('habitat-policy.mode must be advisory or enforce')
+
+          required_regex = {
+              '^\\.github/workflows/',
+              '^stackcp/',
+              '^deploy\\.sh$'
+          }
+          configured_regex = set(policy.get('critical_habitat_regex', []))
+          missing_regex = sorted(required_regex - configured_regex)
+          if missing_regex:
+              raise SystemExit(
+                  'critical_habitat_regex missing required matchers: ' + ', '.join(missing_regex)
+              )
+
+          required_hia_fields = {
+              'conservation_status_change',
+              'critical_habitat_interference',
+              'mitigation_plan_verified',
+              'invasive_pattern_detection',
+              'regulatory_verdict',
+          }
+          schema_required = set(schema.get('required', []))
+          missing_fields = sorted(required_hia_fields - schema_required)
+          if missing_fields:
+              raise SystemExit(
+                  'hia-output.schema.json missing required fields: ' + ', '.join(missing_fields)
+              )
+
+          verdict_enum = set(
+              schema.get('properties', {})
+                .get('regulatory_verdict', {})
+                .get('enum', [])
+          )
+          if verdict_enum != {'APPROVE', 'DENY', 'REQUIRE_APPROVAL'}:
+              raise SystemExit('regulatory_verdict enum must be APPROVE, DENY, REQUIRE_APPROVAL')
+
+          print('Governance contracts validated successfully.')
+          PY
+
+      - name: Publish contract summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Core Governance Contracts"
+            echo "- Base ref: \`${{ steps.diff.outputs.base_ref }}\`"
+            echo "- Head SHA: \`${{ steps.diff.outputs.head_sha }}\`"
+            echo "- Contract state: \`PASS\`"
+          } >> "$GITHUB_STEP_SUMMARY"

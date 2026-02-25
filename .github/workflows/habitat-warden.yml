@@ -1,0 +1,116 @@
+name: Habitat Warden
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  habitat-warden:
+    name: habitat-warden
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build changed-file inventory
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE_REF="${{ github.base_ref || 'main' }}"
+          HEAD_SHA="${{ github.sha }}"
+          git fetch origin "$BASE_REF" --depth=1
+          git diff --name-only "origin/${BASE_REF}...${HEAD_SHA}" > /tmp/changed-files.txt
+
+      - name: Generate advisory habitat assessment
+        id: assess
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          changed = [
+              line.strip()
+              for line in Path('/tmp/changed-files.txt').read_text(encoding='utf-8').splitlines()
+              if line.strip()
+          ]
+          policy = json.loads(Path('.github/codex/habitat-policy.json').read_text(encoding='utf-8'))
+          regexes = [re.compile(p) for p in policy.get('critical_habitat_regex', [])]
+          critical = any(any(r.search(path) for r in regexes) for path in changed)
+
+          assessment = {
+              "conservation_status_change": "NEUTRAL",
+              "critical_habitat_interference": critical,
+              "mitigation_plan_verified": (not critical),
+              "invasive_pattern_detection": [],
+              "regulatory_verdict": "REQUIRE_APPROVAL" if critical else "APPROVE"
+          }
+
+          Path('assessment.json').write_text(json.dumps(assessment, indent=2), encoding='utf-8')
+
+          gh_output = Path(Path.cwd().joinpath('.tmp-github-output'))
+          gh_output.write_text('', encoding='utf-8')
+          PY
+
+          verdict="$(python3 - <<'PY'
+          import json
+          print(json.load(open('assessment.json', 'r', encoding='utf-8'))['regulatory_verdict'])
+          PY
+          )"
+          requires_approval=false
+          if [ "$verdict" = "REQUIRE_APPROVAL" ] || [ "$verdict" = "DENY" ]; then
+            requires_approval=true
+          fi
+
+          echo "regulatory_verdict=$verdict" >> "$GITHUB_OUTPUT"
+          echo "requires_approval=$requires_approval" >> "$GITHUB_OUTPUT"
+          echo "assessment_json_path=assessment.json" >> "$GITHUB_OUTPUT"
+
+      - name: Upload assessment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: habitat-assessment
+          path: assessment.json
+          if-no-files-found: error
+
+      - name: Write step summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Habitat Warden"
+            echo "- Verdict: \`${{ steps.assess.outputs.regulatory_verdict }}\`"
+            echo "- Requires approval: \`${{ steps.assess.outputs.requires_approval }}\`"
+            echo "- Mode: \`advisory\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce only when policy mode is enforce
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODE="$(python3 - <<'PY'
+          import json
+          print(json.load(open('.github/codex/habitat-policy.json', 'r', encoding='utf-8')).get('mode', 'advisory'))
+          PY
+          )"
+          VERDICT="${{ steps.assess.outputs.regulatory_verdict }}"
+          if [ "$MODE" = "enforce" ] && [ "$VERDICT" != "APPROVE" ]; then
+            echo "Enforcement active: verdict=$VERDICT"
+            exit 1
+          fi
+          echo "Enforcement not triggered (mode=$MODE, verdict=$VERDICT)"
