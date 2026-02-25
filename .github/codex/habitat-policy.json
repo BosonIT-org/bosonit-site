@@ -1,5 +1,5 @@
 {
-  "mode": "advisory",
+  "mode": "enforce",
   "critical_habitat_regex": [
     "^\\.github/workflows/",
     "^stackcp/",
