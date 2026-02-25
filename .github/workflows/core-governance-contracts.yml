@@ -73,9 +73,9 @@ jobs:
               raise SystemExit('habitat-policy.mode must be advisory or enforce')
 
           required_regex = {
-              r'^\\.github/workflows/',
-              r'^stackcp/',
-              r'^deploy\\.sh$'
+              '^\\.github/workflows/',
+              '^stackcp/',
+              '^deploy\\.sh$'
           }
           configured_regex = set(policy.get('critical_habitat_regex', []))
           missing_regex = sorted(required_regex - configured_regex)
