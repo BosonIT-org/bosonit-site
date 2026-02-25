@@ -119,3 +119,5 @@ jobs:
             echo "- Head SHA: \`${{ steps.diff.outputs.head_sha }}\`"
             echo "- Contract state: \`PASS\`"
           } >> "$GITHUB_STEP_SUMMARY"
+
+# enforce-mode validation marker
