@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Install gitleaks (OSS)
         run: |
           set -euo pipefail
@@ -28,7 +30,16 @@ jobs:
           gitleaks version
       - name: Run gitleaks
         run: |
-          gitleaks detect --source . --redact --no-git
+          set -euo pipefail
+          git fetch origin main --depth=1
+          gitleaks git --redact --log-opts="origin/main..HEAD"
+      - name: Smoke-check high-risk key patterns in PR diff
+        run: |
+          set -euo pipefail
+          if git diff origin/main...HEAD | grep -nE 'BEGIN PRIVATE KEY|OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|aws_secret_access_key'; then
+            echo "SECRET_SMOKE_MATCH"
+            exit 41
+          fi
 
   policy-habitat-guardrails:
     name: policy / habitat-guardrails
