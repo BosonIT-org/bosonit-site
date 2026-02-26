@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "branch_prefix": "codex/",
+  "merge_strategy": "squash",
+  "fail_closed": true,
+  "labels": {
+    "innovation": ["innovation-proposal", "experiment", "scale-candidate", "rejected-with-rationale"],
+    "approval": "human-approval-required"
+  },
+  "delegated_gate": {
+    "mode": "single_human_delegated",
+    "required_team_review_request": "ai-ops",
+    "trigger_paths": [
+      ".github/workflows/**",
+      "ops/governance/**",
+      "ops/windmill/**",
+      "ansible/**",
+      "infra/**"
+    ],
+    "enforced_by": "habitat-warden"
+  },
+  "required_checks_exact": [
+    "security / gitleaks",
+    "policy / habitat-guardrails",
+    "ci / test",
+    "habitat-warden",
+    "ai-ops auto-approve"
+  ],
+  "evidence_rule": {
+    "scale_candidate_requires_evidence": true,
+    "evidence_location": "observatory/evidence/YYYY-MM-DD/<issue-or-pr-id>/",
+    "exception_allowed_if_documented_in_ADR": true
+  }
+}

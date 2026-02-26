@@ -1,0 +1,57 @@
+script:
+  id: model_role_selector
+  title: Subscription-first Model Role Selector
+  entrypoint: /Users/kennethjones/bosonit.org/ops/windmill/ops/model_role_selector.py
+  runtime: python3
+  mode: fail_closed
+  summary: |
+    Selects a provider using subscription-first policy order.
+    Allows fallback only for approved trigger reasons.
+inputs:
+  request_id:
+    type: string
+    required: false
+  reason_code:
+    type: string
+    required: true
+    default: normal
+  impact_level:
+    type: string
+    required: true
+    default: advisory
+  active_provider:
+    type: string
+    required: false
+  availability:
+    type: object
+    required: false
+  token_estimate:
+    type: integer
+    required: false
+    default: 0
+  latency_ms:
+    type: integer
+    required: false
+outputs:
+  verdict:
+    type: string
+  provider_selected:
+    type: string
+  provider_source:
+    type: string
+  reason_code:
+    type: string
+  fallback_chain_attempted:
+    type: array
+  token_estimate:
+    type: integer
+  latency_ms:
+    type: integer
+  block_reason:
+    type: string
+governance:
+  default_on_unknown: block
+  requires_explicit_human_approval_for:
+    - deploy
+    - infra
+    - security

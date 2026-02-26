@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "subscription-first-routing",
+  "policy_status": "enforced",
+  "default_on_unknown": "block",
+  "provider_order": [
+    {
+      "id": "openai-codex",
+      "display_name": "Codex 5.3",
+      "tier": 1,
+      "routing_role": "primary"
+    },
+    {
+      "id": "gemini-pro",
+      "display_name": "Gemini Pro 3.1",
+      "tier": 2,
+      "routing_role": "secondary"
+    },
+    {
+      "id": "claude-opus",
+      "display_name": "Claude Opus 4.6",
+      "tier": 3,
+      "routing_role": "tertiary"
+    },
+    {
+      "id": "claude-sonnet",
+      "display_name": "Claude Sonnet 4.6",
+      "tier": 4,
+      "routing_role": "tertiary"
+    }
+  ],
+  "fallback_policy": {
+    "allowed_triggers": [
+      "rate_limit",
+      "provider_outage",
+      "quota_exhausted"
+    ],
+    "denied_triggers": [
+      "manual_preference",
+      "silent_downgrade",
+      "unknown_reason"
+    ],
+    "fallback_targets": [
+      "cerebras-proxy",
+      "local-mesh"
+    ],
+    "fallback_condition": "only_when_allowed_trigger"
+  },
+  "weighted_rotation": {
+    "enabled": true,
+    "mode": "within-subscription-tier-only",
+    "notes": "Rotation may distribute requests across subscription providers but may not bypass provider_order or fallback_policy."
+  },
+  "human_approval_gate": {
+    "required_for_impact": [
+      "deploy",
+      "infra",
+      "security"
+    ],
+    "required_label": "human-approval-required",
+    "required_reviewer_group": "ai-ops"
+  },
+  "required_decision_telemetry": [
+    "provider_selected",
+    "reason_code",
+    "fallback_chain_attempted",
+    "latency_ms",
+    "token_estimate"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "approval_required": true,
+  "decision": {
+    "approval_required": true,
+    "block_reason": "fallback_trigger_denied:manual_preference",
+    "fallback_chain_attempted": [],
+    "latency_ms": 95,
+    "policy_id": "subscription-first-routing",
+    "policy_status": "enforced",
+    "provider_selected": null,
+    "provider_source": "blocked",
+    "reason_code": "manual_preference",
+    "request_id": "cio-proposal-001-dryrun-005",
+    "selector": "model_role_selector",
+    "token_estimate": 900,
+    "verdict": "require_approval"
+  },
+  "default_on_unknown": "block",
+  "policy_id": "subscription-first-routing",
+  "policy_pass": false,
+  "policy_verdict": "deny",
+  "required_controls": [],
+  "violations": [
+    "missing_required_telemetry:provider_selected,fallback_chain_attempted",
+    "denied_trigger:manual_preference",
+    "selector_not_allow:require_approval"
+  ]
+}

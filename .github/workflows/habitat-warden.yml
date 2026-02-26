@@ -9,6 +9,11 @@ on:
       - opened
       - synchronize
       - reopened
+      - labeled
+      - ready_for_review
+  pull_request_review:
+    types:
+      - submitted
 
 permissions:
   contents: read
@@ -62,9 +67,6 @@ jobs:
           }
 
           Path('assessment.json').write_text(json.dumps(assessment, indent=2), encoding='utf-8')
-
-          gh_output = Path(Path.cwd().joinpath('.tmp-github-output'))
-          gh_output.write_text('', encoding='utf-8')
           PY
 
           verdict="$(python3 - <<'PY'
@@ -88,6 +90,49 @@ jobs:
           path: assessment.json
           if-no-files-found: error
 
+      - name: Evaluate delegated approval gate
+        id: gate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const labels = (pr.labels || []).map(l => l.name);
+            const hasGateLabel = labels.includes("human-approval-required");
+
+            const reviews = await github.paginate(
+              github.rest.pulls.listReviews,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                per_page: 100
+              }
+            );
+
+            const latestByUser = new Map();
+            for (const review of reviews) {
+              if (review.user && review.user.login) {
+                latestByUser.set(review.user.login, review.state);
+              }
+            }
+
+            const approvedByBot = latestByUser.get("github-actions[bot]") === "APPROVED";
+            const requested = await github.rest.pulls.listRequestedReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+            const requestedTeams = (requested.data.teams || []).map(t => t.slug);
+            const aiOpsTeamRequested = requestedTeams.includes("ai-ops");
+
+            core.setOutput("has_gate_label", String(hasGateLabel));
+            core.setOutput("approved_by_bot", String(approvedByBot));
+            core.setOutput("ai_ops_team_requested", String(aiOpsTeamRequested));
+            core.setOutput(
+              "approval_gate_satisfied",
+              String(hasGateLabel && (approvedByBot || aiOpsTeamRequested))
+            );
+
       - name: Write step summary
         shell: bash
         run: |
@@ -96,10 +141,12 @@ jobs:
             echo "## Habitat Warden"
             echo "- Verdict: \`${{ steps.assess.outputs.regulatory_verdict }}\`"
             echo "- Requires approval: \`${{ steps.assess.outputs.requires_approval }}\`"
-            echo "- Mode: \`advisory\`"
+            echo "- Gate label present: \`${{ steps.gate.outputs.has_gate_label }}\`"
+            echo "- Approved by delegated bot: \`${{ steps.gate.outputs.approved_by_bot }}\`"
+            echo "- ai-ops team requested: \`${{ steps.gate.outputs.ai_ops_team_requested }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Enforce only when policy mode is enforce
+      - name: Enforce policy mode with delegated approval support
         shell: bash
         run: |
           set -euo pipefail
@@ -109,8 +156,27 @@ jobs:
           PY
           )"
           VERDICT="${{ steps.assess.outputs.regulatory_verdict }}"
-          if [ "$MODE" = "enforce" ] && [ "$VERDICT" != "APPROVE" ]; then
-            echo "Enforcement active: verdict=$VERDICT"
+          GATE_OK="${{ steps.gate.outputs.approval_gate_satisfied }}"
+
+          if [ "$MODE" != "enforce" ]; then
+            echo "Advisory mode active."
+            exit 0
+          fi
+
+          if [ "$VERDICT" = "APPROVE" ]; then
+            echo "Verdict approve."
+            exit 0
+          fi
+
+          if [ "$VERDICT" = "DENY" ]; then
+            echo "Enforcement active: verdict=DENY"
             exit 1
           fi
-          echo "Enforcement not triggered (mode=$MODE, verdict=$VERDICT)"
+
+          if [ "$VERDICT" = "REQUIRE_APPROVAL" ] && [ "$GATE_OK" = "true" ]; then
+            echo "Require-approval verdict satisfied by delegated ai-ops approval gate."
+            exit 0
+          fi
+
+          echo "Enforcement active: verdict=$VERDICT gate_ok=$GATE_OK"
+          exit 1

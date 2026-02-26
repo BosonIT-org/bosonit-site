@@ -1,0 +1,40 @@
+script:
+  id: model_policy_gate
+  title: Subscription-first Routing Policy Gate
+  entrypoint: /Users/kennethjones/bosonit.org/ops/windmill/ops/model_policy_gate.py
+  runtime: python3
+  mode: fail_closed
+  summary: |
+    Validates selector decisions against BosonIT routing policy.
+    Returns allow, require_approval, or deny.
+inputs:
+  decision:
+    type: object
+    required: true
+  impact_level:
+    type: string
+    required: false
+  human_approval_granted:
+    type: boolean
+    required: false
+    default: false
+outputs:
+  policy_verdict:
+    type: string
+  policy_pass:
+    type: boolean
+  approval_required:
+    type: boolean
+  required_controls:
+    type: array
+  violations:
+    type: array
+  policy_id:
+    type: string
+governance:
+  blocked_verdicts:
+    - require_approval
+    - deny
+  default_on_unknown: block
+  escalation_label: human-approval-required
+  reviewer_group: ai-ops

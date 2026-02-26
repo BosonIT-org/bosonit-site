@@ -1,0 +1,164 @@
+name: PR Readiness Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  security-gitleaks:
+    name: security / gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks (OSS)
+        run: |
+          set -euo pipefail
+          VERSION="8.24.2"
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" \
+            -o /tmp/gitleaks.tgz
+          tar -xzf /tmp/gitleaks.tgz -C /tmp
+          sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+      - name: Run gitleaks
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          rm -rf /tmp/pr-scan
+          mkdir -p /tmp/pr-scan
+          git diff --name-only origin/main...HEAD > /tmp/changed-files.txt
+          if [ ! -s /tmp/changed-files.txt ]; then
+            echo "No changed files in PR diff. Skipping gitleaks."
+            exit 0
+          fi
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              mkdir -p "/tmp/pr-scan/$(dirname "$file")"
+              cp "$file" "/tmp/pr-scan/$file"
+            fi
+          done < /tmp/changed-files.txt
+          gitleaks detect --source /tmp/pr-scan --redact --no-git
+      - name: Smoke-check high-risk key patterns in PR diff
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          DIFF_FILE=/tmp/pr-readiness.diff
+          git diff -U0 origin/main...HEAD -- . ':!.github/workflows/pr-readiness.yml' > "$DIFF_FILE"
+
+          if grep -nE '^\+.*-----BEGIN [A-Z ]*PRIVATE KEY-----' "$DIFF_FILE"; then
+            echo "SECRET_SMOKE_MATCH: private key block marker"
+            exit 41
+          fi
+
+          if grep -nE "^\+.*(OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY)[[:space:]]*[:=][[:space:]]*([\"'][A-Za-z0-9._\\-]{16,}[\"']|[A-Za-z0-9._\\-]{16,})" "$DIFF_FILE"; then
+            echo "SECRET_SMOKE_MATCH: provider API key assignment"
+            exit 41
+          fi
+
+          if grep -nE "^\+.*aws_secret_access_key[[:space:]]*[:=][[:space:]]*([\"'][A-Za-z0-9/+=]{20,}[\"']|[A-Za-z0-9/+=]{20,})" "$DIFF_FILE"; then
+            echo "SECRET_SMOKE_MATCH: aws secret assignment"
+            exit 41
+          fi
+
+  policy-habitat-guardrails:
+    name: policy / habitat-guardrails
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate CIO routing policy contract
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          required = Path("ops/governance/model_role_registry.json")
+          if not required.exists():
+              raise SystemExit("missing ops/governance/model_role_registry.json")
+
+          data = json.loads(required.read_text())
+          required_keys = ["provider_order", "fallback_policy", "default_on_unknown", "human_approval_gate"]
+          missing = [k for k in required_keys if k not in data]
+          if missing:
+              raise SystemExit(f"missing policy keys: {missing}")
+
+          fallback = data.get("fallback_policy", {})
+          for key in ("allowed_triggers", "denied_triggers", "fallback_targets"):
+              if key not in fallback:
+                  raise SystemExit(f"missing fallback policy key: {key}")
+
+          print("policy validation passed")
+          PY
+
+  ci-test:
+    name: ci / test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+
+  ai-ops-auto-approve:
+    name: ai-ops auto-approve
+    runs-on: ubuntu-latest
+    needs:
+      - security-gitleaks
+      - policy-habitat-guardrails
+      - ci-test
+    if: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: read
+    steps:
+      - name: Submit delegated ai-ops approval when gated
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const labels = (pr.labels || []).map(l => l.name);
+            if (!labels.includes("human-approval-required")) {
+              core.info("No human-approval-required label; skipping delegated approval.");
+              return;
+            }
+            if (!pr.head.ref.startsWith("codex/")) {
+              core.info(`Head ref ${pr.head.ref} is not codex/*; skipping delegated approval.`);
+              return;
+            }
+
+            const requested = await github.rest.pulls.listRequestedReviewers(
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number
+              }
+            );
+            const requestedTeams = (requested.data.teams || []).map(t => t.slug);
+            if (requestedTeams.includes("ai-ops")) {
+              core.info("ai-ops team review already requested.");
+              return;
+            }
+
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              team_reviewers: ["ai-ops"]
+            });
+            core.info("Requested ai-ops team review for delegated gate.");
