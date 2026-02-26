@@ -49,7 +49,7 @@ jobs:
       - name: Smoke-check high-risk key patterns in PR diff
         run: |
           set -euo pipefail
-          if git diff origin/main...HEAD | grep -nE 'BEGIN PRIVATE KEY|OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|aws_secret_access_key'; then
+          if git diff origin/main...HEAD -- . ':!.github/workflows/pr-readiness.yml' | grep -nE 'BEGIN PRIVATE KEY|OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|aws_secret_access_key'; then
             echo "SECRET_SMOKE_MATCH"
             exit 41
           fi
