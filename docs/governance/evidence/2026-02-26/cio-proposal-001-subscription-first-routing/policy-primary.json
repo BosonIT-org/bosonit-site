@@ -1,0 +1,29 @@
+{
+  "approval_required": false,
+  "decision": {
+    "approval_required": false,
+    "block_reason": null,
+    "fallback_chain_attempted": [
+      "openai-codex",
+      "gemini-pro",
+      "claude-opus",
+      "claude-sonnet"
+    ],
+    "latency_ms": 180,
+    "policy_id": "subscription-first-routing",
+    "policy_status": "enforced",
+    "provider_selected": "openai-codex",
+    "provider_source": "subscription",
+    "reason_code": "normal",
+    "request_id": "cio-proposal-001-dryrun-001",
+    "selector": "model_role_selector",
+    "token_estimate": 1200,
+    "verdict": "allow"
+  },
+  "default_on_unknown": "block",
+  "policy_id": "subscription-first-routing",
+  "policy_pass": true,
+  "policy_verdict": "allow",
+  "required_controls": [],
+  "violations": []
+}

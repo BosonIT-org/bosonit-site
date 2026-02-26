@@ -1,0 +1,15 @@
+{
+  "approval_required": true,
+  "block_reason": "fallback_trigger_denied:manual_preference",
+  "fallback_chain_attempted": [],
+  "latency_ms": 95,
+  "policy_id": "subscription-first-routing",
+  "policy_status": "enforced",
+  "provider_selected": null,
+  "provider_source": "blocked",
+  "reason_code": "manual_preference",
+  "request_id": "cio-proposal-001-dryrun-005",
+  "selector": "model_role_selector",
+  "token_estimate": 900,
+  "verdict": "require_approval"
+}
