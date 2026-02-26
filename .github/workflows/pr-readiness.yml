@@ -32,7 +32,20 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin main --depth=1
-          gitleaks git --redact --log-opts="origin/main..HEAD"
+          rm -rf /tmp/pr-scan
+          mkdir -p /tmp/pr-scan
+          git diff --name-only origin/main...HEAD > /tmp/changed-files.txt
+          if [ ! -s /tmp/changed-files.txt ]; then
+            echo "No changed files in PR diff. Skipping gitleaks."
+            exit 0
+          fi
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              mkdir -p "/tmp/pr-scan/$(dirname "$file")"
+              cp "$file" "/tmp/pr-scan/$file"
+            fi
+          done < /tmp/changed-files.txt
+          gitleaks detect --source /tmp/pr-scan --redact --no-git
       - name: Smoke-check high-risk key patterns in PR diff
         run: |
           set -euo pipefail
