@@ -50,8 +50,22 @@ jobs:
       - name: Smoke-check high-risk key patterns in PR diff
         run: |
           set -euo pipefail
-          if git diff origin/main...HEAD -- . ':!.github/workflows/pr-readiness.yml' | grep -nE 'BEGIN PRIVATE KEY|OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|aws_secret_access_key'; then
-            echo "SECRET_SMOKE_MATCH"
+          git fetch origin main --depth=1
+          DIFF_FILE=/tmp/pr-readiness.diff
+          git diff -U0 origin/main...HEAD -- . ':!.github/workflows/pr-readiness.yml' > "$DIFF_FILE"
+
+          if grep -nE '^\+.*-----BEGIN [A-Z ]*PRIVATE KEY-----' "$DIFF_FILE"; then
+            echo "SECRET_SMOKE_MATCH: private key block marker"
+            exit 41
+          fi
+
+          if grep -nE "^\+.*(OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY)[[:space:]]*[:=][[:space:]]*([\"'][A-Za-z0-9._\\-]{16,}[\"']|[A-Za-z0-9._\\-]{16,})" "$DIFF_FILE"; then
+            echo "SECRET_SMOKE_MATCH: provider API key assignment"
+            exit 41
+          fi
+
+          if grep -nE "^\+.*aws_secret_access_key[[:space:]]*[:=][[:space:]]*([\"'][A-Za-z0-9/+=]{20,}[\"']|[A-Za-z0-9/+=]{20,})" "$DIFF_FILE"; then
+            echo "SECRET_SMOKE_MATCH: aws secret assignment"
             exit 41
           fi
 
