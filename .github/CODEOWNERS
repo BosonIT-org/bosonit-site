@@ -1,0 +1,7 @@
+.github/workflows/ @ai-ops
+ops/governance/ @ai-ops
+ops/windmill/ @ai-ops
+ansible/ @ai-ops
+infra/ @ai-ops
+docs/decisions/ @ai-ops
+docs/governance/ @ai-ops

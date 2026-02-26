@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["timestamp_utc", "kpi", "delta", "method", "decision_ref"],
+  "properties": {
+    "timestamp_utc": {"type": "string"},
+    "kpi": {"type": "string"},
+    "delta": {"type": "number"},
+    "method": {"type": "string"},
+    "decision_ref": {"type": "string"}
+  }
+}
