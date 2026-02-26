@@ -1,0 +1,19 @@
+{
+  "approval_required": false,
+  "block_reason": null,
+  "fallback_chain_attempted": [
+    "gemini-pro",
+    "claude-opus",
+    "claude-sonnet"
+  ],
+  "latency_ms": 260,
+  "policy_id": "subscription-first-routing",
+  "policy_status": "enforced",
+  "provider_selected": "gemini-pro",
+  "provider_source": "subscription",
+  "reason_code": "rate_limit",
+  "request_id": "cio-proposal-001-dryrun-002",
+  "selector": "model_role_selector",
+  "token_estimate": 1300,
+  "verdict": "allow"
+}

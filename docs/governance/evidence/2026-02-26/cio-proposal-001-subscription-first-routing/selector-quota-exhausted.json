@@ -1,0 +1,21 @@
+{
+  "approval_required": false,
+  "block_reason": null,
+  "fallback_chain_attempted": [
+    "openai-codex",
+    "gemini-pro",
+    "claude-sonnet",
+    "cerebras-proxy",
+    "local-mesh"
+  ],
+  "latency_ms": 520,
+  "policy_id": "subscription-first-routing",
+  "policy_status": "enforced",
+  "provider_selected": "cerebras-proxy",
+  "provider_source": "fallback",
+  "reason_code": "quota_exhausted",
+  "request_id": "cio-proposal-001-dryrun-004",
+  "selector": "model_role_selector",
+  "token_estimate": 1400,
+  "verdict": "allow"
+}
