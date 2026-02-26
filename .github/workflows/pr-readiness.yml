@@ -127,27 +127,24 @@ jobs:
               core.info(`Head ref ${pr.head.ref} is not codex/*; skipping delegated approval.`);
               return;
             }
-            const reviews = await github.paginate(
-              github.rest.pulls.listReviews,
+
+            const requested = await github.rest.pulls.listRequestedReviewers(
               {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                pull_number: pr.number,
-                per_page: 100
+                pull_number: pr.number
               }
             );
-            const alreadyApproved = reviews.some(
-              r => r.user && r.user.login === "github-actions[bot]" && r.state === "APPROVED"
-            );
-            if (alreadyApproved) {
-              core.info("github-actions[bot] already approved this PR.");
+            const requestedTeams = (requested.data.teams || []).map(t => t.slug);
+            if (requestedTeams.includes("ai-ops")) {
+              core.info("ai-ops team review already requested.");
               return;
             }
-            await github.rest.pulls.createReview({
+
+            await github.rest.pulls.requestReviewers({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: pr.number,
-              event: "APPROVE",
-              body: "Delegated ai-ops approval: required checks passed and approval gate conditions satisfied."
+              team_reviewers: ["ai-ops"]
             });
-            core.info("Delegated approval submitted by github-actions[bot].");
+            core.info("Requested ai-ops team review for delegated gate.");

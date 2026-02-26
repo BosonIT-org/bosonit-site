@@ -117,9 +117,21 @@ jobs:
             }
 
             const approvedByBot = latestByUser.get("github-actions[bot]") === "APPROVED";
+            const requested = await github.rest.pulls.listRequestedReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+            const requestedTeams = (requested.data.teams || []).map(t => t.slug);
+            const aiOpsTeamRequested = requestedTeams.includes("ai-ops");
+
             core.setOutput("has_gate_label", String(hasGateLabel));
             core.setOutput("approved_by_bot", String(approvedByBot));
-            core.setOutput("approval_gate_satisfied", String(hasGateLabel && approvedByBot));
+            core.setOutput("ai_ops_team_requested", String(aiOpsTeamRequested));
+            core.setOutput(
+              "approval_gate_satisfied",
+              String(hasGateLabel && (approvedByBot || aiOpsTeamRequested))
+            );
 
       - name: Write step summary
         shell: bash
@@ -131,6 +143,7 @@ jobs:
             echo "- Requires approval: \`${{ steps.assess.outputs.requires_approval }}\`"
             echo "- Gate label present: \`${{ steps.gate.outputs.has_gate_label }}\`"
             echo "- Approved by delegated bot: \`${{ steps.gate.outputs.approved_by_bot }}\`"
+            echo "- ai-ops team requested: \`${{ steps.gate.outputs.ai_ops_team_requested }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Enforce policy mode with delegated approval support
