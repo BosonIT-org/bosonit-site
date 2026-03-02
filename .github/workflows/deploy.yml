@@ -84,8 +84,15 @@ jobs:
         deadline=$((SECONDS + 180))
         ok=0
         while [ $SECONDS -lt $deadline ]; do
-          html="$(curl -fsS https://www.bosonit.org/services/ || true)"
-          json="$(curl -fsS https://www.bosonit.org/observatory/control-plane.latest.json || true)"
+          nonce="$(date +%s)-$RANDOM"
+          html="$(curl -fsS \
+            -H "Cache-Control: no-cache, no-store" \
+            -H "Pragma: no-cache" \
+            "https://www.bosonit.org/services/?cb=${nonce}" || true)"
+          json="$(curl -fsS \
+            -H "Cache-Control: no-cache, no-store" \
+            -H "Pragma: no-cache" \
+            "https://www.bosonit.org/observatory/control-plane.latest.json?cb=${nonce}" || true)"
           if echo "$html" | grep -q "Revenue Leak Audit" && echo "$json" | grep -q "\"schema_version\""; then
             ok=1
             break
@@ -94,5 +101,11 @@ jobs:
         done
         if [ "$ok" -ne 1 ]; then
           echo "Public route verification failed: expected services and observatory payload not served."
+          echo "services sample:"
+          echo "$html" | head -c 300 || true
+          echo
+          echo "observatory sample:"
+          echo "$json" | head -c 300 || true
+          echo
           exit 1
         fi
