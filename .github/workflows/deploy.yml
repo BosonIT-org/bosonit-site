@@ -1,4 +1,4 @@
-name: Deploy to StackCP
+name: Deploy Site
 on:
   push:
     branches: [ main ]
@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       STACK_USER: ${{ vars.STACK_USER }}
+      VPS0_HOST: ${{ vars.VPS0_HOST }}
+      VPS0_USER: ${{ vars.VPS0_USER }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -17,15 +19,80 @@ jobs:
     - run: npm ci
     - run: npm run build
 
-    - name: Install private key
+    - name: Install SSH keys
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.STACKCP_KEY }}" > ~/.ssh/id_ed25519
-        chmod 600 ~/.ssh/id_ed25519
-        ssh-keyscan ssh.us.stackcp.com >> ~/.ssh/known_hosts
+        chmod 700 ~/.ssh
 
-    - name: Rsync to StackCP
+        if [ -n "${{ secrets.STACKCP_KEY }}" ]; then
+          echo "${{ secrets.STACKCP_KEY }}" > ~/.ssh/id_stackcp
+          chmod 600 ~/.ssh/id_stackcp
+          ssh-keyscan ssh.us.stackcp.com >> ~/.ssh/known_hosts
+        fi
+
+        if [ -n "${{ secrets.VPS0_SSH_KEY }}" ]; then
+          echo "${{ secrets.VPS0_SSH_KEY }}" > ~/.ssh/id_vps0
+          chmod 600 ~/.ssh/id_vps0
+        fi
+
+        if [ -n "${VPS0_HOST}" ]; then
+          ssh-keyscan "${VPS0_HOST}" >> ~/.ssh/known_hosts
+        fi
+
+        cat > ~/.ssh/config <<EOF
+        Host stackcp
+          HostName ssh.us.stackcp.com
+          User ${STACK_USER}
+          IdentityFile ~/.ssh/id_stackcp
+          IdentitiesOnly yes
+
+        Host vps0
+          HostName ${VPS0_HOST}
+          User ${VPS0_USER}
+          IdentityFile ~/.ssh/id_vps0
+          IdentitiesOnly yes
+        EOF
+        chmod 600 ~/.ssh/config
+
+    - name: Deploy to Live Origin (vps0)
       run: |
+        if [ -z "${VPS0_HOST}" ] || [ -z "${VPS0_USER}" ] || [ ! -s ~/.ssh/id_vps0 ]; then
+          echo "VPS0 deploy skipped: host/user/key missing."
+          exit 0
+        fi
+
+        ssh vps0 "sudo mkdir -p /var/www/bosonit"
+        rsync -avz \
+          --rsync-path="sudo rsync" \
+          --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
+          dist/ "vps0:/var/www/bosonit/"
+
+    - name: Mirror to StackCP
+      run: |
+        if [ -z "${STACK_USER}" ] || [ ! -s ~/.ssh/id_stackcp ]; then
+          echo "StackCP mirror skipped: user/key missing."
+          exit 0
+        fi
+
         rsync -avz --delete \
           --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
-          dist/ "${STACK_USER}@ssh.us.stackcp.com:~/public_html/bosonit.org/"
+          dist/ "stackcp:~/public_html/bosonit.org/"
+
+    - name: Verify public routes
+      run: |
+        set -euo pipefail
+        deadline=$((SECONDS + 180))
+        ok=0
+        while [ $SECONDS -lt $deadline ]; do
+          html="$(curl -fsS https://www.bosonit.org/services/ || true)"
+          json="$(curl -fsS https://www.bosonit.org/observatory/control-plane.latest.json || true)"
+          if echo "$html" | grep -q "Revenue Leak Audit" && echo "$json" | grep -q "\"schema_version\""; then
+            ok=1
+            break
+          fi
+          sleep 5
+        done
+        if [ "$ok" -ne 1 ]; then
+          echo "Public route verification failed: expected services and observatory payload not served."
+          exit 1
+        fi
