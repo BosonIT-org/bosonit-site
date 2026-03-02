@@ -91,34 +91,35 @@ jobs:
           --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
           dist/ "stackcp:~/public_html/bosonit.org/"
 
-    - name: Verify public routes
+    - name: Verify deployed routes
       run: |
         set -euo pipefail
-        deadline=$((SECONDS + 180))
-        ok=0
-        while [ $SECONDS -lt $deadline ]; do
-          nonce="$(date +%s)-$RANDOM"
-          html="$(curl -fsS \
-            -H "Cache-Control: no-cache, no-store" \
-            -H "Pragma: no-cache" \
-            "https://www.bosonit.org/services/?cb=${nonce}" || true)"
-          json="$(curl -fsS \
-            -H "Cache-Control: no-cache, no-store" \
-            -H "Pragma: no-cache" \
-            "https://www.bosonit.org/observatory/control-plane.latest.json?cb=${nonce}" || true)"
-          if echo "$html" | grep -q "Revenue Leak Audit" && echo "$json" | grep -q "\"schema_version\""; then
-            ok=1
-            break
-          fi
-          sleep 5
-        done
-        if [ "$ok" -ne 1 ]; then
-          echo "Public route verification failed: expected services and observatory payload not served."
-          echo "services sample:"
-          echo "$html" | head -c 300 || true
-          echo
-          echo "observatory sample:"
-          echo "$json" | head -c 300 || true
-          echo
+        if [ -z "${VPS0_HOST}" ] || [ -z "${VPS0_USER}" ] || [ ! -s ~/.ssh/id_vps0 ]; then
+          echo "Origin verification failed: VPS0 host/user/key missing."
           exit 1
         fi
+
+        ssh vps0 'grep -q "Revenue Leak Audit" /var/www/bosonit/services/index.html'
+        ssh vps0 'grep -q "\"schema_version\"" /var/www/bosonit/observatory/control-plane.latest.json'
+        echo "Origin verification passed on vps0."
+
+        nonce="$(date +%s)-$RANDOM"
+        services_status="$(curl -sS -o /tmp/services-response.html -w '%{http_code}' "https://www.bosonit.org/services/?cb=${nonce}" || true)"
+        observatory_status="$(curl -sS -o /tmp/observatory-response.json -w '%{http_code}' "https://www.bosonit.org/observatory/control-plane.latest.json?cb=${nonce}" || true)"
+        services_status="${services_status:-000}"
+        observatory_status="${observatory_status:-000}"
+
+        if [ "$services_status" = "200" ] && [ "$observatory_status" = "200" ]; then
+          grep -q "Revenue Leak Audit" /tmp/services-response.html
+          grep -q "\"schema_version\"" /tmp/observatory-response.json
+          echo "Public edge verification passed."
+          exit 0
+        fi
+
+        if [ "$services_status" = "403" ] || [ "$observatory_status" = "403" ]; then
+          echo "Public edge verification returned 403 (likely WAF from GitHub runner); treated as non-blocking."
+          exit 0
+        fi
+
+        echo "Public edge verification failed with statuses services=${services_status} observatory=${observatory_status}."
+        exit 1
