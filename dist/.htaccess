@@ -1,0 +1,15 @@
+RewriteEngine On
+RewriteBase /
+
+# Serve real files and directories first.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Explicit static routes that must bypass generic homepage fallback.
+RewriteRule ^services/?$ /services/index.html [L]
+RewriteRule ^control-plane/?$ /control-plane/index.html [L]
+RewriteRule ^observatory/control-plane.latest.json$ /observatory/control-plane.latest.json [L]
+
+# Default SPA/static fallback.
+RewriteRule . /index.html [L]
