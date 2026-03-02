@@ -13,6 +13,7 @@ const SOURCE_CANDIDATES = [
 ].filter(Boolean);
 
 const OUTPUT_FILE = path.join(REPO_ROOT, "public", "observatory", "control-plane.latest.json");
+const REVENUE_EXPERIMENT_PACK = path.join(REPO_ROOT, "ops", "observatory", "revenue-experiment-pack.json");
 
 function nowIso() {
   return new Date().toISOString();
@@ -344,6 +345,42 @@ function summarizeCiReport(ciReport, ciSnapshot) {
   };
 }
 
+function summarizeRevenueExperiments(pack) {
+  const experiments = Array.isArray(pack?.experiments) ? pack.experiments : [];
+  const normalized = experiments.map((item) => ({
+    id: item?.id || "unknown",
+    channel: item?.channel || "unknown",
+    owner: item?.owner || "unassigned",
+    stage: item?.stage || "planned",
+    status: item?.status || item?.stage || "planned",
+    budget_split_percent: safeNum(item?.budget_split_percent),
+    target_audience: item?.target_audience || "",
+    tracking: item?.tracking || {},
+    kpi_targets: item?.kpi_targets || {},
+    kill_rule: item?.kill_rule || "",
+    scale_rule: item?.scale_rule || "",
+    next_review_utc: item?.next_review_utc || null,
+    notes: item?.notes || "",
+  }));
+
+  const budgetSplit = normalized.reduce((sum, item) => sum + safeNum(item.budget_split_percent), 0);
+  const activeCount = normalized.filter((item) => {
+    const status = String(item.status || "").toLowerCase();
+    return status.includes("active") || status.includes("launch") || status.includes("scale");
+  }).length;
+
+  return {
+    schema_version: pack?.schema_version || null,
+    updated_at_utc: pack?.updated_at_utc || null,
+    objective: pack?.objective || "",
+    weekly_review_day: pack?.weekly_review_day || "Monday",
+    channel_count: normalized.length,
+    active_count: activeCount,
+    budget_split_total_percent: Number(budgetSplit.toFixed(2)),
+    experiments: normalized,
+  };
+}
+
 function summarizeWorkflowRuns(evidenceRoot, warnings) {
   const workflowRoot = path.join(evidenceRoot, "BosonIT-org");
   const metadataFiles = walkFiles(workflowRoot, "metadata.json");
@@ -460,6 +497,7 @@ function main() {
   const heartbeatState = readJson(path.join(source.evidenceRoot, "heartbeat", "agent_heartbeat_state.json"), warnings, {});
   const ciSnapshot = readJson(path.join(source.evidenceRoot, "heartbeat", "ci_snapshot.json"), warnings, {});
   const ciReport = readJson(path.join(source.evidenceRoot, "heartbeat", "ci_report.json"), warnings, {});
+  const revenueExperimentPack = readJson(REVENUE_EXPERIMENT_PACK, warnings, {});
 
   const dispatchEvents = readJsonl(path.join(source.evidenceRoot, "windmill", "agent_dispatch_events.jsonl"), warnings);
   const governorEvents = readJsonl(path.join(source.evidenceRoot, "windmill", "agent_cost_governor_events.jsonl"), warnings);
@@ -472,7 +510,15 @@ function main() {
   const ciSummary = summarizeCiReport(ciReport, ciSnapshot);
   const workflowSummary = summarizeWorkflowRuns(source.evidenceRoot, warnings);
   const systemSummary = summarizeSystemChanges(systemChangeEvents);
+  const revenueSummary = summarizeRevenueExperiments(revenueExperimentPack);
   const latestHeartbeatEvent = sortByTimestampDesc(heartbeatEvents, "checked_at_utc")[0] || null;
+
+  if (revenueSummary.channel_count > 0) {
+    const delta = Math.abs(revenueSummary.budget_split_total_percent - 100);
+    if (delta > 0.01) {
+      warnings.push(`revenue_budget_split_not_100:${revenueSummary.budget_split_total_percent}`);
+    }
+  }
 
   if (latestHeartbeatEvent) {
     const latestMs = Date.parse(latestHeartbeatEvent.checked_at_utc || "") || 0;
@@ -515,6 +561,7 @@ function main() {
     routing: governorSummary,
     governance_verdict: computeGovernanceVerdict(governorSummary.latest),
     ci: ciSummary,
+    revenue: revenueSummary,
     system_changes: systemSummary,
   };
 

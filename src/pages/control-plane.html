@@ -383,6 +383,26 @@
       </section>
 
       <section class="panel span-12">
+        <h2>Revenue Experiment Pack</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Owner</th>
+                <th>Budget</th>
+                <th>Status</th>
+                <th>Next Review</th>
+                <th>Kill Rule</th>
+                <th>Scale Rule</th>
+              </tr>
+            </thead>
+            <tbody id="revenueExperimentBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel span-12">
         <h2>System Change Events</h2>
         <ul id="systemChanges" class="list"></ul>
       </section>
@@ -481,9 +501,11 @@
       const rows = [
         document.getElementById("workflowBody"),
         document.getElementById("hostBody"),
+        document.getElementById("revenueExperimentBody"),
       ];
       rows.forEach((el) => {
-        el.innerHTML = `<tr><td colspan="5">${message}</td></tr>`;
+        const colspan = el.id === "revenueExperimentBody" ? 7 : 5;
+        el.innerHTML = `<tr><td colspan="${colspan}">${message}</td></tr>`;
       });
       document.getElementById("dispatchCases").innerHTML = `<li class="item">${message}</li>`;
       document.getElementById("systemChanges").innerHTML = `<li class="item">${message}</li>`;
@@ -567,6 +589,7 @@
       const heartbeat = data?.habitat?.heartbeat_status || {};
       const workflows = data?.inflight?.workflows || {};
       const verdict = data?.governance_verdict || {};
+      const revenue = data?.revenue || {};
       const warnings = data?.source?.warnings || [];
       const latestWorkflowPublished = Array.isArray(workflows.recent_runs) && workflows.recent_runs.length > 0
         ? workflows.recent_runs[0].published_at_utc
@@ -579,6 +602,7 @@
         { text: `Token Policy: ${heartbeat.token_policy?.status || "unknown"}`, klass: statusClass(heartbeat.token_policy?.status, "warn") },
         { text: `Governance: ${verdict.verdict || "unknown"}`, klass: statusClass(verdict.verdict) },
         { text: `Recent non-success runs: ${workflows.non_success_runs_last_24h ?? 0}`, klass: (workflows.non_success_runs_last_24h || 0) > 0 ? "warn" : "ok" },
+        { text: `Experiment channels: ${revenue.channel_count ?? 0}`, klass: (revenue.channel_count || 0) >= 3 ? "ok" : "warn" },
         { text: `Heartbeat freshness: ${heartbeatFreshness.label}`, klass: heartbeatFreshness.klass },
         { text: `Workflow freshness: ${workflowFreshness.label}`, klass: workflowFreshness.klass },
       ];
@@ -685,6 +709,29 @@
       document.getElementById("ciSummary").textContent = JSON.stringify(payload, null, 2);
     }
 
+    function renderRevenueExperiments(data) {
+      const revenue = data?.revenue || {};
+      const experiments = Array.isArray(revenue.experiments) ? revenue.experiments : [];
+      const body = document.getElementById("revenueExperimentBody");
+      if (experiments.length === 0) {
+        body.innerHTML = `<tr><td colspan="7">No revenue experiment pack found.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = experiments.map((experiment) => {
+        const status = experiment.status || experiment.stage || "unknown";
+        return `<tr>
+          <td>${experiment.channel || experiment.id || "unknown"}</td>
+          <td>${experiment.owner || "unassigned"}</td>
+          <td>${Number(experiment.budget_split_percent || 0).toFixed(1)}%</td>
+          <td class="${statusClass(status, "warn")}">${dotLabel(status)}</td>
+          <td>${formatTs(experiment.next_review_utc)}</td>
+          <td>${experiment.kill_rule || "n/a"}</td>
+          <td>${experiment.scale_rule || "n/a"}</td>
+        </tr>`;
+      }).join("");
+    }
+
     function renderSystemChanges(data) {
       const changes = data?.system_changes?.recent || [];
       const warnings = data?.source?.warnings || [];
@@ -738,6 +785,7 @@
         renderGovernance(data);
         renderRouting(data);
         renderCi(data);
+        renderRevenueExperiments(data);
         renderSystemChanges(data);
         renderFooter(data);
       } catch (error) {
