@@ -48,9 +48,11 @@ jobs:
 
       - name: Publish artifacts to observatory repo
         if: steps.token.outputs.has_token == 'true'
+        id: publish
         env:
           OBS_TOKEN: ${{ secrets.OBSERVATORY_PUSH_TOKEN }}
           OBS_REPO: BosonIT-org/bosonit-habitat-observatory
+          OBS_BASE_BRANCH: main
           SRC_REPO: ${{ github.repository }}
           RUN_ID: ${{ github.event.workflow_run.id }}
           RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
@@ -90,11 +92,70 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No evidence delta to commit."
+            echo "result=no-change" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          git commit -m "evidence: ${SRC_REPO} ${WORKFLOW_NAME} run ${RUN_ID}/${RUN_ATTEMPT}"
-          git push origin HEAD:main
+          BRANCH_NAME="automation/observatory-evidence/run-${RUN_ID}-attempt-${RUN_ATTEMPT}"
+          PR_TITLE="evidence: ${SRC_REPO} ${WORKFLOW_NAME} run ${RUN_ID}/${RUN_ATTEMPT}"
+
+          git commit -m "${PR_TITLE}"
+          git checkout -B "${BRANCH_NAME}"
+          git push -u origin "${BRANCH_NAME}"
+
+          OBS_OWNER="${OBS_REPO%%/*}"
+          HEAD_REF="${OBS_OWNER}:${BRANCH_NAME}"
+          API_ROOT="https://api.github.com/repos/${OBS_REPO}"
+          ENCODED_HEAD_REF="$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "${HEAD_REF}")"
+
+          existing_pr="$(curl -fsS \
+            -H "Authorization: token ${OBS_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${API_ROOT}/pulls?state=open&head=${ENCODED_HEAD_REF}" \
+            | python3 -c 'import json,sys; data=json.load(sys.stdin); print(data[0]["html_url"] if data else "")')"
+
+          if [ -n "${existing_pr}" ]; then
+            echo "Open PR already exists: ${existing_pr}"
+            echo "result=pr-reused" >> "$GITHUB_OUTPUT"
+            echo "pr_url=${existing_pr}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          python3 - <<'PY' > /tmp/observatory-pr-payload.json
+          import json
+          import os
+
+          payload = {
+              "title": os.environ["PR_TITLE"],
+              "head": os.environ["BRANCH_NAME"],
+              "base": os.environ["OBS_BASE_BRANCH"],
+              "body": (
+                  f"Automated observatory evidence publication from {os.environ['SRC_REPO']}\n\n"
+                  f"- Workflow: {os.environ['WORKFLOW_NAME']}\n"
+                  f"- Run: {os.environ['WORKFLOW_HTML_URL']}\n"
+                  f"- Conclusion: {os.environ['RUN_CONCLUSION']}"
+              ),
+          }
+          print(json.dumps(payload))
+          PY
+
+          create_status="$(curl -sS -o /tmp/observatory-pr-response.json -w '%{http_code}' -X POST \
+            -H "Authorization: token ${OBS_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${API_ROOT}/pulls" \
+            --data @/tmp/observatory-pr-payload.json)"
+
+          if [ "${create_status}" != "201" ]; then
+            echo "Failed to create observatory PR (status ${create_status})."
+            cat /tmp/observatory-pr-response.json
+            exit 1
+          fi
+
+          pr_url="$(python3 -c 'import json; print(json.load(open("/tmp/observatory-pr-response.json", "r", encoding="utf-8"))["html_url"])')"
+
+          echo "Opened PR: ${pr_url}"
+          echo "result=pr-opened" >> "$GITHUB_OUTPUT"
+          echo "pr_url=${pr_url}" >> "$GITHUB_OUTPUT"
 
       - name: Summary
         shell: bash
@@ -106,4 +167,6 @@ jobs:
             echo "- Run ID: \`${{ github.event.workflow_run.id }}\`"
             echo "- Conclusion: \`${{ github.event.workflow_run.conclusion }}\`"
             echo "- Token configured: \`${{ steps.token.outputs.has_token || 'false' }}\`"
+            echo "- Publish result: \`${{ steps.publish.outputs.result || 'not-run' }}\`"
+            echo "- Observatory PR: \`${{ steps.publish.outputs.pr_url || 'n/a' }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
