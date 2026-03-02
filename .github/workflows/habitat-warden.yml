@@ -17,7 +17,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   habitat-warden:
@@ -99,38 +98,10 @@ jobs:
             const labels = (pr.labels || []).map(l => l.name);
             const hasGateLabel = labels.includes("human-approval-required");
 
-            const reviews = await github.paginate(
-              github.rest.pulls.listReviews,
-              {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pr.number,
-                per_page: 100
-              }
-            );
-
-            const latestByUser = new Map();
-            for (const review of reviews) {
-              if (review.user && review.user.login) {
-                latestByUser.set(review.user.login, review.state);
-              }
-            }
-
-            const approvedByBot = latestByUser.get("github-actions[bot]") === "APPROVED";
-            const requested = await github.rest.pulls.listRequestedReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pr.number
-            });
-            const requestedTeams = (requested.data.teams || []).map(t => t.slug);
-            const aiOpsTeamRequested = requestedTeams.includes("ai-ops");
-
             core.setOutput("has_gate_label", String(hasGateLabel));
-            core.setOutput("approved_by_bot", String(approvedByBot));
-            core.setOutput("ai_ops_team_requested", String(aiOpsTeamRequested));
             core.setOutput(
               "approval_gate_satisfied",
-              String(hasGateLabel && (approvedByBot || aiOpsTeamRequested))
+              String(hasGateLabel)
             );
 
       - name: Write step summary
@@ -142,8 +113,6 @@ jobs:
             echo "- Verdict: \`${{ steps.assess.outputs.regulatory_verdict }}\`"
             echo "- Requires approval: \`${{ steps.assess.outputs.requires_approval }}\`"
             echo "- Gate label present: \`${{ steps.gate.outputs.has_gate_label }}\`"
-            echo "- Approved by delegated bot: \`${{ steps.gate.outputs.approved_by_bot }}\`"
-            echo "- ai-ops team requested: \`${{ steps.gate.outputs.ai_ops_team_requested }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Enforce policy mode with delegated approval support
@@ -174,7 +143,7 @@ jobs:
           fi
 
           if [ "$VERDICT" = "REQUIRE_APPROVAL" ] && [ "$GATE_OK" = "true" ]; then
-            echo "Require-approval verdict satisfied by delegated ai-ops approval gate."
+            echo "Require-approval verdict satisfied by policy gate label."
             exit 0
           fi
 
