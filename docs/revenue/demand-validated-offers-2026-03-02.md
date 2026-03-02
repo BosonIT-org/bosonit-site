@@ -38,17 +38,17 @@ These artifacts already prioritize S1 and S2 around measurable demand generation
 
 ## Final Offer Ladder (Now Implemented on `/services/`)
 
-1. Entry Offer: Revenue Signal Audit ($500)
-- Outcome: identify highest-probability pipeline path and close attribution gaps.
+1. Entry Offer: Revenue Leak Audit ($500)
+- Outcome: identify highest-value lead-to-close leaks and ship a 14-day fix map.
 - Delivery window: 72 hours.
 
-2. Core Offer: 30-Day Market-to-Revenue Sprint
-- Outcome: deploy content-to-offer conversion loop with weekly scale/kill thresholds.
-- Delivery: done-with-you implementation sprint.
+2. Core Offer: Booked-Call Engine Sprint (from $2,500)
+- Outcome: deploy lead capture, follow-up, and qualification automation tied to booked calls.
+- Delivery: 14-day done-with-you deployment sprint.
 
-3. Core Offer: Agentic Ops Hardening Sprint
-- Outcome: production-safe automation with governance and rollback controls.
-- Delivery: reliability and policy hardening sprint.
+3. Continuity Offer: Revenue Ops Pod (from $1,200/mo)
+- Outcome: weekly experiment decisions, runtime reliability checks, and monthly attribution reporting.
+- Delivery: monthly managed service with recurring optimization.
 
 ## Delivery Feasibility With Existing Resources
 

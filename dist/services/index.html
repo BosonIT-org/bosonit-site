@@ -158,16 +158,16 @@
     <section class="card">
       <div class="hero-grid">
         <div>
-          <h1>Demand-Validated Services</h1>
-          <p>Productized growth and automation services for SMB and mid-market teams that need measurable revenue outcomes.</p>
-          <p class="kpi">Offer ladder: entry diagnostic -> implementation sprint -> managed continuity.</p>
+          <h1>Revenue-Producing Service Offers</h1>
+          <p>In-demand offers for SMB and mid-market teams: pipeline visibility, booked-call automation, and monthly revenue operations continuity.</p>
+          <p class="kpi">Offer ladder: 72-hour diagnostic -> 14-day engine deployment -> monthly optimization pod.</p>
           <p id="checkoutStatus" class="badge"><span class="dot" aria-hidden="true"></span>Checkout rail loading...</p>
         </div>
         <div>
           <div class="actions">
-            <button id="startRevenueAuditBtn" class="primary" type="button">Start Revenue Signal Audit - $500</button>
-            <button id="bookMarketRevenueSprintBtn" type="button">Book 30-Day Market-to-Revenue Sprint</button>
-            <button id="bookAgenticOpsSprintBtn" type="button">Book Agentic Ops Hardening Sprint</button>
+            <button id="startRevenueLeakAuditBtn" class="primary" type="button">Start Revenue Leak Audit - $500</button>
+            <button id="bookBookedCallEngineBtn" type="button">Book 14-Day Booked-Call Engine - from $2,500</button>
+            <button id="startRevenueOpsPodBtn" type="button">Start Revenue Ops Pod - from $1,200/mo</button>
             <a href="https://www.bosonit.org/roi/?utm_source=services&utm_medium=cta&utm_campaign=sales_conversation">Talk to sales</a>
             <a href="/control-plane/">Open Control Plane</a>
             <a href="/">Home</a>
@@ -178,34 +178,34 @@
     </section>
     <section class="grid">
       <article class="card">
-        <h2>Offer 1: Revenue Signal Audit ($500)</h2>
-        <p>72-hour diagnostic for teams that are spending on growth but cannot tie source -> offer -> closed revenue.</p>
+        <h2>Offer 1: Revenue Leak Audit ($500)</h2>
+        <p>72-hour diagnostic for teams with traffic and outreach activity but weak lead-to-close conversion visibility.</p>
         <ul class="offer-list">
-          <li>ICP pain-to-offer matrix and angle test plan</li>
-          <li>Attribution manifest with mandatory `offer_id` contract</li>
-          <li>14-day execution map for the highest-probability offer path</li>
+          <li>Lead-to-close leak map with loss points by stage</li>
+          <li>Attribution contract (`source -> offer_id -> conversion`) instrumentation checklist</li>
+          <li>14-day cashflow fix plan prioritized by expected lift</li>
         </ul>
-        <p class="offer-meta">Best for: founders, agencies, and RevOps leads with inconsistent pipeline quality.</p>
+        <p class="offer-meta">Best for: founders and RevOps leads dealing with random pipeline outcomes.</p>
       </article>
       <article class="card">
-        <h2>Offer 2: 30-Day Market-to-Revenue Sprint</h2>
-        <p>Done-with-you implementation that binds channel output directly to booked calls and attributable pipeline.</p>
+        <h2>Offer 2: Booked-Call Engine Sprint (from $2,500)</h2>
+        <p>Done-with-you build of a lead capture, qualification, and follow-up system that consistently produces booked calls.</p>
         <ul class="offer-list">
-          <li>Comments -> articles -> offer dispatch system</li>
-          <li>Offer-angle tests across 3 ICP-specific variants</li>
-          <li>Weekly scorecards with scale and kill thresholds</li>
+          <li>Inbound form + webhook + CRM routing automation</li>
+          <li>Email and Telegram follow-up sequences with no-drop SLAs</li>
+          <li>Two offer-angle tests and daily conversion scoreboard</li>
         </ul>
-        <p class="offer-meta">Best for: lean B2B teams that need compounding inbound without adding headcount.</p>
+        <p class="offer-meta">Best for: B2B teams with active traffic but weak appointment volume.</p>
       </article>
       <article class="card">
-        <h2>Offer 3: Agentic Ops Hardening Sprint</h2>
-        <p>Reliability and governance hardening for AI workflow deployments that must run in production without drift.</p>
+        <h2>Offer 3: Revenue Ops Pod (from $1,200/mo)</h2>
+        <p>Managed continuity layer that keeps your growth automations healthy, optimized, and tied to attributable revenue every week.</p>
         <ul class="offer-list">
-          <li>Workflow resilience gates, rollback controls, and incident triage paths</li>
-          <li>Vault + model-routing + guardrail enforcement checks</li>
-          <li>Production readiness report with acceptance criteria</li>
+          <li>Weekly experiment reviews with scale and kill decisions</li>
+          <li>Runtime guardrails, alerting, and rollback coverage for automation failures</li>
+          <li>Monthly revenue attribution report and next-cycle offer plan</li>
         </ul>
-        <p class="offer-meta">Best for: operations leaders deploying automation in compliance-sensitive environments.</p>
+        <p class="offer-meta">Best for: teams that need dependable growth execution without adding full-time ops headcount.</p>
       </article>
     </section>
   </main>
@@ -217,9 +217,14 @@
     const ROI_PAGE_URL = "https://www.bosonit.org/roi/?utm_source=services&utm_medium=cta&utm_campaign=roi-audit";
     const EVENT_STORAGE_KEY = "bosonit_services_conversion_events";
     const OFFER_IDS = {
-      revenueSignalAudit: "offer_revenue_signal_audit_500",
-      marketToRevenueSprint: "offer_market_to_revenue_sprint_30d",
-      agenticOpsHardening: "offer_agentic_ops_hardening_sprint",
+      revenueLeakAudit: "offer_revenue_leak_audit_500",
+      bookedCallEngineSprint: "offer_booked_call_engine_sprint_14d",
+      revenueOpsPod: "offer_revenue_ops_pod_monthly",
+    };
+    const OFFER_VALUES = {
+      [OFFER_IDS.revenueLeakAudit]: 500,
+      [OFFER_IDS.bookedCallEngineSprint]: 2500,
+      [OFFER_IDS.revenueOpsPod]: 1200,
     };
 
     let checkoutLinks = null;
@@ -353,8 +358,9 @@
 
     function candidateCheckoutUrls(intent) {
       const links = checkoutLinks || {};
-      if (intent === OFFER_IDS.revenueSignalAudit) {
+      if (intent === OFFER_IDS.revenueLeakAudit) {
         return [
+          links.revenue_leak_audit,
           links.revenue_signal_audit,
           links.roi_audit,
           links.audit_500,
@@ -362,20 +368,23 @@
           ROI_PAGE_URL,
         ];
       }
-      if (intent === OFFER_IDS.marketToRevenueSprint) {
+      if (intent === OFFER_IDS.bookedCallEngineSprint) {
         return [
+          links.booked_call_engine_sprint,
           links.market_to_revenue_sprint,
           links.market_publish_sprint,
           links.architecture_sprint,
-          buildSalesRouteUrl(OFFER_IDS.marketToRevenueSprint),
+          buildSalesRouteUrl(OFFER_IDS.bookedCallEngineSprint),
         ];
       }
-      if (intent === OFFER_IDS.agenticOpsHardening) {
+      if (intent === OFFER_IDS.revenueOpsPod) {
         return [
-          links.agentic_ops_hardening_sprint,
-          links.ops_hardening_sprint,
-          links.pilot_hardening,
-          buildSalesRouteUrl(OFFER_IDS.agenticOpsHardening),
+          links.revenue_ops_pod_monthly,
+          links.pro_monthly,
+          links.monthly,
+          links.pro_yearly,
+          links.yearly,
+          buildSalesRouteUrl(OFFER_IDS.revenueOpsPod),
         ];
       }
       return [buildSalesRouteUrl(intent), ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
@@ -401,11 +410,19 @@
     function updateCheckoutStatus() {
       const statusEl = document.getElementById("checkoutStatus");
       const links = checkoutLinks || {};
-      const candidates = [links.revenue_signal_audit, links.roi_audit, links.audit_500]
+      const candidates = [
+        links.revenue_leak_audit,
+        links.revenue_signal_audit,
+        links.roi_audit,
+        links.audit_500,
+        links.revenue_ops_pod_monthly,
+        links.pro_monthly,
+        links.monthly,
+      ]
         .map((value) => normalizeCheckoutUrl(value))
         .filter(Boolean);
       const stripe = candidates.find((value) => value.includes("stripe.com"));
-      const salesHost = new URL(buildSalesRouteUrl(OFFER_IDS.marketToRevenueSprint)).hostname;
+      const salesHost = new URL(buildSalesRouteUrl(OFFER_IDS.bookedCallEngineSprint)).hostname;
       if (stripe) {
         statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Checkout live (${new URL(stripe).hostname}) + sales route live (${salesHost})`;
         return;
@@ -426,7 +443,7 @@
         route_type: route.routeType,
         checkout_host: host,
         target_url: url,
-        value_usd: intent === OFFER_IDS.revenueSignalAudit ? 500 : 0,
+        value_usd: OFFER_VALUES[intent] || 0,
         ts: new Date().toISOString(),
       };
 
@@ -436,12 +453,12 @@
       window.location.assign(url);
     }
 
-    document.getElementById("startRevenueAuditBtn")
-      .addEventListener("click", () => startOffer(OFFER_IDS.revenueSignalAudit));
-    document.getElementById("bookMarketRevenueSprintBtn")
-      .addEventListener("click", () => startOffer(OFFER_IDS.marketToRevenueSprint));
-    document.getElementById("bookAgenticOpsSprintBtn")
-      .addEventListener("click", () => startOffer(OFFER_IDS.agenticOpsHardening));
+    document.getElementById("startRevenueLeakAuditBtn")
+      .addEventListener("click", () => startOffer(OFFER_IDS.revenueLeakAudit));
+    document.getElementById("bookBookedCallEngineBtn")
+      .addEventListener("click", () => startOffer(OFFER_IDS.bookedCallEngineSprint));
+    document.getElementById("startRevenueOpsPodBtn")
+      .addEventListener("click", () => startOffer(OFFER_IDS.revenueOpsPod));
 
     loadCheckoutLinks().finally(updateCheckoutStatus);
   </script>
