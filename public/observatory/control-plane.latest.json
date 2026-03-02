@@ -1,12 +1,12 @@
 {
   "schema_version": "2026-03-02.control-plane.v1",
-  "generated_at_utc": "2026-03-02T20:53:14.510Z",
+  "generated_at_utc": "2026-03-02T21:15:13.331Z",
   "source": {
     "observatory_root": "/Users/kennethjones/bosonit-habitat-observatory",
     "evidence_root": "/Users/kennethjones/bosonit-habitat-observatory/evidence",
     "candidates_checked": [
       "/Users/kennethjones/bosonit-habitat-observatory",
-      "/private/tmp/bosonit-demand-offers/observatory"
+      "/private/tmp/bosonit-demand-refresh/observatory"
     ],
     "warnings": []
   },
@@ -878,8 +878,8 @@
   },
   "revenue": {
     "schema_version": "2026-03-02.revenue-experiment-pack.v1",
-    "updated_at_utc": "2026-03-02T20:45:00Z",
-    "objective": "Acquire first 20 net-new buyers for demand-validated services with CAC payback of 3 months or less.",
+    "updated_at_utc": "2026-03-02T21:15:00Z",
+    "objective": "Acquire first 20 paying clients across audit, sprint, and retainer offers with CAC payback in 60 days or less.",
     "weekly_review_day": "Monday",
     "channel_count": 3,
     "active_count": 3,
@@ -888,12 +888,12 @@
       {
         "id": "paid-search",
         "channel": "Paid Search",
-        "primary_offer_id": "offer_revenue_signal_audit_500",
+        "primary_offer_id": "offer_revenue_leak_audit_500",
         "owner": "Growth",
         "stage": "launch_ready",
         "status": "launch_ready",
         "budget_split_percent": 35,
-        "target_audience": "High-intent operators searching for revenue attribution and AI workflow ROI fixes.",
+        "target_audience": "High-intent founders and RevOps operators searching for lead-to-close conversion fixes.",
         "tracking": {
           "primary_event": "begin_checkout",
           "secondary_event": "qualified_call_booked"
@@ -907,17 +907,17 @@
         "kill_rule": "Pause when CTR < 2% after 1,000 impressions or CPL > $250 for 7 days.",
         "scale_rule": "Increase weekly budget by 20% when CPL <= $120 and close rate >= 20%.",
         "next_review_utc": "2026-03-09T15:00:00Z",
-        "notes": "Primary CTA maps to Revenue Signal Audit ($500) and escalates qualified buyers to sprint offers."
+        "notes": "Primary CTA maps to Revenue Leak Audit ($500) and escalates qualified buyers to sprint and retainer offers."
       },
       {
         "id": "outbound",
         "channel": "Outbound",
-        "primary_offer_id": "offer_market_to_revenue_sprint_30d",
+        "primary_offer_id": "offer_booked_call_engine_sprint_14d",
         "owner": "Sales",
         "stage": "launch_ready",
         "status": "launch_ready",
         "budget_split_percent": 35,
-        "target_audience": "COO, Ops, and RevOps leaders in 5-200 employee companies.",
+        "target_audience": "COO, Sales, and RevOps leaders in 5-200 employee B2B companies with active traffic but weak appointment rates.",
         "tracking": {
           "primary_event": "positive_reply",
           "secondary_event": "demo_booked"
@@ -930,20 +930,20 @@
         "kill_rule": "Pause sequence when reply rate < 1.5% after 1,000 sends.",
         "scale_rule": "Expand list volume 25% weekly when reply rate >= 5% and demo rate >= 0.5%.",
         "next_review_utc": "2026-03-09T15:00:00Z",
-        "notes": "Outbound sequence focuses on 30-day implementation sprint for teams with active but underperforming growth channels."
+        "notes": "Outbound sequence focuses on the 14-day Booked-Call Engine Sprint for teams with underperforming inbound and follow-up motion."
       },
       {
         "id": "partner-referral",
         "channel": "Partner Referral",
-        "primary_offer_id": "offer_agentic_ops_hardening_sprint",
+        "primary_offer_id": "offer_revenue_ops_pod_monthly",
         "owner": "Partnerships",
         "stage": "launch_ready",
         "status": "launch_ready",
         "budget_split_percent": 30,
-        "target_audience": "Agencies and consultants serving operations-heavy SMB clients.",
+        "target_audience": "Agencies and consultants with client portfolios that need monthly growth automation operations.",
         "tracking": {
           "primary_event": "referral_demo",
-          "secondary_event": "partner_sourced_revenue"
+          "secondary_event": "partner_sourced_mrr"
         },
         "kpi_targets": {
           "partner_demos_min_per_month": 3,
@@ -952,7 +952,7 @@
         "kill_rule": "Pause partner lane after 45 days with zero referred demos.",
         "scale_rule": "Add one new partner each week once two consecutive weeks hit >= 3 referred demos.",
         "next_review_utc": "2026-03-09T15:00:00Z",
-        "notes": "Partner lane anchors on agentic ops hardening for compliance-sensitive and reliability-sensitive client accounts."
+        "notes": "Partner lane anchors on Revenue Ops Pod monthly retainers for recurring MRR growth."
       }
     ]
   },
