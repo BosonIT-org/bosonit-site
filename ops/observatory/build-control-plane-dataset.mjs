@@ -350,6 +350,7 @@ function summarizeRevenueExperiments(pack) {
   const normalized = experiments.map((item) => ({
     id: item?.id || "unknown",
     channel: item?.channel || "unknown",
+    primary_offer_id: item?.primary_offer_id || "",
     owner: item?.owner || "unassigned",
     stage: item?.stage || "planned",
     status: item?.status || item?.stage || "planned",

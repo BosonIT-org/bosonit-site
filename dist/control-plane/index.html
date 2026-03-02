@@ -389,6 +389,7 @@
             <thead>
               <tr>
                 <th>Channel</th>
+                <th>Primary Offer</th>
                 <th>Owner</th>
                 <th>Budget</th>
                 <th>Status</th>
@@ -504,7 +505,7 @@
         document.getElementById("revenueExperimentBody"),
       ];
       rows.forEach((el) => {
-        const colspan = el.id === "revenueExperimentBody" ? 7 : 5;
+        const colspan = el.id === "revenueExperimentBody" ? 8 : 5;
         el.innerHTML = `<tr><td colspan="${colspan}">${message}</td></tr>`;
       });
       document.getElementById("dispatchCases").innerHTML = `<li class="item">${message}</li>`;
@@ -714,7 +715,7 @@
       const experiments = Array.isArray(revenue.experiments) ? revenue.experiments : [];
       const body = document.getElementById("revenueExperimentBody");
       if (experiments.length === 0) {
-        body.innerHTML = `<tr><td colspan="7">No revenue experiment pack found.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="8">No revenue experiment pack found.</td></tr>`;
         return;
       }
 
@@ -722,6 +723,7 @@
         const status = experiment.status || experiment.stage || "unknown";
         return `<tr>
           <td>${experiment.channel || experiment.id || "unknown"}</td>
+          <td>${experiment.primary_offer_id || "n/a"}</td>
           <td>${experiment.owner || "unassigned"}</td>
           <td>${Number(experiment.budget_split_percent || 0).toFixed(1)}%</td>
           <td class="${statusClass(status, "warn")}">${dotLabel(status)}</td>
