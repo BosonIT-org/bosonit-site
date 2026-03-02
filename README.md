@@ -43,3 +43,16 @@ npm run build:control-plane-data
 ```
 
 `npm run build` runs the generator automatically through `prebuild`.
+
+## Deploy targets
+- Primary live origin: `vps0` static root `/var/www/bosonit` (served via Cloudflare Tunnel `site-prod`).
+- Mirror target: StackCP `~/public_html/bosonit.org/`.
+
+### Manual deploy
+```bash
+# Deploy to live origin (default)
+./deploy.sh --target vps0
+
+# Deploy to both live origin and StackCP mirror
+STACK_USER=bosonit.org ./deploy.sh --target both
+```
