@@ -51,6 +51,7 @@ jobs:
         id: publish
         env:
           OBS_TOKEN: ${{ secrets.OBSERVATORY_PUSH_TOKEN }}
+          GH_TOKEN: ${{ secrets.OBSERVATORY_PUSH_TOKEN }}
           OBS_REPO: BosonIT-org/bosonit-habitat-observatory
           OBS_BASE_BRANCH: main
           SRC_REPO: ${{ github.repository }}
@@ -93,6 +94,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No evidence delta to commit."
             echo "result=no-change" >> "$GITHUB_OUTPUT"
+            echo "auto_merge=not-applicable" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -117,46 +119,54 @@ jobs:
 
           if [ -n "${existing_pr}" ]; then
             echo "Open PR already exists: ${existing_pr}"
-            echo "result=pr-reused" >> "$GITHUB_OUTPUT"
-            echo "pr_url=${existing_pr}" >> "$GITHUB_OUTPUT"
-            exit 0
+            publish_result="pr-reused"
+            pr_url="${existing_pr}"
+          else
+            python3 - <<'PY' > /tmp/observatory-pr-payload.json
+            import json
+            import os
+
+            payload = {
+                "title": os.environ["PR_TITLE"],
+                "head": os.environ["BRANCH_NAME"],
+                "base": os.environ["OBS_BASE_BRANCH"],
+                "body": (
+                    f"Automated observatory evidence publication from {os.environ['SRC_REPO']}\n\n"
+                    f"- Workflow: {os.environ['WORKFLOW_NAME']}\n"
+                    f"- Run: {os.environ['WORKFLOW_HTML_URL']}\n"
+                    f"- Conclusion: {os.environ['RUN_CONCLUSION']}"
+                ),
+            }
+            print(json.dumps(payload))
+            PY
+
+            create_status="$(curl -sS -o /tmp/observatory-pr-response.json -w '%{http_code}' -X POST \
+              -H "Authorization: token ${OBS_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "${API_ROOT}/pulls" \
+              --data @/tmp/observatory-pr-payload.json)"
+
+            if [ "${create_status}" != "201" ]; then
+              echo "Failed to create observatory PR (status ${create_status})."
+              cat /tmp/observatory-pr-response.json
+              exit 1
+            fi
+
+            pr_url="$(python3 -c 'import json; print(json.load(open("/tmp/observatory-pr-response.json", "r", encoding="utf-8"))["html_url"])')"
+            echo "Opened PR: ${pr_url}"
+            publish_result="pr-opened"
           fi
 
-          python3 - <<'PY' > /tmp/observatory-pr-payload.json
-          import json
-          import os
-
-          payload = {
-              "title": os.environ["PR_TITLE"],
-              "head": os.environ["BRANCH_NAME"],
-              "base": os.environ["OBS_BASE_BRANCH"],
-              "body": (
-                  f"Automated observatory evidence publication from {os.environ['SRC_REPO']}\n\n"
-                  f"- Workflow: {os.environ['WORKFLOW_NAME']}\n"
-                  f"- Run: {os.environ['WORKFLOW_HTML_URL']}\n"
-                  f"- Conclusion: {os.environ['RUN_CONCLUSION']}"
-              ),
-          }
-          print(json.dumps(payload))
-          PY
-
-          create_status="$(curl -sS -o /tmp/observatory-pr-response.json -w '%{http_code}' -X POST \
-            -H "Authorization: token ${OBS_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "${API_ROOT}/pulls" \
-            --data @/tmp/observatory-pr-payload.json)"
-
-          if [ "${create_status}" != "201" ]; then
-            echo "Failed to create observatory PR (status ${create_status})."
-            cat /tmp/observatory-pr-response.json
-            exit 1
+          if gh pr merge "${pr_url}" --repo "${OBS_REPO}" --auto --squash --delete-branch; then
+            auto_merge_status="enabled"
+          else
+            echo "::warning::Unable to enable auto-merge for ${pr_url}; manual merge may be required."
+            auto_merge_status="failed"
           fi
 
-          pr_url="$(python3 -c 'import json; print(json.load(open("/tmp/observatory-pr-response.json", "r", encoding="utf-8"))["html_url"])')"
-
-          echo "Opened PR: ${pr_url}"
-          echo "result=pr-opened" >> "$GITHUB_OUTPUT"
+          echo "result=${publish_result}" >> "$GITHUB_OUTPUT"
           echo "pr_url=${pr_url}" >> "$GITHUB_OUTPUT"
+          echo "auto_merge=${auto_merge_status}" >> "$GITHUB_OUTPUT"
 
       - name: Summary
         shell: bash
@@ -169,5 +179,6 @@ jobs:
             echo "- Conclusion: \`${{ github.event.workflow_run.conclusion }}\`"
             echo "- Token configured: \`${{ steps.token.outputs.has_token || 'false' }}\`"
             echo "- Publish result: \`${{ steps.publish.outputs.result || 'not-run' }}\`"
+            echo "- Auto-merge: \`${{ steps.publish.outputs.auto_merge || 'not-run' }}\`"
             echo "- Observatory PR: \`${{ steps.publish.outputs.pr_url || 'n/a' }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
