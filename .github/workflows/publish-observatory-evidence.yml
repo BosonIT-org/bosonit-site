@@ -122,7 +122,17 @@ jobs:
             publish_result="pr-reused"
             pr_url="${existing_pr}"
           else
-            python3 -c 'import json, os; print(json.dumps({"title": os.environ["PR_TITLE"], "head": os.environ["BRANCH_NAME"], "base": os.environ["OBS_BASE_BRANCH"], "body": f"Automated observatory evidence publication from {os.environ[\"SRC_REPO\"]}\\n\\n- Workflow: {os.environ[\"WORKFLOW_NAME\"]}\\n- Run: {os.environ[\"WORKFLOW_HTML_URL\"]}\\n- Conclusion: {os.environ[\"RUN_CONCLUSION\"]}"}))' > /tmp/observatory-pr-payload.json
+            PR_BODY="Automated observatory evidence publication from ${SRC_REPO}
+
+- Workflow: ${WORKFLOW_NAME}
+- Run: ${WORKFLOW_HTML_URL}
+- Conclusion: ${RUN_CONCLUSION}"
+            jq -n \
+              --arg title "${PR_TITLE}" \
+              --arg head "${BRANCH_NAME}" \
+              --arg base "${OBS_BASE_BRANCH}" \
+              --arg body "${PR_BODY}" \
+              '{title: $title, head: $head, base: $base, body: $body}' > /tmp/observatory-pr-payload.json
 
             create_status="$(curl -sS -o /tmp/observatory-pr-response.json -w '%{http_code}' -X POST \
               -H "Authorization: token ${OBS_TOKEN}" \
