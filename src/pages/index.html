@@ -1,1 +1,80 @@
-<!DOCTYPE html><html><head><title>Bosonit.org</title></head><body><h1>Welcome to Bosonit.org</h1><p>This site is generated with Astro and deployed automatically to StackCP.</p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BosonIT Control Surface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #091021;
+      --panel: rgba(9, 23, 43, 0.86);
+      --line: rgba(162, 211, 255, 0.24);
+      --text: #eff7ff;
+      --muted: #a5c1dd;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      color: var(--text);
+      background:
+        radial-gradient(50rem 30rem at 0% 0%, rgba(16, 183, 255, 0.26), transparent 55%),
+        radial-gradient(42rem 36rem at 100% 100%, rgba(56, 224, 163, 0.2), transparent 60%),
+        var(--bg);
+      font-family: "Space Grotesk", sans-serif;
+    }
+    .card {
+      width: min(760px, 100%);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 22px;
+      padding: 1.25rem;
+      box-shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
+      display: grid;
+      gap: 0.85rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      line-height: 1.1;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    a {
+      color: #e4f4ff;
+      text-decoration: none;
+      border: 1px solid rgba(178, 224, 255, 0.36);
+      border-radius: 11px;
+      padding: 0.5rem 0.78rem;
+      font-size: 0.86rem;
+      background: linear-gradient(145deg, rgba(21, 44, 74, 0.9), rgba(15, 29, 49, 0.95));
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>BosonIT Operational Surface</h1>
+    <p>Use the control plane dashboard for a single source of truth on habitat compliance, inflight execution, dispatch health, and model routing.</p>
+    <div class="actions">
+      <a href="/control-plane">Open Control Plane Dashboard</a>
+      <a href="/services/">Services</a>
+    </div>
+  </main>
+</body>
+</html>
