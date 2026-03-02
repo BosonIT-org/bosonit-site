@@ -98,6 +98,7 @@ jobs:
 
           BRANCH_NAME="automation/observatory-evidence/run-${RUN_ID}-attempt-${RUN_ATTEMPT}"
           PR_TITLE="evidence: ${SRC_REPO} ${WORKFLOW_NAME} run ${RUN_ID}/${RUN_ATTEMPT}"
+          export BRANCH_NAME PR_TITLE
 
           git commit -m "${PR_TITLE}"
           git checkout -B "${BRANCH_NAME}"
