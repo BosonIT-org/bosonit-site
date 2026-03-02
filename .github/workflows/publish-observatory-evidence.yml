@@ -122,11 +122,8 @@ jobs:
             publish_result="pr-reused"
             pr_url="${existing_pr}"
           else
-            PR_BODY="Automated observatory evidence publication from ${SRC_REPO}
-
-- Workflow: ${WORKFLOW_NAME}
-- Run: ${WORKFLOW_HTML_URL}
-- Conclusion: ${RUN_CONCLUSION}"
+            PR_BODY="$(printf 'Automated observatory evidence publication from %s\n\n- Workflow: %s\n- Run: %s\n- Conclusion: %s' \
+              "${SRC_REPO}" "${WORKFLOW_NAME}" "${WORKFLOW_HTML_URL}" "${RUN_CONCLUSION}")"
             jq -n \
               --arg title "${PR_TITLE}" \
               --arg head "${BRANCH_NAME}" \
