@@ -23,11 +23,21 @@ jobs:
       run: |
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
+        : > ~/.ssh/config
+
+        safe_keyscan() {
+          local host="$1"
+          if ssh-keyscan -T 5 "$host" >> ~/.ssh/known_hosts 2>/dev/null; then
+            echo "Loaded host key for ${host}"
+          else
+            echo "Warning: unable to fetch host key for ${host}; continuing." >&2
+          fi
+        }
 
         if [ -n "${{ secrets.STACKCP_KEY }}" ]; then
           echo "${{ secrets.STACKCP_KEY }}" > ~/.ssh/id_stackcp
           chmod 600 ~/.ssh/id_stackcp
-          ssh-keyscan ssh.us.stackcp.com >> ~/.ssh/known_hosts
+          safe_keyscan ssh.us.stackcp.com
         fi
 
         if [ -n "${{ secrets.VPS0_SSH_KEY }}" ]; then
@@ -35,23 +45,26 @@ jobs:
           chmod 600 ~/.ssh/id_vps0
         fi
 
-        if [ -n "${VPS0_HOST}" ]; then
-          ssh-keyscan "${VPS0_HOST}" >> ~/.ssh/known_hosts
-        fi
-
-        cat > ~/.ssh/config <<EOF
+        if [ -n "${STACK_USER}" ] && [ -s ~/.ssh/id_stackcp ]; then
+          cat >> ~/.ssh/config <<EOF
         Host stackcp
           HostName ssh.us.stackcp.com
           User ${STACK_USER}
           IdentityFile ~/.ssh/id_stackcp
           IdentitiesOnly yes
+        EOF
+        fi
 
+        if [ -n "${VPS0_HOST}" ] && [ -n "${VPS0_USER}" ] && [ -s ~/.ssh/id_vps0 ]; then
+          safe_keyscan "${VPS0_HOST}"
+          cat >> ~/.ssh/config <<EOF
         Host vps0
           HostName ${VPS0_HOST}
           User ${VPS0_USER}
           IdentityFile ~/.ssh/id_vps0
           IdentitiesOnly yes
         EOF
+        fi
         chmod 600 ~/.ssh/config
 
     - name: Deploy to Live Origin (vps0)
