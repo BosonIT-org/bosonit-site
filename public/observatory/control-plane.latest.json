@@ -1,12 +1,12 @@
 {
   "schema_version": "2026-03-02.control-plane.v1",
-  "generated_at_utc": "2026-03-02T19:37:43.389Z",
+  "generated_at_utc": "2026-03-02T20:53:14.510Z",
   "source": {
     "observatory_root": "/Users/kennethjones/bosonit-habitat-observatory",
     "evidence_root": "/Users/kennethjones/bosonit-habitat-observatory/evidence",
     "candidates_checked": [
       "/Users/kennethjones/bosonit-habitat-observatory",
-      "/Users/kennethjones/bosonit.org/observatory"
+      "/private/tmp/bosonit-demand-offers/observatory"
     ],
     "warnings": []
   },
@@ -878,8 +878,8 @@
   },
   "revenue": {
     "schema_version": "2026-03-02.revenue-experiment-pack.v1",
-    "updated_at_utc": "2026-03-02T19:00:00Z",
-    "objective": "Acquire first 20 net-new paying customers with CAC payback of 3 months or less.",
+    "updated_at_utc": "2026-03-02T20:45:00Z",
+    "objective": "Acquire first 20 net-new buyers for demand-validated services with CAC payback of 3 months or less.",
     "weekly_review_day": "Monday",
     "channel_count": 3,
     "active_count": 3,
@@ -888,11 +888,12 @@
       {
         "id": "paid-search",
         "channel": "Paid Search",
+        "primary_offer_id": "offer_revenue_signal_audit_500",
         "owner": "Growth",
         "stage": "launch_ready",
         "status": "launch_ready",
         "budget_split_percent": 35,
-        "target_audience": "High-intent AI automation and operations buyers.",
+        "target_audience": "High-intent operators searching for revenue attribution and AI workflow ROI fixes.",
         "tracking": {
           "primary_event": "begin_checkout",
           "secondary_event": "qualified_call_booked"
@@ -906,11 +907,12 @@
         "kill_rule": "Pause when CTR < 2% after 1,000 impressions or CPL > $250 for 7 days.",
         "scale_rule": "Increase weekly budget by 20% when CPL <= $120 and close rate >= 20%.",
         "next_review_utc": "2026-03-09T15:00:00Z",
-        "notes": "Keyword groups must map directly to service outcomes and ROI language."
+        "notes": "Primary CTA maps to Revenue Signal Audit ($500) and escalates qualified buyers to sprint offers."
       },
       {
         "id": "outbound",
         "channel": "Outbound",
+        "primary_offer_id": "offer_market_to_revenue_sprint_30d",
         "owner": "Sales",
         "stage": "launch_ready",
         "status": "launch_ready",
@@ -928,11 +930,12 @@
         "kill_rule": "Pause sequence when reply rate < 1.5% after 1,000 sends.",
         "scale_rule": "Expand list volume 25% weekly when reply rate >= 5% and demo rate >= 0.5%.",
         "next_review_utc": "2026-03-09T15:00:00Z",
-        "notes": "Keep outreach tightly aligned to 2 ICP segments to preserve signal quality."
+        "notes": "Outbound sequence focuses on 30-day implementation sprint for teams with active but underperforming growth channels."
       },
       {
         "id": "partner-referral",
         "channel": "Partner Referral",
+        "primary_offer_id": "offer_agentic_ops_hardening_sprint",
         "owner": "Partnerships",
         "stage": "launch_ready",
         "status": "launch_ready",
@@ -949,7 +952,7 @@
         "kill_rule": "Pause partner lane after 45 days with zero referred demos.",
         "scale_rule": "Add one new partner each week once two consecutive weeks hit >= 3 referred demos.",
         "next_review_utc": "2026-03-09T15:00:00Z",
-        "notes": "Use revenue-share terms and shared proof assets for faster partner onboarding."
+        "notes": "Partner lane anchors on agentic ops hardening for compliance-sensitive and reliability-sensitive client accounts."
       }
     ]
   },

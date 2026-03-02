@@ -136,6 +136,21 @@
       color: var(--muted);
       line-height: 1.45;
     }
+    .offer-meta {
+      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      color: #cbe4ff;
+    }
+    .offer-list {
+      margin: 0.65rem 0 0;
+      padding-left: 1rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+    .offer-list li + li {
+      margin-top: 0.35rem;
+    }
   </style>
 </head>
 <body>
@@ -143,45 +158,69 @@
     <section class="card">
       <div class="hero-grid">
         <div>
-          <h1>Services</h1>
-          <p>Delivery tracks for product engineering, automation, and operational reliability.</p>
-          <p class="kpi">Fastest revenue path: 15-minute ROI Audit checkout.</p>
+          <h1>Demand-Validated Services</h1>
+          <p>Productized growth and automation services for SMB and mid-market teams that need measurable revenue outcomes.</p>
+          <p class="kpi">Offer ladder: entry diagnostic -> implementation sprint -> managed continuity.</p>
           <p id="checkoutStatus" class="badge"><span class="dot" aria-hidden="true"></span>Checkout rail loading...</p>
         </div>
         <div>
           <div class="actions">
-            <button id="startAuditBtn" class="primary" type="button">Start ROI Audit - $500</button>
-            <button id="startProMonthlyBtn" type="button">Start Pro Monthly</button>
-            <button id="startProYearlyBtn" type="button">Start Pro Yearly</button>
-            <a href="https://calendly.com/bosonit" target="_blank" rel="noopener">Book a call</a>
+            <button id="startRevenueAuditBtn" class="primary" type="button">Start Revenue Signal Audit - $500</button>
+            <button id="bookMarketRevenueSprintBtn" type="button">Book 30-Day Market-to-Revenue Sprint</button>
+            <button id="bookAgenticOpsSprintBtn" type="button">Book Agentic Ops Hardening Sprint</button>
+            <a href="https://www.bosonit.org/roi/?utm_source=services&utm_medium=cta&utm_campaign=sales_conversation">Talk to sales</a>
             <a href="/control-plane/">Open Control Plane</a>
             <a href="/">Home</a>
           </div>
-          <p class="small">Every checkout click records local conversion telemetry and emits non-blocking analytics events (`begin_checkout`) before redirecting.</p>
+          <p class="small">Every CTA emits `offer_id` attribution (`source -> offer -> conversion`) before redirecting to checkout or scheduling.</p>
         </div>
       </div>
     </section>
     <section class="grid">
       <article class="card">
-        <h2>Platform Engineering</h2>
-        <p>Hardened app delivery pipelines, observability, and repeatable release controls.</p>
+        <h2>Offer 1: Revenue Signal Audit ($500)</h2>
+        <p>72-hour diagnostic for teams that are spending on growth but cannot tie source -> offer -> closed revenue.</p>
+        <ul class="offer-list">
+          <li>ICP pain-to-offer matrix and angle test plan</li>
+          <li>Attribution manifest with mandatory `offer_id` contract</li>
+          <li>14-day execution map for the highest-probability offer path</li>
+        </ul>
+        <p class="offer-meta">Best for: founders, agencies, and RevOps leads with inconsistent pipeline quality.</p>
       </article>
       <article class="card">
-        <h2>Automation Systems</h2>
-        <p>Agent-driven orchestration and workflow automation with governance-first guardrails.</p>
+        <h2>Offer 2: 30-Day Market-to-Revenue Sprint</h2>
+        <p>Done-with-you implementation that binds channel output directly to booked calls and attributable pipeline.</p>
+        <ul class="offer-list">
+          <li>Comments -> articles -> offer dispatch system</li>
+          <li>Offer-angle tests across 3 ICP-specific variants</li>
+          <li>Weekly scorecards with scale and kill thresholds</li>
+        </ul>
+        <p class="offer-meta">Best for: lean B2B teams that need compounding inbound without adding headcount.</p>
       </article>
       <article class="card">
-        <h2>Reliability Operations</h2>
-        <p>Incident triage, runbook execution, and telemetry loops tuned for low-friction sustainment.</p>
+        <h2>Offer 3: Agentic Ops Hardening Sprint</h2>
+        <p>Reliability and governance hardening for AI workflow deployments that must run in production without drift.</p>
+        <ul class="offer-list">
+          <li>Workflow resilience gates, rollback controls, and incident triage paths</li>
+          <li>Vault + model-routing + guardrail enforcement checks</li>
+          <li>Production readiness report with acceptance criteria</li>
+        </ul>
+        <p class="offer-meta">Best for: operations leaders deploying automation in compliance-sensitive environments.</p>
       </article>
     </section>
   </main>
   <script>
     const CHECKOUT_LINKS_URL = "/api/checkout/links";
     const CONTACT_TRACK_URL = "/api/contact";
+    const SALES_ROUTE_URL = "https://www.bosonit.org/roi/";
     const ROI_STRIPE_FALLBACK_URL = "https://buy.stripe.com/5kQ28qcsgc5WeBr9cE0Jq00";
     const ROI_PAGE_URL = "https://www.bosonit.org/roi/?utm_source=services&utm_medium=cta&utm_campaign=roi-audit";
     const EVENT_STORAGE_KEY = "bosonit_services_conversion_events";
+    const OFFER_IDS = {
+      revenueSignalAudit: "offer_revenue_signal_audit_500",
+      marketToRevenueSprint: "offer_market_to_revenue_sprint_30d",
+      agenticOpsHardening: "offer_agentic_ops_hardening_sprint",
+    };
 
     let checkoutLinks = null;
 
@@ -206,6 +245,16 @@
       return trimmed;
     }
 
+    function buildSalesRouteUrl(offerId) {
+      const url = new URL(SALES_ROUTE_URL);
+      url.searchParams.set("utm_source", "services");
+      url.searchParams.set("utm_medium", "cta");
+      url.searchParams.set("utm_campaign", offerId);
+      url.searchParams.set("utm_content", "sales-route");
+      url.searchParams.set("a1", offerId);
+      return url.toString();
+    }
+
     function trackLocalEvent(event) {
       try {
         const existing = JSON.parse(localStorage.getItem(EVENT_STORAGE_KEY) || "[]");
@@ -220,26 +269,33 @@
     function emitAnalytics(event) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
-        event: "bosonit_begin_checkout",
+        event: "bosonit_offer_intent",
+        offer_id: event.offer_id,
         intent: event.intent,
+        route_type: event.route_type,
         checkout_host: event.checkout_host,
         source_path: "/services/",
         ts: event.ts,
       });
 
       if (typeof window.gtag === "function") {
-        window.gtag("event", "begin_checkout", {
+        const gtagEvent = event.route_type === "checkout" ? "begin_checkout" : "generate_lead";
+        window.gtag("event", gtagEvent, {
           currency: "USD",
-          value: event.intent === "roi_audit" ? 500 : 0,
+          value: event.value_usd || 0,
+          offer_id: event.offer_id,
+          route_type: event.route_type,
           checkout_host: event.checkout_host,
           source_path: "/services/",
         });
       }
 
       if (typeof window.plausible === "function") {
-        window.plausible("begin_checkout", {
+        window.plausible("offer_intent", {
           props: {
+            offer_id: event.offer_id,
             intent: event.intent,
+            route_type: event.route_type,
             checkout_host: event.checkout_host,
             source_path: "/services/",
           },
@@ -252,9 +308,9 @@
         return;
       }
       const payload = {
-        name: "BosonIT Services Checkout Intent",
-        email: "checkout-intent@bosonit.org",
-        message: `intent=${event.intent}; checkout_host=${event.checkout_host}; source=/services/; ts=${event.ts}`,
+        name: "BosonIT Services Offer Intent",
+        email: "offers-intent@bosonit.org",
+        message: `offer_id=${event.offer_id}; intent=${event.intent}; route_type=${event.route_type}; checkout_host=${event.checkout_host}; source=/services/; ts=${event.ts}`,
         source: "bosonit.org/services",
         channel: "web",
       };
@@ -297,59 +353,80 @@
 
     function candidateCheckoutUrls(intent) {
       const links = checkoutLinks || {};
-      if (intent === "roi_audit") {
+      if (intent === OFFER_IDS.revenueSignalAudit) {
         return [
+          links.revenue_signal_audit,
           links.roi_audit,
           links.audit_500,
-          links.pro_monthly,
           ROI_STRIPE_FALLBACK_URL,
           ROI_PAGE_URL,
         ];
       }
-      if (intent === "pro_monthly") {
-        return [links.pro_monthly, links.monthly, ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
+      if (intent === OFFER_IDS.marketToRevenueSprint) {
+        return [
+          links.market_to_revenue_sprint,
+          links.market_publish_sprint,
+          links.architecture_sprint,
+          buildSalesRouteUrl(OFFER_IDS.marketToRevenueSprint),
+        ];
       }
-      if (intent === "pro_yearly") {
-        return [links.pro_yearly, links.yearly, ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
+      if (intent === OFFER_IDS.agenticOpsHardening) {
+        return [
+          links.agentic_ops_hardening_sprint,
+          links.ops_hardening_sprint,
+          links.pilot_hardening,
+          buildSalesRouteUrl(OFFER_IDS.agenticOpsHardening),
+        ];
       }
-      return [ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
+      return [buildSalesRouteUrl(intent), ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
     }
 
-    function pickCheckoutUrl(intent) {
-      const candidates = candidateCheckoutUrls(intent);
+    function pickOfferRoute(intent) {
+      const candidates = candidateCheckoutUrls(intent).map((value) => normalizeCheckoutUrl(value)).filter(Boolean);
+      let fallback = "";
       for (const raw of candidates) {
         const url = normalizeCheckoutUrl(raw);
         if (!url) continue;
+        if (!fallback) fallback = url;
         const isStripe = url.includes("stripe.com");
-        if (isStripe) return url;
+        if (isStripe) {
+          return { url, routeType: "checkout" };
+        }
       }
-      return ROI_STRIPE_FALLBACK_URL;
+      const safeUrl = fallback || buildSalesRouteUrl(intent);
+      const routeType = safeUrl.includes("stripe.com") ? "checkout" : "sales_route";
+      return { url: safeUrl, routeType };
     }
 
     function updateCheckoutStatus() {
       const statusEl = document.getElementById("checkoutStatus");
       const links = checkoutLinks || {};
-      const candidates = [links.roi_audit, links.audit_500, links.pro_monthly, links.pro_yearly]
+      const candidates = [links.revenue_signal_audit, links.roi_audit, links.audit_500]
         .map((value) => normalizeCheckoutUrl(value))
         .filter(Boolean);
       const stripe = candidates.find((value) => value.includes("stripe.com"));
+      const salesHost = new URL(buildSalesRouteUrl(OFFER_IDS.marketToRevenueSprint)).hostname;
       if (stripe) {
-        statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Checkout rail live (${new URL(stripe).hostname})`;
+        statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Checkout live (${new URL(stripe).hostname}) + sales route live (${salesHost})`;
         return;
       }
-      statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Using direct Stripe fallback rail (${new URL(ROI_STRIPE_FALLBACK_URL).hostname})`;
+      statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Fallback checkout (${new URL(ROI_STRIPE_FALLBACK_URL).hostname}) + sales route live (${salesHost})`;
     }
 
-    async function startCheckout(intent) {
+    async function startOffer(intent) {
       if (!checkoutLinks) {
         await loadCheckoutLinks();
       }
-      const url = pickCheckoutUrl(intent);
+      const route = pickOfferRoute(intent);
+      const url = route.url;
       const host = isHttpUrl(url) ? new URL(url).hostname : "unknown";
       const event = {
+        offer_id: intent,
         intent,
+        route_type: route.routeType,
         checkout_host: host,
         target_url: url,
+        value_usd: intent === OFFER_IDS.revenueSignalAudit ? 500 : 0,
         ts: new Date().toISOString(),
       };
 
@@ -359,9 +436,12 @@
       window.location.assign(url);
     }
 
-    document.getElementById("startAuditBtn").addEventListener("click", () => startCheckout("roi_audit"));
-    document.getElementById("startProMonthlyBtn").addEventListener("click", () => startCheckout("pro_monthly"));
-    document.getElementById("startProYearlyBtn").addEventListener("click", () => startCheckout("pro_yearly"));
+    document.getElementById("startRevenueAuditBtn")
+      .addEventListener("click", () => startOffer(OFFER_IDS.revenueSignalAudit));
+    document.getElementById("bookMarketRevenueSprintBtn")
+      .addEventListener("click", () => startOffer(OFFER_IDS.marketToRevenueSprint));
+    document.getElementById("bookAgenticOpsSprintBtn")
+      .addEventListener("click", () => startOffer(OFFER_IDS.agenticOpsHardening));
 
     loadCheckoutLinks().finally(updateCheckoutStatus);
   </script>
