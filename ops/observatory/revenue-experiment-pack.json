@@ -1,0 +1,74 @@
+{
+  "schema_version": "2026-03-02.revenue-experiment-pack.v1",
+  "updated_at_utc": "2026-03-02T19:00:00Z",
+  "objective": "Acquire first 20 net-new paying customers with CAC payback of 3 months or less.",
+  "weekly_review_day": "Monday",
+  "experiments": [
+    {
+      "id": "paid-search",
+      "channel": "Paid Search",
+      "owner": "Growth",
+      "stage": "launch_ready",
+      "status": "launch_ready",
+      "budget_split_percent": 35,
+      "target_audience": "High-intent AI automation and operations buyers.",
+      "tracking": {
+        "primary_event": "begin_checkout",
+        "secondary_event": "qualified_call_booked"
+      },
+      "kpi_targets": {
+        "ctr_min_percent": 3.0,
+        "cpl_max_usd": 150,
+        "demo_rate_min_percent": 5.0,
+        "close_rate_min_percent": 20.0
+      },
+      "kill_rule": "Pause when CTR < 2% after 1,000 impressions or CPL > $250 for 7 days.",
+      "scale_rule": "Increase weekly budget by 20% when CPL <= $120 and close rate >= 20%.",
+      "next_review_utc": "2026-03-09T15:00:00Z",
+      "notes": "Keyword groups must map directly to service outcomes and ROI language."
+    },
+    {
+      "id": "outbound",
+      "channel": "Outbound",
+      "owner": "Sales",
+      "stage": "launch_ready",
+      "status": "launch_ready",
+      "budget_split_percent": 35,
+      "target_audience": "COO, Ops, and RevOps leaders in 5-200 employee companies.",
+      "tracking": {
+        "primary_event": "positive_reply",
+        "secondary_event": "demo_booked"
+      },
+      "kpi_targets": {
+        "reply_rate_min_percent": 3.0,
+        "positive_reply_min_percent": 1.0,
+        "demo_booked_min_percent": 0.3
+      },
+      "kill_rule": "Pause sequence when reply rate < 1.5% after 1,000 sends.",
+      "scale_rule": "Expand list volume 25% weekly when reply rate >= 5% and demo rate >= 0.5%.",
+      "next_review_utc": "2026-03-09T15:00:00Z",
+      "notes": "Keep outreach tightly aligned to 2 ICP segments to preserve signal quality."
+    },
+    {
+      "id": "partner-referral",
+      "channel": "Partner Referral",
+      "owner": "Partnerships",
+      "stage": "launch_ready",
+      "status": "launch_ready",
+      "budget_split_percent": 30,
+      "target_audience": "Agencies and consultants serving operations-heavy SMB clients.",
+      "tracking": {
+        "primary_event": "referral_demo",
+        "secondary_event": "partner_sourced_revenue"
+      },
+      "kpi_targets": {
+        "partner_demos_min_per_month": 3,
+        "partner_cac_max_percent_of_paid": 50
+      },
+      "kill_rule": "Pause partner lane after 45 days with zero referred demos.",
+      "scale_rule": "Add one new partner each week once two consecutive weeks hit >= 3 referred demos.",
+      "next_review_utc": "2026-03-09T15:00:00Z",
+      "notes": "Use revenue-share terms and shared proof assets for faster partner onboarding."
+    }
+  ]
+}

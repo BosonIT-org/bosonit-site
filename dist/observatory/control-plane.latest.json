@@ -1,0 +1,976 @@
+{
+  "schema_version": "2026-03-02.control-plane.v1",
+  "generated_at_utc": "2026-03-02T19:37:43.389Z",
+  "source": {
+    "observatory_root": "/Users/kennethjones/bosonit-habitat-observatory",
+    "evidence_root": "/Users/kennethjones/bosonit-habitat-observatory/evidence",
+    "candidates_checked": [
+      "/Users/kennethjones/bosonit-habitat-observatory",
+      "/Users/kennethjones/bosonit.org/observatory"
+    ],
+    "warnings": []
+  },
+  "habitat": {
+    "heartbeat_status": {
+      "stage": "healthy",
+      "ok": true,
+      "checked_at_utc": "2026-02-25T11:33:16.699060+00:00",
+      "monitored_hosts": [
+        "bmos-svr0",
+        "jcloud",
+        "vps0"
+      ],
+      "expected_ingress_host": "bmos-svr0",
+      "token_policy": {
+        "status": "OK_SINGLE_INGRESS",
+        "expected_ingress_host": "bmos-svr0",
+        "enabled_hosts": [
+          "bmos-svr0"
+        ],
+        "issues": [],
+        "recommendation": "Run exactly one Telegram ingress (expected host only). Keep all other agents tokenless to avoid duplicate long-polling, overlap, and wasted rate limits."
+      },
+      "health": {
+        "reachable_hosts": 3,
+        "total_hosts": 3,
+        "gateway_running_hosts": 3
+      },
+      "issues": [],
+      "advisory_mode": true,
+      "hosts": [
+        {
+          "host_id": "bmos-svr0",
+          "checked_at_utc": "2026-02-25T11:33:12.688883+00:00",
+          "reachable": true,
+          "gateway_running": true,
+          "gateway_status": "up(process)",
+          "telegram_token_present": true,
+          "telegram_bot_username": "BosonNeo_bot",
+          "issue_count": 0
+        },
+        {
+          "host_id": "jcloud",
+          "checked_at_utc": "2026-02-25T11:33:13.738684+00:00",
+          "reachable": true,
+          "gateway_running": true,
+          "gateway_status": "up(process)",
+          "telegram_token_present": false,
+          "telegram_bot_username": "",
+          "issue_count": 0
+        },
+        {
+          "host_id": "vps0",
+          "checked_at_utc": "2026-02-25T11:33:14.786304+00:00",
+          "reachable": true,
+          "gateway_running": true,
+          "gateway_status": "up(process)",
+          "telegram_token_present": false,
+          "telegram_bot_username": "",
+          "issue_count": 0
+        }
+      ]
+    },
+    "heartbeat_state": {
+      "checked_at_utc": "2026-02-25T06:34:30.071189+00:00",
+      "issue_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stage": "healthy"
+    },
+    "heartbeat_event_count": 7,
+    "latest_heartbeat_event_utc": "2026-02-25T11:33:16.699060+00:00"
+  },
+  "inflight": {
+    "workflows": {
+      "total_runs": 26,
+      "active_runs": 0,
+      "non_success_runs": 10,
+      "non_success_runs_last_24h": 0,
+      "by_conclusion": {
+        "failure": 10,
+        "success": 16
+      },
+      "top_workflows": [
+        {
+          "workflow": "BosonIT-org/bosonit-habitat-core:Codex Jules Orchestrator",
+          "count": 8
+        },
+        {
+          "workflow": "BosonIT-org/bosonit-habitat-core:CI",
+          "count": 8
+        },
+        {
+          "workflow": "BosonIT-org/bosonit-site:Habitat Warden",
+          "count": 5
+        },
+        {
+          "workflow": "BosonIT-org/bosonit-site:Deploy to StackCP",
+          "count": 3
+        },
+        {
+          "workflow": "BosonIT-org/bosonit-habitat-core:Agent Dispatch Router",
+          "count": 2
+        }
+      ],
+      "recent_runs": [
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417954109,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417954109",
+          "published_at_utc": "2026-02-25T22:04:57Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417954109-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417947979,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417947979",
+          "published_at_utc": "2026-02-25T22:04:55Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417947979-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417954092,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417954092",
+          "published_at_utc": "2026-02-25T22:04:51Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417954092-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417947921,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417947921",
+          "published_at_utc": "2026-02-25T22:04:41Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417947921-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417944064,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417944064",
+          "published_at_utc": "2026-02-25T22:04:36Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417944064-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417944049,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417944049",
+          "published_at_utc": "2026-02-25T22:04:33Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417944049-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417619908,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417619908",
+          "published_at_utc": "2026-02-25T21:54:51Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417619908-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417619873,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417619873",
+          "published_at_utc": "2026-02-25T21:54:47Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417619873-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417615191,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417615191",
+          "published_at_utc": "2026-02-25T21:54:41Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417615191-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417615202,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417615202",
+          "published_at_utc": "2026-02-25T21:54:34Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417615202-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417406368,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417406368",
+          "published_at_utc": "2026-02-25T21:48:32Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417406368-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417406357,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417406357",
+          "published_at_utc": "2026-02-25T21:48:30Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417406357-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22417356579,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417356579",
+          "published_at_utc": "2026-02-25T21:47:08Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22417356579-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22417356600,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22417356600",
+          "published_at_utc": "2026-02-25T21:46:55Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22417356600-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Habitat Warden",
+          "workflow_run_id": 22417124539,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22417124539",
+          "published_at_utc": "2026-02-25T21:40:18Z",
+          "evidence_path": "BosonIT-org/bosonit-site/habitat-warden/run-22417124539-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Habitat Warden",
+          "workflow_run_id": 22416528762,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22416528762",
+          "published_at_utc": "2026-02-25T21:23:57Z",
+          "evidence_path": "BosonIT-org/bosonit-site/habitat-warden/run-22416528762-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Deploy to StackCP",
+          "workflow_run_id": 22416417599,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22416417599",
+          "published_at_utc": "2026-02-25T21:21:10Z",
+          "evidence_path": "BosonIT-org/bosonit-site/deploy-to-stackcp/run-22416417599-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Habitat Warden",
+          "workflow_run_id": 22416397517,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22416397517",
+          "published_at_utc": "2026-02-25T21:20:15Z",
+          "evidence_path": "BosonIT-org/bosonit-site/habitat-warden/run-22416397517-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Deploy to StackCP",
+          "workflow_run_id": 22416121206,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22416121206",
+          "published_at_utc": "2026-02-25T21:12:53Z",
+          "evidence_path": "BosonIT-org/bosonit-site/deploy-to-stackcp/run-22416121206-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Habitat Warden",
+          "workflow_run_id": 22416099349,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22416099349",
+          "published_at_utc": "2026-02-25T21:11:46Z",
+          "evidence_path": "BosonIT-org/bosonit-site/habitat-warden/run-22416099349-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Habitat Warden",
+          "workflow_run_id": 22416058088,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22416058088",
+          "published_at_utc": "2026-02-25T21:10:38Z",
+          "evidence_path": "BosonIT-org/bosonit-site/habitat-warden/run-22416058088-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-site",
+          "workflow_name": "Deploy to StackCP",
+          "workflow_run_id": 22414971720,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-site/actions/runs/22414971720",
+          "published_at_utc": "2026-02-25T20:39:36Z",
+          "evidence_path": "BosonIT-org/bosonit-site/deploy-to-stackcp/run-22414971720-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "CI",
+          "workflow_run_id": 22410075967,
+          "workflow_run_attempt": 1,
+          "conclusion": "failure",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22410075967",
+          "published_at_utc": "2026-02-25T18:22:32Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/ci/run-22410075967-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Codex Jules Orchestrator",
+          "workflow_run_id": 22410073446,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22410073446",
+          "published_at_utc": "2026-02-25T18:22:03Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/codex-jules-orchestrator/run-22410073446-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Agent Dispatch Router",
+          "workflow_run_id": 22409327430,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22409327430",
+          "published_at_utc": "2026-02-25T18:01:12Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/agent-dispatch-router/run-22409327430-attempt-1/metadata.json"
+        },
+        {
+          "source_repository": "BosonIT-org/bosonit-habitat-core",
+          "workflow_name": "Agent Dispatch Router",
+          "workflow_run_id": 22409273496,
+          "workflow_run_attempt": 1,
+          "conclusion": "success",
+          "workflow_url": "https://github.com/BosonIT-org/bosonit-habitat-core/actions/runs/22409273496",
+          "published_at_utc": "2026-02-25T17:59:51Z",
+          "evidence_path": "BosonIT-org/bosonit-habitat-core/agent-dispatch-router/run-22409273496-attempt-1/metadata.json"
+        }
+      ]
+    },
+    "dispatch": {
+      "total_events": 9,
+      "status_breakdown": {
+        "success": 9
+      },
+      "host_breakdown": {
+        "bmos-svr0": 3,
+        "jcloud": 3,
+        "vps0": 3
+      },
+      "recent_cases": [
+        {
+          "case_id": "dryrun-20260225T112219Z",
+          "request_owner": "bosonit-ceo",
+          "selected_model": "gpt-5.3-codex",
+          "selected_provider": "openai",
+          "first_seen_utc": "2026-02-25T11:22:19.364464+00:00",
+          "latest_seen_utc": "2026-02-25T11:22:19.364464+00:00",
+          "statuses": [
+            "success"
+          ],
+          "hosts": [
+            "bmos-svr0",
+            "jcloud",
+            "vps0"
+          ],
+          "events": 9
+        }
+      ],
+      "success_rate": 1,
+      "latest_event_utc": "2026-02-25T11:22:19.364464+00:00"
+    }
+  },
+  "routing": {
+    "total_events": 1,
+    "fallback_used_count": 0,
+    "denial_count": 0,
+    "avg_token_spend_estimate": 8000,
+    "top_profiles": [
+      {
+        "profile": "codex_oauth_gpt53_xhigh",
+        "count": 1
+      }
+    ],
+    "top_providers": [
+      {
+        "provider": "openai",
+        "count": 1
+      }
+    ],
+    "latest": {
+      "timestamp_utc": "2026-02-25T11:22:19.255265+00:00",
+      "selected_profile_id": "codex_oauth_gpt53_xhigh",
+      "selected_provider": "openai",
+      "selected_model": "gpt-5.3-codex",
+      "auth_profile": "oauth",
+      "data_classification": "internal",
+      "impact_level": "advisory",
+      "regulatory_verdict": "APPROVE",
+      "fallback_used": false,
+      "token_spend_estimate": 8000,
+      "token_guard": {
+        "soft_limit_tokens": 12000,
+        "hard_limit_tokens": 24000,
+        "route_retry_limit": 2,
+        "route_retry_limit_reached": false
+      }
+    }
+  },
+  "governance_verdict": {
+    "data_class": "internal",
+    "impact_level": "advisory",
+    "required_controls": [
+      "logging_and_traceability",
+      "deterministic_output_checks"
+    ],
+    "approval_required": false,
+    "block_reason": null,
+    "verdict": "allow"
+  },
+  "ci": {
+    "generated_at": "2026-02-25T09:32:03.614216+00:00",
+    "advisory_mode": true,
+    "counts": {
+      "added": 9,
+      "modified": 19,
+      "removed": 0,
+      "snapshot_items": 1092
+    },
+    "class_breakdown": {
+      "added": {
+        "ansible-config": 1,
+        "governance-record": 2,
+        "windmill-config": 6
+      },
+      "modified": {
+        "codex-session-history": 1,
+        "governance-record": 6,
+        "openclaw-session-history": 1,
+        "openclaw-config": 10,
+        "openclaw-memory": 1
+      },
+      "removed": {}
+    },
+    "recent_examples": {
+      "added": [
+        {
+          "ci_class": "ansible-config",
+          "content_hash": "050af3f8cd6efea06bff5703bb92957c3f69ba54b87cf931cd958ed4ceab9947",
+          "fingerprint": "ea316d70c9aee98808668d31cf97e95819e2f640b8cf419d4db43819a0c3f269",
+          "id": "ansible-repo:playbooks/provider_auth_vault_sync.yml",
+          "location": "/Users/kennethjones/ansible/playbooks/provider_auth_vault_sync.yml",
+          "source": "ansible-repo",
+          "summary": {
+            "size": 2852
+          },
+          "version": null
+        },
+        {
+          "ci_class": "governance-record",
+          "content_hash": "b4f73c7002a83ce9d6cd7f0531fe9680ca6379585b633a2da3c83893a71d8113",
+          "fingerprint": "fe84224b7b47276da7809965d44faa6c3f370182b2fc0827d9bcf7848d431c8d",
+          "id": "governance-repo:assets/model-policy-enforced-gate.yaml",
+          "location": "/Users/kennethjones/ops/governance/assets/model-policy-enforced-gate.yaml",
+          "source": "governance-repo",
+          "summary": {
+            "size": 1273
+          },
+          "version": null
+        },
+        {
+          "ci_class": "governance-record",
+          "content_hash": "8971649f5e1ade9bf8f1fb78f44c59cdc184785f21f66136d6375f1d35e1d39c",
+          "fingerprint": "95c5dabc385d8fd257d09ec31cc47652ad53a04f8f26b00c8935ae1ec702edee",
+          "id": "governance-repo:assets/provider-auth-vault-sync.yaml",
+          "location": "/Users/kennethjones/ops/governance/assets/provider-auth-vault-sync.yaml",
+          "source": "governance-repo",
+          "summary": {
+            "size": 1414
+          },
+          "version": null
+        },
+        {
+          "ci_class": "windmill-config",
+          "content_hash": "b10287e4c5426227a8850935e535457b5d43da50520c61513f34a2af7950a621",
+          "fingerprint": "3380fcd26ab529645ea34a936a602f10ba61f5bdf6fd8227ca1b46af379683de",
+          "id": "windmill-repo:f/ops/model_policy_gate_enforced.py",
+          "location": "/Users/kennethjones/ops/windmill/f/ops/model_policy_gate_enforced.py",
+          "source": "windmill-repo",
+          "summary": {
+            "size": 2076
+          },
+          "version": null
+        },
+        {
+          "ci_class": "windmill-config",
+          "content_hash": "4c6fda5059600b9d883ac5443e5d2eacb49b4bceb0e6b2e8d346b4b7d1834e4a",
+          "fingerprint": "b16c64587a85aa9dfa2273ed614d0486ad826193442564a34cb2b3aff868b766",
+          "id": "windmill-repo:f/ops/model_policy_gate_enforced.script.yaml",
+          "location": "/Users/kennethjones/ops/windmill/f/ops/model_policy_gate_enforced.script.yaml",
+          "source": "windmill-repo",
+          "summary": {
+            "size": 1414
+          },
+          "version": null
+        },
+        {
+          "ci_class": "windmill-config",
+          "content_hash": "14c7a7e31d260c35c00e212dd745873c84d44e10e982a53f0c6d291ba2a1a504",
+          "fingerprint": "9bcfcd595801cb680033d2a915dc080c6d1f5e1b4f4cdf27a00443d26e3155c7",
+          "id": "windmill-repo:f/ops/provider_auth_vault_sync.py",
+          "location": "/Users/kennethjones/ops/windmill/f/ops/provider_auth_vault_sync.py",
+          "source": "windmill-repo",
+          "summary": {
+            "size": 7172
+          },
+          "version": null
+        },
+        {
+          "ci_class": "windmill-config",
+          "content_hash": "e56abca4754823560f2dc859eed6c9ea6cc1f4601f6e6fb493ab107769a803f7",
+          "fingerprint": "b6ff74f81612f19a3c941d3b3877f1237a6e8e43ba6626c90682deabe2a8e465",
+          "id": "windmill-repo:f/ops/provider_auth_vault_sync.script.yaml",
+          "location": "/Users/kennethjones/ops/windmill/f/ops/provider_auth_vault_sync.script.yaml",
+          "source": "windmill-repo",
+          "summary": {
+            "size": 896
+          },
+          "version": null
+        },
+        {
+          "ci_class": "windmill-config",
+          "content_hash": "3f221adb45f944e7251d53a3fe203a9d48606eb36748c82cfb8246515a64f632",
+          "fingerprint": "a6ee13716a9b9e53c0d2dc73f41a61c4018d056c8c6f521d922718af0e564bc1",
+          "id": "windmill-repo:scripts/model_policy_gate_enforced.py",
+          "location": "/Users/kennethjones/ops/windmill/scripts/model_policy_gate_enforced.py",
+          "source": "windmill-repo",
+          "summary": {
+            "size": 1948
+          },
+          "version": null
+        }
+      ],
+      "modified": [
+        {
+          "after": {
+            "ci_class": "codex-session-history",
+            "content_hash": "87ab6e99afffeb3c99fd6c259ecafe59bf43c218b35c23a18b7155b57a2f2e80",
+            "fingerprint": "f50cc6541060e6db137338e00155c768177e6428a05bedfb1f2ef5a7a159b3e6",
+            "id": "codex-session-brain:summary",
+            "location": "/Users/kennethjones/.codex/sessions",
+            "source": "codex-session-brain",
+            "summary": {
+              "extensions": [
+                ".jsonl"
+              ],
+              "file_count": 209,
+              "latest_mtime": 1772011917,
+              "total_size": 611493414
+            },
+            "version": null
+          },
+          "before": {
+            "ci_class": "codex-session-history",
+            "content_hash": "a373bce710e811439c96d3b957b8d867634c84566ec1166a9d7b1bcd3b9627b6",
+            "fingerprint": "ed4bd43f95b510ddc764245a7746e2ac67a40ef6d86b51f542061a43f54edf7c",
+            "id": "codex-session-brain:summary",
+            "location": "/Users/kennethjones/.codex/sessions",
+            "source": "codex-session-brain",
+            "summary": {
+              "extensions": [
+                ".jsonl"
+              ],
+              "file_count": 209,
+              "latest_mtime": 1772011120,
+              "total_size": 610785254
+            },
+            "version": null
+          }
+        },
+        {
+          "after": {
+            "ci_class": "governance-record",
+            "content_hash": "cdd9cde330442b774c01429be23a447427d8493423d02eaf5795c0df443783f1",
+            "fingerprint": "6782ec01fff76a4141708968967507907a0274adf2236dfc0ff7ab916c5ac403",
+            "id": "governance-repo:control_policy.runtime.json",
+            "location": "/Users/kennethjones/ops/governance/control_policy.runtime.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 1771,
+              "top_keys": [
+                "audit_policy",
+                "channel_policy",
+                "classification_policy",
+                "defaults",
+                "enforcement_scope",
+                "model_selection",
+                "token_governor",
+                "version"
+              ]
+            },
+            "version": null
+          },
+          "before": {
+            "ci_class": "governance-record",
+            "content_hash": "ce7fadaf7994bc9143bf038908c4d577e9bc1b1c0371079d2ca21dee322646b2",
+            "fingerprint": "84f2fa0d5fcc678a0af7c2e383ecae6b90151c61c86bfeafdc49245d9cbd201a",
+            "id": "governance-repo:control_policy.runtime.json",
+            "location": "/Users/kennethjones/ops/governance/control_policy.runtime.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 1636,
+              "top_keys": [
+                "audit_policy",
+                "channel_policy",
+                "classification_policy",
+                "defaults",
+                "model_selection",
+                "token_governor",
+                "version"
+              ]
+            },
+            "version": null
+          }
+        },
+        {
+          "after": {
+            "ci_class": "governance-record",
+            "content_hash": "39e6695994fbdf7034aa6c35b1e67c26afff0831d2184b9c0afb152ea51ba5b6",
+            "fingerprint": "fb74932582889932d52e6d316dbc76788d5e853b552b1859925eee0f50512c0c",
+            "id": "governance-repo:control_policy.yaml",
+            "location": "/Users/kennethjones/ops/governance/control_policy.yaml",
+            "source": "governance-repo",
+            "summary": {
+              "size": 2438
+            },
+            "version": null
+          },
+          "before": {
+            "ci_class": "governance-record",
+            "content_hash": "72287898895e755a4b5d86ea7b37a14becd45ab9f7297a1ab88f3bbca16a4d05",
+            "fingerprint": "6a8cede374d63f763ac872ec2924399b666fd6b3fc95148e8fbf77784c572fb3",
+            "id": "governance-repo:control_policy.yaml",
+            "location": "/Users/kennethjones/ops/governance/control_policy.yaml",
+            "source": "governance-repo",
+            "summary": {
+              "size": 2323
+            },
+            "version": null
+          }
+        },
+        {
+          "after": {
+            "ci_class": "governance-record",
+            "content_hash": "02b08b8903a4f7228a9af81b4adb7194afdff6aac0b42b431c9b4d8f2120f304",
+            "fingerprint": "305e063a5a006396afc0f53132c967a64165f0db4ee00e5b2de82f959f31ed70",
+            "id": "governance-repo:model_role_registry.json",
+            "location": "/Users/kennethjones/ops/governance/model_role_registry.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 2904,
+              "top_keys": [
+                "owner",
+                "profiles",
+                "selection_policy",
+                "updated_at",
+                "version"
+              ]
+            },
+            "version": null
+          },
+          "before": {
+            "ci_class": "governance-record",
+            "content_hash": "66c0f8b6cf7809b35b41fe23a2dabe221336434585557d942c6beb9094eeb51e",
+            "fingerprint": "a601ef237fcb8b8fa4eb4759282327a56ade7fa267da876d9b205ba9c7629836",
+            "id": "governance-repo:model_role_registry.json",
+            "location": "/Users/kennethjones/ops/governance/model_role_registry.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 2537,
+              "top_keys": [
+                "owner",
+                "profiles",
+                "selection_policy",
+                "updated_at",
+                "version"
+              ]
+            },
+            "version": null
+          }
+        },
+        {
+          "after": {
+            "ci_class": "governance-record",
+            "content_hash": "b9f5804da0f97c37701c86fffc5c5a4c3ac7afb3beccfcb3825401310e098856",
+            "fingerprint": "4bda34d897b6a13c30d44e41989db89f5ed2d332ada0824d2d04ad702b32eb65",
+            "id": "governance-repo:required_asset_ids.yaml",
+            "location": "/Users/kennethjones/ops/governance/required_asset_ids.yaml",
+            "source": "governance-repo",
+            "summary": {
+              "size": 860
+            },
+            "version": null
+          },
+          "before": {
+            "ci_class": "governance-record",
+            "content_hash": "453d0e88caa4fa894c6a2179117a9f3b63ce51ebdda8582d93ce757950177627",
+            "fingerprint": "6eb2d4f61c9d1bc48bdaf174dd433e585145e9d31ad51a9c8c83449bcfc1aa0a",
+            "id": "governance-repo:required_asset_ids.yaml",
+            "location": "/Users/kennethjones/ops/governance/required_asset_ids.yaml",
+            "source": "governance-repo",
+            "summary": {
+              "size": 800
+            },
+            "version": null
+          }
+        },
+        {
+          "after": {
+            "ci_class": "governance-record",
+            "content_hash": "d50368031107164e242af112447b40fa6f78ab45141dfb67677ce0449ec17f65",
+            "fingerprint": "af5897c6701795f81df2f213c10406308f32a01935a2239b4eade3d6be3a6a1e",
+            "id": "governance-repo:state/ci_report.json",
+            "location": "/Users/kennethjones/ops/governance/state/ci_report.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 4736,
+              "top_keys": [
+                "advisory_mode",
+                "changes",
+                "counts",
+                "generated_at",
+                "ok",
+                "snapshot_path",
+                "sources",
+                "warnings"
+              ]
+            },
+            "version": "1.0.0"
+          },
+          "before": {
+            "ci_class": "governance-record",
+            "content_hash": "0a33124d098a6837c0941fc5bf429ef87cdcfbc33b7cc43250e991a1c674681d",
+            "fingerprint": "c582ce3466b6fdc650b1b34a3f50feab42148af916520c3bb8f58413bcaacf84",
+            "id": "governance-repo:state/ci_report.json",
+            "location": "/Users/kennethjones/ops/governance/state/ci_report.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 141150,
+              "top_keys": [
+                "advisory_mode",
+                "changes",
+                "counts",
+                "generated_at",
+                "ok",
+                "snapshot_path",
+                "sources",
+                "warnings"
+              ]
+            },
+            "version": "1.0.0"
+          }
+        },
+        {
+          "after": {
+            "ci_class": "governance-record",
+            "content_hash": "9073f00ef8aedbbd123ad19759cf2ef3276f1517e655c3aaf040cbcc6f3a13c3",
+            "fingerprint": "e28683930d0e7a150a3774fbd57bdfb3eda74c85f4fa8ef2811f91b0ff8a8b33",
+            "id": "governance-repo:state/ci_snapshot.json",
+            "location": "/Users/kennethjones/ops/governance/state/ci_snapshot.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 745188,
+              "top_keys": [
+                "generated_at",
+                "items",
+                "sources",
+                "warnings"
+              ]
+            },
+            "version": "1.0.0"
+          },
+          "before": {
+            "ci_class": "governance-record",
+            "content_hash": "cb351567841e78c74d188518a5ad2e0ff2022c2309821d2ea050c2369c8de19b",
+            "fingerprint": "19a6abc302f78428380ffb9550d34bb7e17e22938c10301a78d05fa3c019eb9e",
+            "id": "governance-repo:state/ci_snapshot.json",
+            "location": "/Users/kennethjones/ops/governance/state/ci_snapshot.json",
+            "source": "governance-repo",
+            "summary": {
+              "size": 743828,
+              "top_keys": [
+                "generated_at",
+                "items",
+                "sources",
+                "warnings"
+              ]
+            },
+            "version": "1.0.0"
+          }
+        },
+        {
+          "after": {
+            "ci_class": "openclaw-session-history",
+            "content_hash": "965d11511f82ac8519aa0c4ba348ecb3fe460f3f9ab1f81988ef8ec2777a5a47",
+            "fingerprint": "342b7d857393fd00a92898b5c66af7cc3383cd49c49b82b06e600a56c6783c12",
+            "id": "openclaw-agent-session-brain:summary",
+            "location": "/Users/kennethjones/.openclaw/agents",
+            "source": "openclaw-agent-session-brain",
+            "summary": {
+              "extensions": [
+                ".json",
+                ".jsonl"
+              ],
+              "file_count": 3324,
+              "latest_mtime": 1772011891,
+              "total_size": 515064013
+            },
+            "version": null
+          },
+          "before": {
+            "ci_class": "openclaw-session-history",
+            "content_hash": "c63bb910bef7cdd3a015cdfd2bd4cff4cae84a0968c4d69e508329762b386457",
+            "fingerprint": "78ac098b359a95671c94a725865c1982f9c535e087beafbfd3c7d062f72dd7c1",
+            "id": "openclaw-agent-session-brain:summary",
+            "location": "/Users/kennethjones/.openclaw/agents",
+            "source": "openclaw-agent-session-brain",
+            "summary": {
+              "extensions": [
+                ".json",
+                ".jsonl"
+              ],
+              "file_count": 3324,
+              "latest_mtime": 1772010991,
+              "total_size": 515060691
+            },
+            "version": null
+          }
+        }
+      ],
+      "removed": []
+    }
+  },
+  "revenue": {
+    "schema_version": "2026-03-02.revenue-experiment-pack.v1",
+    "updated_at_utc": "2026-03-02T19:00:00Z",
+    "objective": "Acquire first 20 net-new paying customers with CAC payback of 3 months or less.",
+    "weekly_review_day": "Monday",
+    "channel_count": 3,
+    "active_count": 3,
+    "budget_split_total_percent": 100,
+    "experiments": [
+      {
+        "id": "paid-search",
+        "channel": "Paid Search",
+        "owner": "Growth",
+        "stage": "launch_ready",
+        "status": "launch_ready",
+        "budget_split_percent": 35,
+        "target_audience": "High-intent AI automation and operations buyers.",
+        "tracking": {
+          "primary_event": "begin_checkout",
+          "secondary_event": "qualified_call_booked"
+        },
+        "kpi_targets": {
+          "ctr_min_percent": 3,
+          "cpl_max_usd": 150,
+          "demo_rate_min_percent": 5,
+          "close_rate_min_percent": 20
+        },
+        "kill_rule": "Pause when CTR < 2% after 1,000 impressions or CPL > $250 for 7 days.",
+        "scale_rule": "Increase weekly budget by 20% when CPL <= $120 and close rate >= 20%.",
+        "next_review_utc": "2026-03-09T15:00:00Z",
+        "notes": "Keyword groups must map directly to service outcomes and ROI language."
+      },
+      {
+        "id": "outbound",
+        "channel": "Outbound",
+        "owner": "Sales",
+        "stage": "launch_ready",
+        "status": "launch_ready",
+        "budget_split_percent": 35,
+        "target_audience": "COO, Ops, and RevOps leaders in 5-200 employee companies.",
+        "tracking": {
+          "primary_event": "positive_reply",
+          "secondary_event": "demo_booked"
+        },
+        "kpi_targets": {
+          "reply_rate_min_percent": 3,
+          "positive_reply_min_percent": 1,
+          "demo_booked_min_percent": 0.3
+        },
+        "kill_rule": "Pause sequence when reply rate < 1.5% after 1,000 sends.",
+        "scale_rule": "Expand list volume 25% weekly when reply rate >= 5% and demo rate >= 0.5%.",
+        "next_review_utc": "2026-03-09T15:00:00Z",
+        "notes": "Keep outreach tightly aligned to 2 ICP segments to preserve signal quality."
+      },
+      {
+        "id": "partner-referral",
+        "channel": "Partner Referral",
+        "owner": "Partnerships",
+        "stage": "launch_ready",
+        "status": "launch_ready",
+        "budget_split_percent": 30,
+        "target_audience": "Agencies and consultants serving operations-heavy SMB clients.",
+        "tracking": {
+          "primary_event": "referral_demo",
+          "secondary_event": "partner_sourced_revenue"
+        },
+        "kpi_targets": {
+          "partner_demos_min_per_month": 3,
+          "partner_cac_max_percent_of_paid": 50
+        },
+        "kill_rule": "Pause partner lane after 45 days with zero referred demos.",
+        "scale_rule": "Add one new partner each week once two consecutive weeks hit >= 3 referred demos.",
+        "next_review_utc": "2026-03-09T15:00:00Z",
+        "notes": "Use revenue-share terms and shared proof assets for faster partner onboarding."
+      }
+    ]
+  },
+  "system_changes": {
+    "total_events": 1,
+    "severity_breakdown": {
+      "medium": 1
+    },
+    "category_breakdown": {
+      "runtime_hygiene": 1
+    },
+    "recent": [
+      {
+        "event_id": "evt-stale-terminal-funnel-20260225T173112Z",
+        "timestamp_utc": "2026-02-25T17:31:12.972603+00:00",
+        "category": "runtime_hygiene",
+        "severity": "medium",
+        "summary": "Stale terminal-bound Tailscale funnel sessions were detected in Codex app-server child processes.",
+        "actor": "codex",
+        "status": "resolved"
+      }
+    ]
+  }
+}

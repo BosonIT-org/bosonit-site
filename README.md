@@ -26,3 +26,20 @@ Customer-facing applications, delivery workflows, and runtime service code for B
 - Sensitive-path PRs require `human-approval-required` and `ai-ops` team review.
 - Fail-closed behavior applies for infra, security, and deploy-impacting changes.
 - No secrets in git; use Vault-managed references only.
+
+## Control plane dashboard
+- Dashboard route: `/control-plane`
+- Data feed: `public/observatory/control-plane.latest.json`
+- Build generator: `ops/observatory/build-control-plane-dataset.mjs`
+
+### Data source precedence
+1. `HABITAT_OBSERVATORY_ROOT` (if set)
+2. `/Users/kennethjones/bosonit-habitat-observatory`
+3. Local fallback `./observatory`
+
+### Generate or refresh feed manually
+```bash
+npm run build:control-plane-data
+```
+
+`npm run build` runs the generator automatically through `prebuild`.

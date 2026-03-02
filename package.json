@@ -1,1 +1,1 @@
-{"scripts":{"build":"astro build","dev":"astro dev","start":"astro start"},"devDependencies":{"@astrojs/tailwind":"^6.0.2","astro":"^5.12.8","tailwindcss":"^3.4.17"}}
+{"scripts":{"build":"astro build","build:control-plane-data":"node ops/observatory/build-control-plane-dataset.mjs","dev":"astro dev","prebuild":"npm run build:control-plane-data","start":"astro preview"},"devDependencies":{"@astrojs/tailwind":"^6.0.2","astro":"^5.12.8","tailwindcss":"^3.4.17"}}

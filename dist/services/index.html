@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BosonIT Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #081224;
+      --panel: rgba(12, 27, 48, 0.88);
+      --line: rgba(159, 215, 255, 0.24);
+      --text: #eaf5ff;
+      --muted: #a7c3e0;
+      --accent: #63ddaa;
+      --accent-2: #53b8ff;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 1rem;
+      color: var(--text);
+      background:
+        radial-gradient(60rem 35rem at 0% 0%, rgba(36, 174, 255, 0.24), transparent 58%),
+        radial-gradient(45rem 40rem at 100% 100%, rgba(99, 221, 170, 0.18), transparent 62%),
+        var(--bg);
+      font-family: "Space Grotesk", sans-serif;
+    }
+    .shell {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      gap: 0.9rem;
+    }
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 1rem;
+      box-shadow: 0 24px 54px rgba(0, 0, 0, 0.42);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3vw, 2.3rem);
+      line-height: 1.1;
+    }
+    p {
+      margin: 0.4rem 0 0;
+      color: var(--muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    a {
+      color: #e9f8ff;
+      text-decoration: none;
+      border: 1px solid rgba(189, 226, 255, 0.34);
+      border-radius: 11px;
+      padding: 0.48rem 0.78rem;
+      background: linear-gradient(145deg, rgba(21, 46, 77, 0.9), rgba(15, 31, 52, 0.95));
+    }
+    a.primary {
+      color: #0c1622;
+      border-color: transparent;
+      background: var(--accent);
+      font-weight: 700;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.75rem;
+      align-items: start;
+    }
+    .kpi {
+      margin-top: 0.55rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.7rem;
+      border: 1px solid rgba(140, 213, 255, 0.38);
+      background: rgba(83, 184, 255, 0.12);
+      color: #dff1ff;
+      border-radius: 999px;
+      padding: 0.28rem 0.62rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.01em;
+    }
+    .badge .dot {
+      width: 0.46rem;
+      height: 0.46rem;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0.6rem rgba(99, 221, 170, 0.7);
+      display: inline-block;
+    }
+    button {
+      color: #e9f8ff;
+      text-decoration: none;
+      border: 1px solid rgba(189, 226, 255, 0.34);
+      border-radius: 11px;
+      padding: 0.48rem 0.78rem;
+      background: linear-gradient(145deg, rgba(21, 46, 77, 0.9), rgba(15, 31, 52, 0.95));
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    button.primary {
+      color: #0c1622;
+      border-color: transparent;
+      background: linear-gradient(145deg, var(--accent), #79e9bb);
+      font-weight: 700;
+    }
+    .small {
+      margin-top: 0.5rem;
+      font-size: 0.77rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="card">
+      <div class="hero-grid">
+        <div>
+          <h1>Services</h1>
+          <p>Delivery tracks for product engineering, automation, and operational reliability.</p>
+          <p class="kpi">Fastest revenue path: 15-minute ROI Audit checkout.</p>
+          <p id="checkoutStatus" class="badge"><span class="dot" aria-hidden="true"></span>Checkout rail loading...</p>
+        </div>
+        <div>
+          <div class="actions">
+            <button id="startAuditBtn" class="primary" type="button">Start ROI Audit - $500</button>
+            <button id="startProMonthlyBtn" type="button">Start Pro Monthly</button>
+            <button id="startProYearlyBtn" type="button">Start Pro Yearly</button>
+            <a href="https://calendly.com/bosonit" target="_blank" rel="noopener">Book a call</a>
+            <a href="/control-plane/">Open Control Plane</a>
+            <a href="/">Home</a>
+          </div>
+          <p class="small">Every checkout click records local conversion telemetry and emits non-blocking analytics events (`begin_checkout`) before redirecting.</p>
+        </div>
+      </div>
+    </section>
+    <section class="grid">
+      <article class="card">
+        <h2>Platform Engineering</h2>
+        <p>Hardened app delivery pipelines, observability, and repeatable release controls.</p>
+      </article>
+      <article class="card">
+        <h2>Automation Systems</h2>
+        <p>Agent-driven orchestration and workflow automation with governance-first guardrails.</p>
+      </article>
+      <article class="card">
+        <h2>Reliability Operations</h2>
+        <p>Incident triage, runbook execution, and telemetry loops tuned for low-friction sustainment.</p>
+      </article>
+    </section>
+  </main>
+  <script>
+    const CHECKOUT_LINKS_URL = "/api/checkout/links";
+    const CONTACT_TRACK_URL = "/api/contact";
+    const ROI_STRIPE_FALLBACK_URL = "https://buy.stripe.com/5kQ28qcsgc5WeBr9cE0Jq00";
+    const ROI_PAGE_URL = "https://www.bosonit.org/roi/?utm_source=services&utm_medium=cta&utm_campaign=roi-audit";
+    const EVENT_STORAGE_KEY = "bosonit_services_conversion_events";
+
+    let checkoutLinks = null;
+
+    function isLocalPreviewHost() {
+      const host = window.location.hostname || "";
+      return host === "127.0.0.1" || host === "localhost";
+    }
+
+    function isHttpUrl(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+      } catch {
+        return false;
+      }
+    }
+
+    function normalizeCheckoutUrl(value) {
+      if (!value || typeof value !== "string") return "";
+      const trimmed = value.trim();
+      if (!isHttpUrl(trimmed)) return "";
+      return trimmed;
+    }
+
+    function trackLocalEvent(event) {
+      try {
+        const existing = JSON.parse(localStorage.getItem(EVENT_STORAGE_KEY) || "[]");
+        const next = Array.isArray(existing) ? existing.slice(-49) : [];
+        next.push(event);
+        localStorage.setItem(EVENT_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // no-op
+      }
+    }
+
+    function emitAnalytics(event) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "bosonit_begin_checkout",
+        intent: event.intent,
+        checkout_host: event.checkout_host,
+        source_path: "/services/",
+        ts: event.ts,
+      });
+
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "begin_checkout", {
+          currency: "USD",
+          value: event.intent === "roi_audit" ? 500 : 0,
+          checkout_host: event.checkout_host,
+          source_path: "/services/",
+        });
+      }
+
+      if (typeof window.plausible === "function") {
+        window.plausible("begin_checkout", {
+          props: {
+            intent: event.intent,
+            checkout_host: event.checkout_host,
+            source_path: "/services/",
+          },
+        });
+      }
+    }
+
+    function sendConversionSignal(event) {
+      if (isLocalPreviewHost()) {
+        return;
+      }
+      const payload = {
+        name: "BosonIT Services Checkout Intent",
+        email: "checkout-intent@bosonit.org",
+        message: `intent=${event.intent}; checkout_host=${event.checkout_host}; source=/services/; ts=${event.ts}`,
+        source: "bosonit.org/services",
+        channel: "web",
+      };
+
+      try {
+        const body = JSON.stringify(payload);
+        if (navigator.sendBeacon) {
+          const blob = new Blob([body], { type: "application/json" });
+          navigator.sendBeacon(CONTACT_TRACK_URL, blob);
+          return;
+        }
+        fetch(CONTACT_TRACK_URL, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body,
+          keepalive: true,
+        }).catch(() => {});
+      } catch {
+        // no-op
+      }
+    }
+
+    async function loadCheckoutLinks() {
+      if (isLocalPreviewHost()) {
+        return null;
+      }
+      try {
+        const response = await fetch(CHECKOUT_LINKS_URL, {
+          cache: "no-store",
+          headers: { "cache-control": "no-cache" },
+        });
+        if (!response.ok) return null;
+        const payload = await response.json();
+        checkoutLinks = payload && typeof payload === "object" ? payload : null;
+        return checkoutLinks;
+      } catch {
+        return null;
+      }
+    }
+
+    function candidateCheckoutUrls(intent) {
+      const links = checkoutLinks || {};
+      if (intent === "roi_audit") {
+        return [
+          links.roi_audit,
+          links.audit_500,
+          links.pro_monthly,
+          ROI_STRIPE_FALLBACK_URL,
+          ROI_PAGE_URL,
+        ];
+      }
+      if (intent === "pro_monthly") {
+        return [links.pro_monthly, links.monthly, ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
+      }
+      if (intent === "pro_yearly") {
+        return [links.pro_yearly, links.yearly, ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
+      }
+      return [ROI_STRIPE_FALLBACK_URL, ROI_PAGE_URL];
+    }
+
+    function pickCheckoutUrl(intent) {
+      const candidates = candidateCheckoutUrls(intent);
+      for (const raw of candidates) {
+        const url = normalizeCheckoutUrl(raw);
+        if (!url) continue;
+        const isStripe = url.includes("stripe.com");
+        if (isStripe) return url;
+      }
+      return ROI_STRIPE_FALLBACK_URL;
+    }
+
+    function updateCheckoutStatus() {
+      const statusEl = document.getElementById("checkoutStatus");
+      const links = checkoutLinks || {};
+      const candidates = [links.roi_audit, links.audit_500, links.pro_monthly, links.pro_yearly]
+        .map((value) => normalizeCheckoutUrl(value))
+        .filter(Boolean);
+      const stripe = candidates.find((value) => value.includes("stripe.com"));
+      if (stripe) {
+        statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Checkout rail live (${new URL(stripe).hostname})`;
+        return;
+      }
+      statusEl.innerHTML = `<span class="dot" aria-hidden="true"></span>Using direct Stripe fallback rail (${new URL(ROI_STRIPE_FALLBACK_URL).hostname})`;
+    }
+
+    async function startCheckout(intent) {
+      if (!checkoutLinks) {
+        await loadCheckoutLinks();
+      }
+      const url = pickCheckoutUrl(intent);
+      const host = isHttpUrl(url) ? new URL(url).hostname : "unknown";
+      const event = {
+        intent,
+        checkout_host: host,
+        target_url: url,
+        ts: new Date().toISOString(),
+      };
+
+      trackLocalEvent(event);
+      emitAnalytics(event);
+      sendConversionSignal(event);
+      window.location.assign(url);
+    }
+
+    document.getElementById("startAuditBtn").addEventListener("click", () => startCheckout("roi_audit"));
+    document.getElementById("startProMonthlyBtn").addEventListener("click", () => startCheckout("pro_monthly"));
+    document.getElementById("startProYearlyBtn").addEventListener("click", () => startCheckout("pro_yearly"));
+
+    loadCheckoutLinks().finally(updateCheckoutStatus);
+  </script>
+</body>
+</html>
