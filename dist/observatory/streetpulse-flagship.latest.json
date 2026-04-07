@@ -1,0 +1,119 @@
+{
+  "available": true,
+  "schema_version": "2026-03-10.streetpulse-flagship.v1",
+  "generated_at_utc": "2026-03-17T16:03:15.975Z",
+  "product": {
+    "brand": "StreetPulse",
+    "focus": "Fleet",
+    "buyer": "",
+    "lane": "leave-now intelligence",
+    "wedge_label": "Leave-Now Intelligence",
+    "headline": "See the city move before you do.",
+    "lede": "StreetPulse turns public traffic cameras and map signals into a clear leave-now answer for fleets, campuses, venues, and city-moving teams. The current flagship motion keeps that promise concrete with a finite paid pilot, visible source proof, and no signup cliff.",
+    "decision_subtle": "StreetPulse Fleet Pilot is the current launch motion: Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+    "story_friction": "Blind departure timing, route guesswork, and late reactions to visible congestion.",
+    "story_payoff": "A buyer sees a clear go-now or wait-now answer backed by named cameras, visible attribution, and a finite pilot scope.",
+    "story_reason": "The product proves itself in one browser session, then converts with a diagnostic, a paid pilot, and an optimization path instead of a vague platform pitch.",
+    "novel_ui_signature": "Cinematic decision card, live proof filmstrip, and one-tap leave-now framing.",
+    "operator_title": "Fleet teams get the answer earlier.",
+    "operator_copy": "StreetPulse gives the operator a faster release or delay call before the downstream queue, curbside line, or staffing shock becomes obvious and expensive.",
+    "operator_promise": "Pilot promise: prove a camera-backed leave-now decision inside one live workflow in 14 days.",
+    "public_release_rule": "StreetPulse only stays on the public sales rail when the live feed is visible in the product itself.",
+    "offer_ladder_title": "Start with one workflow. Expand only if it earns it.",
+    "offer_ladder_intro": "The public app proves the experience. The ladder gives the buyer a low-friction diagnostic, a paid pilot, and an optimization path without forcing a platform commitment up front.",
+    "pilot_title": "StreetPulse Fleet Pilot",
+    "pilot_intro": "StreetPulse Fleet Pilot is the first paid motion. Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+    "footer_note": "StreetPulse stays public-first: the buyer can feel the product, inspect the proof, and take a paid next step in a single session.",
+    "roi_window_days": 14
+  },
+  "offers": [
+    {
+      "id": "streetpulse-flagship-diagnostic",
+      "tier": "entry",
+      "name": "StreetPulse Diagnostic",
+      "internal_name": "StreetPulse Fleet Release Diagnostic",
+      "price_usd": 1676,
+      "billing": "one_time",
+      "billing_model": "one_time",
+      "checkout_url": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time",
+      "objective": "Audit the current leave-now intelligence workflow, quantify friction, and identify the fastest ROI path.",
+      "delivery_outcome": "Workflow map, KPI baseline, and pilot recommendation for fleet operators, venue operations leads, campus mobility teams, and city-moving users who need a clear leave-now answer from visible public signals..",
+      "best_for": "Audit the current leave-now intelligence workflow, quantify friction, and identify the fastest ROI path.",
+      "legacy_keys": [
+        "streetpulse_flagship_diagnostic",
+        "streetpulse_diagnostic"
+      ]
+    },
+    {
+      "id": "streetpulse-fleet-pilot",
+      "tier": "core",
+      "name": "StreetPulse Fleet Pilot",
+      "internal_name": "StreetPulse Fleet Release Pilot",
+      "price_usd": 4877,
+      "billing": "one_time",
+      "billing_model": "pilot_project",
+      "checkout_url": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time",
+      "objective": "Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+      "delivery_outcome": "Live routing workflow, operator queue, tracked pilot metrics, and a launch-ready operating motion.",
+      "best_for": "Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+      "legacy_keys": [
+        "streetpulse_fleet_pilot",
+        "streetpulse_flagship_pilot"
+      ]
+    },
+    {
+      "id": "streetpulse-fleet-optimization",
+      "tier": "recurring",
+      "name": "StreetPulse Fleet Optimization",
+      "internal_name": "StreetPulse Fleet Release Optimization",
+      "price_usd": 1372,
+      "billing": "subscription",
+      "billing_model": "monthly_recurring",
+      "checkout_url": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription",
+      "objective": "Tune rules, thresholds, routing quality, and operator handoffs from live production data.",
+      "delivery_outcome": "Weekly improvement loop, KPI review, controlled rollout changes, and ongoing operator support.",
+      "best_for": "Tune rules, thresholds, routing quality, and operator handoffs from live production data.",
+      "legacy_keys": [
+        "streetpulse_fleet_optimization",
+        "streetpulse_flagship_optimization"
+      ]
+    }
+  ],
+  "current_offer": {
+    "id": "streetpulse-fleet-pilot",
+    "tier": "core",
+    "name": "StreetPulse Fleet Pilot",
+    "internal_name": "StreetPulse Fleet Release Pilot",
+    "price_usd": 4877,
+    "billing": "one_time",
+    "billing_model": "pilot_project",
+    "checkout_url": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time",
+    "objective": "Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+    "delivery_outcome": "Live routing workflow, operator queue, tracked pilot metrics, and a launch-ready operating motion.",
+    "best_for": "Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+    "legacy_keys": [
+      "streetpulse_fleet_pilot",
+      "streetpulse_flagship_pilot"
+    ]
+  },
+  "queue": [
+    {
+      "candidate_name": "StreetPulse Fleet Release",
+      "lane": "leave-now intelligence",
+      "buyer": "Fleet operators, venue operations leads, campus mobility teams, and city-moving users who need a clear leave-now answer from visible public signals.",
+      "promotion_state": "recommended"
+    },
+    {
+      "candidate_name": "StreetPulse Venue Ingress",
+      "lane": "ingress timing",
+      "buyer": "Fleet operators, venue operations leads, campus mobility teams, and city-moving users who need a clear leave-now answer from visible public signals.",
+      "promotion_state": "queued"
+    },
+    {
+      "candidate_name": "StreetPulse Campus Departure",
+      "lane": "departure timing",
+      "buyer": "Fleet operators, venue operations leads, campus mobility teams, and city-moving users who need a clear leave-now answer from visible public signals.",
+      "promotion_state": "queued"
+    }
+  ]
+}

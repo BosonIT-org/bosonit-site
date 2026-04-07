@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BosonIT Startup Proof</title>
+  <meta
+    name="description"
+    content="Reviewer-facing proof surface for BosonIT: company facts, AI product posture, operating proof, and the public evidence stack behind the startup-credit applications."
+  />
+  <meta property="og:title" content="BosonIT Startup Proof" />
+  <meta
+    property="og:description"
+    content="Reviewer-facing proof for BosonIT LLC: company facts, operating proof, founder-controlled posture, and the public surfaces behind the startup-credit applications."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bosonit.org/startup-proof/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BosonIT Startup Proof" />
+  <meta
+    name="twitter:description"
+    content="Company facts, operating proof, product direction, and a truthful startup-credit review surface for BosonIT LLC."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07111d;
+      --panel: rgba(11, 23, 39, 0.82);
+      --panel-soft: rgba(15, 29, 48, 0.9);
+      --line: rgba(152, 210, 255, 0.2);
+      --text: #eef7ff;
+      --muted: #a6bfd8;
+      --accent: #77dfb5;
+      --accent-2: #7fc8ff;
+      --gold: #ffd48a;
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      background:
+        radial-gradient(44rem 24rem at 0% 0%, rgba(127, 200, 255, 0.18), transparent 55%),
+        radial-gradient(34rem 20rem at 100% 0%, rgba(119, 223, 181, 0.14), transparent 48%),
+        linear-gradient(180deg, #07111d 0%, #091523 100%);
+    }
+
+    .page {
+      width: min(var(--max), calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 72px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+
+    .hero,
+    .section-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero {
+      grid-template-columns: 1.15fr 0.85fr;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy,
+    .hero-facts,
+    .section,
+    .proof-card {
+      padding: 28px;
+    }
+
+    .hero-copy {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(127, 200, 255, 0.12), transparent 34%),
+        linear-gradient(180deg, rgba(12, 25, 42, 0.95), rgba(7, 17, 29, 0.95));
+    }
+
+    .hero-facts,
+    .section,
+    .proof-card {
+      background: var(--panel-soft);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 2rem;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.55;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      margin-top: 16px;
+      font-size: clamp(2.7rem, 8vw, 5rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      max-width: 11ch;
+    }
+
+    h1 em {
+      display: block;
+      font-style: normal;
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      color: #d7ebff;
+    }
+
+    .lede,
+    .section p,
+    .proof-card p {
+      margin-top: 14px;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .actions,
+    .fact-grid,
+    .proof-links,
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button,
+    .button-ghost,
+    .tag,
+    .fact,
+    .proof-link {
+      border-radius: 999px;
+      padding: 0.78rem 1rem;
+    }
+
+    .button,
+    .button-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button {
+      color: #081d2b;
+      background: linear-gradient(135deg, var(--accent), #cbf9e5);
+    }
+
+    .button-ghost,
+    .tag,
+    .fact,
+    .proof-link {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid rgba(152, 210, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .actions {
+      margin-top: 22px;
+    }
+
+    .tag {
+      color: #e6f4ff;
+      font-size: 0.86rem;
+    }
+
+    .tag strong,
+    .fact strong {
+      color: var(--gold);
+    }
+
+    .fact-grid {
+      margin-top: 18px;
+    }
+
+    .fact {
+      flex: 1 1 220px;
+      min-width: 0;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+
+    .fact span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.55;
+    }
+
+    .section-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .section h2,
+    .proof-card h2 {
+      margin-top: 12px;
+      font-size: 1.24rem;
+    }
+
+    ul {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .proof-card {
+      margin-bottom: 18px;
+    }
+
+    .proof-links {
+      margin-top: 16px;
+    }
+
+    .proof-link {
+      font-size: 0.9rem;
+    }
+
+    .footnote {
+      margin-top: 20px;
+      color: #8ea8c4;
+      font-size: 0.84rem;
+      line-height: 1.58;
+    }
+
+    @media (max-width: 960px) {
+      .hero,
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(var(--max), calc(100% - 20px));
+        padding-top: 18px;
+      }
+
+      .hero-copy,
+      .hero-facts,
+      .section,
+      .proof-card {
+        padding: 22px;
+      }
+
+      .button,
+      .button-ghost {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <article class="hero-copy panel">
+        <span class="eyebrow">Startup Review Surface</span>
+        <h1>BosonIT is building <em>governed AI operator systems.</em></h1>
+        <p class="lede">
+          BosonIT LLC is a veteran-led, bootstrapped company building secure collaboration, workflow automation,
+          and private AI operator environments. The strongest proof is not a deck. It is the live habitat, the public control surfaces derived from it,
+          and the operating discipline wrapped around approvals, records, and browser execution.
+        </p>
+        <div class="tag-row" style="margin-top: 18px;">
+          <span class="tag"><strong>Entity</strong> Illinois LLC</span>
+          <span class="tag"><strong>Industry</strong> AI - Generative</span>
+          <span class="tag"><strong>Model</strong> founder-controlled and bootstrapped</span>
+          <span class="tag"><strong>Website</strong> bosonit.org</span>
+        </div>
+        <div class="actions">
+          <a class="button" href="/streetpulse/">Review StreetPulse</a>
+          <a class="button-ghost" href="/opportunity-os/">Review OpportunityOS</a>
+          <a class="button-ghost" href="/control-plane/">Open the Control Plane</a>
+          <a class="button-ghost" href="/innovation-control/">Review Innovation Control</a>
+        </div>
+        <p class="footnote">
+          Truth boundary: BosonIT does not claim funded Scale-tier status unless later evidenced. Credit support is being pursued to accelerate
+          already-operating AI product and operator surfaces.
+        </p>
+      </article>
+
+      <aside class="hero-facts panel">
+        <span class="eyebrow">Company Facts</span>
+        <div class="fact-grid">
+          <div class="fact">
+            <strong>Secure collaboration planes</strong>
+            <span>Nextcloud, approval capture, control-room operations, records discipline</span>
+          </div>
+          <div class="fact">
+            <strong>Workflow orchestration</strong>
+            <span>Windmill, Vault, browser automation, and governed execution loops</span>
+          </div>
+          <div class="fact">
+            <strong>Public proof surfaces</strong>
+            <span>Control Plane, StreetPulse, Innovation Control, and service rails</span>
+          </div>
+          <div class="fact">
+            <strong>Use of credits</strong>
+            <span>Compute, orchestration, security, delivery, and AI infrastructure acceleration</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section-grid">
+      <article class="section panel">
+        <span class="eyebrow">Operating Proof</span>
+        <h2>Private habitat with public evidence.</h2>
+        <p>The private operating room runs in Nextcloud while the public mirror exposes current execution, approvals, and observability without exposing restricted internals.</p>
+        <ul>
+          <li>Approval Center with click-first governance</li>
+          <li>Control-room deck, tables, talk, and files plane</li>
+          <li>Browser-agent evidence mirrored into the operator cockpit</li>
+        </ul>
+      </article>
+
+      <article class="section panel">
+        <span class="eyebrow">Product Direction</span>
+        <h2>AI surfaces already taking shape.</h2>
+        <p>The company is packaging its own operator habitat into commercial and near-commercial product surfaces rather than asking reviewers to fund abstract exploration.</p>
+        <ul>
+          <li>OpportunityOS as the lead system for federal opportunity intelligence, evidence automation, and mission rooms</li>
+          <li>StreetPulse as the release-facing flagship surface</li>
+          <li>Innovation Control as governed seed scoring and backlog routing</li>
+          <li>Services rails exist as delivery wrappers around productized operator systems, not as the main story</li>
+        </ul>
+      </article>
+
+      <article class="section panel">
+        <span class="eyebrow">Narrative Discipline</span>
+        <h2>Ambition without inflated claims.</h2>
+        <p>Backlog concepts exist, but BosonIT explicitly filters them against dogfood fit, revenue wedges, and current capacity. Reviewers are seeing the truthfully strongest current story.</p>
+        <ul>
+          <li>GeoStrokes is treated as incubation evidence, not lead traction</li>
+          <li>Bootstrapped status is preserved as fact</li>
+          <li>Funding-sensitive tiers are not claimed without evidence</li>
+        </ul>
+      </article>
+
+      <article class="section panel">
+        <span class="eyebrow">Company Legitimacy</span>
+        <h2>Founder-led, reachable, and operating now.</h2>
+        <p>BosonIT is not hiding behind a vague brand shell. The company now has a formed Illinois entity, founder-controlled operating surfaces, and a direct review contact.</p>
+        <ul>
+          <li>Founder: Kenneth Jones</li>
+          <li>Entity: BosonIT LLC</li>
+          <li>Primary review contact: kenneth@bosonit.org</li>
+          <li>Near-term revenue path: OpportunityOS, StreetPulse, and operator-surface commercialization</li>
+        </ul>
+      </article>
+    </section>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Reviewer Media Pack</span>
+      <h2>Multimodal proof is now part of the BosonIT system story.</h2>
+      <p>OpportunityOS now carries a canonical creative pack for the lead lanes so reviewers can assess the same system through video, narrated audio, deck format, and technical writing instead of only static text.</p>
+      <div class="proof-links">
+        <a class="proof-link" href="/opportunity-os/">OpportunityOS media packs</a>
+        <a class="proof-link" href="/control-plane/">Creative pipeline status</a>
+        <a class="proof-link" href="/innovation-control/">Innovation intake</a>
+      </div>
+    </article>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Verify It Yourself</span>
+      <h2>Public surfaces a reviewer can inspect in minutes.</h2>
+      <p>These are the shortest paths to verify that BosonIT is already building a real AI operator environment with product-facing outputs.</p>
+      <div class="proof-links">
+        <a class="proof-link" href="/control-plane/">Control Plane Mirror</a>
+        <a class="proof-link" href="/opportunity-os/">OpportunityOS</a>
+        <a class="proof-link" href="/streetpulse/">StreetPulse</a>
+        <a class="proof-link" href="/innovation-control/">Innovation Control</a>
+        <a class="proof-link" href="/services/">Services</a>
+        <a class="proof-link" href="/">Home</a>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

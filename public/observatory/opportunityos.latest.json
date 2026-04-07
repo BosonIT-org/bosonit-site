@@ -1,0 +1,1627 @@
+{
+  "available": true,
+  "status": "ready",
+  "generated_at_utc": "2026-03-17T16:03:15.990Z",
+  "system_name": "OpportunityOS",
+  "intent": "Score federal, subcontracting, and regulated-team opportunities for BosonIT based on fit, novelty, revenue potential, and delivery readiness.",
+  "category": "ai-native opportunity and evidence operating system",
+  "intake": {
+    "source": "sam_api",
+    "live_status": "ready",
+    "live_blocker": null,
+    "live_message": "Fetched 100 normalized opportunities from the SAM public API.",
+    "using_seed_fallback": false,
+    "live_metrics": {
+      "request_count": 1,
+      "total_records_reported": 13773,
+      "item_count": 100
+    },
+    "requirements": {
+      "personal_api_key_required": true,
+      "source": "SAM.gov Contract Opportunities public API",
+      "current_window_days": 14,
+      "current_limit_per_request": 100,
+      "notes": [
+        "A personal SAM.gov API key is required.",
+        "Public/non-federal users may be rate-limited based on account role posture.",
+        "OpportunityOS keeps a seed fallback active until live SAM intake is available."
+      ]
+    }
+  },
+  "current_motion": {
+    "lead_system": "OpportunityOS",
+    "lead_story": "BosonIT is packaging federal opportunity intelligence, evidence automation, and secure mission rooms into one operator system that can be sold before full prime-contract eligibility arrives.",
+    "entry_offer": "revenue-leak-audit",
+    "near_term_revenue_paths": [
+      "opportunity qualification for small federal contractors",
+      "evidence and redaction automation for regulated teams",
+      "secure teaming and delivery rooms for contractor collaborations"
+    ],
+    "upsell_paths": [
+      "opportunityos-pilot",
+      "evidenceos-pilot",
+      "mission-rooms-deployment"
+    ]
+  },
+  "metrics": {
+    "candidate_count": 100,
+    "avg_score": 72,
+    "high_fit_count": 24,
+    "direct_path_count": 100,
+    "subcontracting_path_count": 66
+  },
+  "target_buyers": [
+    "small federal contractors",
+    "subcontractors and teaming partners",
+    "regulated smb operations teams",
+    "govtech and compliance-heavy software teams"
+  ],
+  "target_domains": [
+    "document-processing",
+    "semantic-search",
+    "redaction-and-pii-handling",
+    "records-and-evidence-management",
+    "workflow-automation",
+    "secure-collaboration",
+    "proposal-and-opportunity-intelligence"
+  ],
+  "signal_sources": [
+    "sam-contract-opportunities",
+    "agency-rfi-and-sources-sought",
+    "subcontracting-and-teaming-signals",
+    "partner-programs",
+    "regulated-team-workflow-pain"
+  ],
+  "preferred_notice_types": [
+    "sources sought",
+    "request for information",
+    "combined synopsis-solicitation",
+    "solicitation"
+  ],
+  "proof_surfaces": [
+    "https://bosonit.org/startup-proof/",
+    "https://bosonit.org/control-plane/",
+    "https://bosonit.org/streetpulse/"
+  ],
+  "credit_capacity_story": {
+    "google": {
+      "platforms": [
+        "Vertex AI",
+        "BigQuery",
+        "Cloud Run",
+        "Cloud Storage"
+      ],
+      "workloads": [
+        "requirement extraction from opportunities and attachments",
+        "semantic search over clauses, evidence, and prior responses",
+        "scored opportunity routing and agent orchestration",
+        "artifact storage for evidence and reviewer-ready proof"
+      ],
+      "why_it_scales": "OpportunityOS needs document ingestion, agent evaluation, retrieval, and scoring workloads that expand with each opportunity lane and evidence room."
+    },
+    "aws": {
+      "platforms": [
+        "Bedrock",
+        "Textract",
+        "S3",
+        "Step Functions"
+      ],
+      "workloads": [
+        "PDF and form extraction",
+        "transactional workflow fallback paths",
+        "document pipelines for evidence assembly",
+        "notification and transactional communication"
+      ],
+      "why_it_scales": "AWS supports redundant document-processing and workflow paths for contractor and regulated-team deployments."
+    },
+    "cloudflare": {
+      "platforms": [
+        "Workers",
+        "Queues",
+        "R2",
+        "Browser Rendering"
+      ],
+      "workloads": [
+        "edge intake for public opportunities",
+        "lightweight rendering and evidence previews",
+        "durable artifact storage for public proof and archives",
+        "fast operator interfaces and mobile-friendly event delivery"
+      ],
+      "why_it_scales": "Cloudflare can absorb public-facing opportunity ingestion, proof distribution, and edge-triggered workflow events without exposing the private operator room."
+    }
+  },
+  "creative_pipeline_status": {
+    "overall_status": "work_packet_ready",
+    "queued_bundle_count": 6,
+    "available_surfaces": {
+      "chrome_gemini_flow_veo": "guided_browser",
+      "chrome_gemini_nano_banana": "guided_browser",
+      "chrome_gemini_lyria": "guided_browser",
+      "atlas": "guided_browser",
+      "sora_2": "blocked_missing_openai_key",
+      "openai_speech": "blocked_missing_openai_key",
+      "local_voice_agent": "local_service",
+      "local_slides_skill": "local_skill",
+      "codex_local": "local_skill"
+    },
+    "blockers": [
+      "OPENAI_API_KEY is not present in the current runtime, so Sora and OpenAI speech stay in fallback mode."
+    ],
+    "best_primary_route": "Chrome/Gemini for Google multimodal surfaces, local voice for narration drafts, Sora/OpenAI as premium fallback once API access is bridged."
+  },
+  "featured_media": {
+    "lane_id": "opp-gsa-intelligence-001",
+    "lane_title": "Federal opportunity intelligence for small contractors and teaming partners",
+    "headline": "Reviewer media pack for Federal opportunity intelligence for small contractors and teaming partners",
+    "description": "One canonical video, audio brief, slide deck, and technical article generated from the lead OpportunityOS lane.",
+    "primary_cta_url": "/opportunity-os/",
+    "featured_assets": [
+      {
+        "type": "video",
+        "lane_id": "opp-gsa-intelligence-001",
+        "status": "work_packet_ready",
+        "primary_surface": "chrome_gemini_flow_veo",
+        "fallback_surface": "sora_2",
+        "title": "Federal opportunity intelligence for small contractors and teaming partners teaser",
+        "runtime_target": "60-90 seconds",
+        "audience": "reviewers and contractor buyers",
+        "prompt_brief": "Show the friction of federal opportunity intelligence for small contractors and teaming partners, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT can sell watchlist scoring and response prep before competing as a prime contractor."
+      },
+      {
+        "type": "audio",
+        "lane_id": "opp-gsa-intelligence-001",
+        "status": "work_packet_ready",
+        "primary_surface": "local_voice_agent",
+        "fallback_surface": "openai_speech",
+        "title": "Federal opportunity intelligence for small contractors and teaming partners narrated brief",
+        "runtime_target": "2-4 minutes",
+        "audience": "mobile reviewers and buyers",
+        "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for federal opportunity intelligence for small contractors and teaming partners. Include the proof angle and one concise call to action. Workload: LLM extraction, retrieval, scoring, evidence storage"
+      },
+      {
+        "type": "slides",
+        "lane_id": "opp-gsa-intelligence-001",
+        "status": "work_packet_ready",
+        "primary_surface": "local_slides_skill",
+        "fallback_surface": "manual_outline",
+        "title": "Federal opportunity intelligence for small contractors and teaming partners reviewer deck",
+        "runtime_target": "6-10 slides",
+        "audience": "startup-credit reviewers and teaming partners",
+        "prompt_brief": "Build a compact reviewer deck for federal opportunity intelligence for small contractors and teaming partners with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+      },
+      {
+        "type": "article",
+        "lane_id": "opp-gsa-intelligence-001",
+        "status": "work_packet_ready",
+        "primary_surface": "codex_local",
+        "fallback_surface": "claude_or_gemini_review",
+        "title": "Federal opportunity intelligence for small contractors and teaming partners technical brief",
+        "runtime_target": "900-1400 words",
+        "audience": "technical reviewers and prospective buyers",
+        "prompt_brief": "Write a technical brief explaining how BosonIT solves federal opportunity intelligence for small contractors and teaming partners with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+      }
+    ]
+  },
+  "creative_assets": [
+    {
+      "lane_id": "opp-gsa-intelligence-001",
+      "lane_title": "Federal opportunity intelligence for small contractors and teaming partners",
+      "priority_rank": 1,
+      "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+      "audience": "small federal contractors",
+      "publication_targets": [
+        "opportunity_os_public_page",
+        "startup_proof_page",
+        "control_plane",
+        "nextcloud_control_room",
+        "linkedin",
+        "x",
+        "email_brief"
+      ],
+      "asset_types": [
+        "video",
+        "audio",
+        "slides",
+        "article",
+        "image",
+        "music"
+      ],
+      "featured_assets": [
+        {
+          "type": "video",
+          "lane_id": "opp-gsa-intelligence-001",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_flow_veo",
+          "fallback_surface": "sora_2",
+          "title": "Federal opportunity intelligence for small contractors and teaming partners teaser",
+          "runtime_target": "60-90 seconds",
+          "audience": "reviewers and contractor buyers",
+          "prompt_brief": "Show the friction of federal opportunity intelligence for small contractors and teaming partners, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT can sell watchlist scoring and response prep before competing as a prime contractor."
+        },
+        {
+          "type": "audio",
+          "lane_id": "opp-gsa-intelligence-001",
+          "status": "work_packet_ready",
+          "primary_surface": "local_voice_agent",
+          "fallback_surface": "openai_speech",
+          "title": "Federal opportunity intelligence for small contractors and teaming partners narrated brief",
+          "runtime_target": "2-4 minutes",
+          "audience": "mobile reviewers and buyers",
+          "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for federal opportunity intelligence for small contractors and teaming partners. Include the proof angle and one concise call to action. Workload: LLM extraction, retrieval, scoring, evidence storage"
+        },
+        {
+          "type": "slides",
+          "lane_id": "opp-gsa-intelligence-001",
+          "status": "work_packet_ready",
+          "primary_surface": "local_slides_skill",
+          "fallback_surface": "manual_outline",
+          "title": "Federal opportunity intelligence for small contractors and teaming partners reviewer deck",
+          "runtime_target": "6-10 slides",
+          "audience": "startup-credit reviewers and teaming partners",
+          "prompt_brief": "Build a compact reviewer deck for federal opportunity intelligence for small contractors and teaming partners with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+        },
+        {
+          "type": "article",
+          "lane_id": "opp-gsa-intelligence-001",
+          "status": "work_packet_ready",
+          "primary_surface": "codex_local",
+          "fallback_surface": "claude_or_gemini_review",
+          "title": "Federal opportunity intelligence for small contractors and teaming partners technical brief",
+          "runtime_target": "900-1400 words",
+          "audience": "technical reviewers and prospective buyers",
+          "prompt_brief": "Write a technical brief explaining how BosonIT solves federal opportunity intelligence for small contractors and teaming partners with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+        }
+      ],
+      "supporting_assets": [
+        {
+          "type": "image",
+          "lane_id": "opp-gsa-intelligence-001",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_nano_banana",
+          "fallback_surface": "openai_imagegen",
+          "title": "Federal opportunity intelligence for small contractors and teaming partners key art",
+          "runtime_target": "hero still",
+          "audience": "landing pages and social cards",
+          "prompt_brief": "Create reviewer-grade key art for federal opportunity intelligence for small contractors and teaming partners with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+        },
+        {
+          "type": "music",
+          "lane_id": "opp-gsa-intelligence-001",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_lyria",
+          "fallback_surface": "manual_music_direction",
+          "title": "Federal opportunity intelligence for small contractors and teaming partners music bed",
+          "runtime_target": "20-40 seconds",
+          "audience": "video support",
+          "prompt_brief": "Generate a restrained, modern, intelligent music bed for federal opportunity intelligence for small contractors and teaming partners. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+        }
+      ],
+      "route_summary": {
+        "video": "chrome_gemini_flow_veo",
+        "image": "chrome_gemini_nano_banana",
+        "music": "chrome_gemini_lyria",
+        "audio": "local_voice_agent",
+        "slides": "local_slides_skill",
+        "article": "codex_local"
+      }
+    },
+    {
+      "lane_id": "opp-nara-evidence-002",
+      "lane_title": "Records and FOIA evidence automation for archives and records-heavy teams",
+      "priority_rank": 2,
+      "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+      "audience": "records and compliance teams",
+      "publication_targets": [
+        "opportunity_os_public_page",
+        "startup_proof_page",
+        "control_plane",
+        "nextcloud_control_room",
+        "linkedin",
+        "x",
+        "email_brief"
+      ],
+      "asset_types": [
+        "video",
+        "audio",
+        "slides",
+        "article",
+        "image",
+        "music"
+      ],
+      "featured_assets": [
+        {
+          "type": "video",
+          "lane_id": "opp-nara-evidence-002",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_flow_veo",
+          "fallback_surface": "sora_2",
+          "title": "Records and FOIA evidence automation for archives and records-heavy teams teaser",
+          "runtime_target": "60-90 seconds",
+          "audience": "reviewers and contractor buyers",
+          "prompt_brief": "Show the friction of records and foia evidence automation for archives and records-heavy teams, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: This directly matches BosonIT strengths in evidence capture, document handling, and secure coordination."
+        },
+        {
+          "type": "audio",
+          "lane_id": "opp-nara-evidence-002",
+          "status": "work_packet_ready",
+          "primary_surface": "local_voice_agent",
+          "fallback_surface": "openai_speech",
+          "title": "Records and FOIA evidence automation for archives and records-heavy teams narrated brief",
+          "runtime_target": "2-4 minutes",
+          "audience": "mobile reviewers and buyers",
+          "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for records and foia evidence automation for archives and records-heavy teams. Include the proof angle and one concise call to action. Workload: document ingestion, semantic retrieval, artifact generation"
+        },
+        {
+          "type": "slides",
+          "lane_id": "opp-nara-evidence-002",
+          "status": "work_packet_ready",
+          "primary_surface": "local_slides_skill",
+          "fallback_surface": "manual_outline",
+          "title": "Records and FOIA evidence automation for archives and records-heavy teams reviewer deck",
+          "runtime_target": "6-10 slides",
+          "audience": "startup-credit reviewers and teaming partners",
+          "prompt_brief": "Build a compact reviewer deck for records and foia evidence automation for archives and records-heavy teams with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+        },
+        {
+          "type": "article",
+          "lane_id": "opp-nara-evidence-002",
+          "status": "work_packet_ready",
+          "primary_surface": "codex_local",
+          "fallback_surface": "claude_or_gemini_review",
+          "title": "Records and FOIA evidence automation for archives and records-heavy teams technical brief",
+          "runtime_target": "900-1400 words",
+          "audience": "technical reviewers and prospective buyers",
+          "prompt_brief": "Write a technical brief explaining how BosonIT solves records and foia evidence automation for archives and records-heavy teams with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+        }
+      ],
+      "supporting_assets": [
+        {
+          "type": "image",
+          "lane_id": "opp-nara-evidence-002",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_nano_banana",
+          "fallback_surface": "openai_imagegen",
+          "title": "Records and FOIA evidence automation for archives and records-heavy teams key art",
+          "runtime_target": "hero still",
+          "audience": "landing pages and social cards",
+          "prompt_brief": "Create reviewer-grade key art for records and foia evidence automation for archives and records-heavy teams with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+        },
+        {
+          "type": "music",
+          "lane_id": "opp-nara-evidence-002",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_lyria",
+          "fallback_surface": "manual_music_direction",
+          "title": "Records and FOIA evidence automation for archives and records-heavy teams music bed",
+          "runtime_target": "20-40 seconds",
+          "audience": "video support",
+          "prompt_brief": "Generate a restrained, modern, intelligent music bed for records and foia evidence automation for archives and records-heavy teams. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+        }
+      ],
+      "route_summary": {
+        "video": "chrome_gemini_flow_veo",
+        "image": "chrome_gemini_nano_banana",
+        "music": "chrome_gemini_lyria",
+        "audio": "local_voice_agent",
+        "slides": "local_slides_skill",
+        "article": "codex_local"
+      }
+    },
+    {
+      "lane_id": "opp-dhs-redaction-003",
+      "lane_title": "PII redaction and evidence rooms for regulated contractor workflows",
+      "priority_rank": 3,
+      "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+      "audience": "regulated smb operations teams",
+      "publication_targets": [
+        "opportunity_os_public_page",
+        "startup_proof_page",
+        "control_plane",
+        "nextcloud_control_room",
+        "linkedin",
+        "x",
+        "email_brief"
+      ],
+      "asset_types": [
+        "video",
+        "audio",
+        "slides",
+        "article",
+        "image",
+        "music"
+      ],
+      "featured_assets": [
+        {
+          "type": "video",
+          "lane_id": "opp-dhs-redaction-003",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_flow_veo",
+          "fallback_surface": "sora_2",
+          "title": "PII redaction and evidence rooms for regulated contractor workflows teaser",
+          "runtime_target": "60-90 seconds",
+          "audience": "reviewers and contractor buyers",
+          "prompt_brief": "Show the friction of pii redaction and evidence rooms for regulated contractor workflows, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT already has approval capture, private rooms, and records discipline that map cleanly to this pain."
+        },
+        {
+          "type": "audio",
+          "lane_id": "opp-dhs-redaction-003",
+          "status": "work_packet_ready",
+          "primary_surface": "local_voice_agent",
+          "fallback_surface": "openai_speech",
+          "title": "PII redaction and evidence rooms for regulated contractor workflows narrated brief",
+          "runtime_target": "2-4 minutes",
+          "audience": "mobile reviewers and buyers",
+          "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for pii redaction and evidence rooms for regulated contractor workflows. Include the proof angle and one concise call to action. Workload: No workload signal recorded."
+        },
+        {
+          "type": "slides",
+          "lane_id": "opp-dhs-redaction-003",
+          "status": "work_packet_ready",
+          "primary_surface": "local_slides_skill",
+          "fallback_surface": "manual_outline",
+          "title": "PII redaction and evidence rooms for regulated contractor workflows reviewer deck",
+          "runtime_target": "6-10 slides",
+          "audience": "startup-credit reviewers and teaming partners",
+          "prompt_brief": "Build a compact reviewer deck for pii redaction and evidence rooms for regulated contractor workflows with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+        },
+        {
+          "type": "article",
+          "lane_id": "opp-dhs-redaction-003",
+          "status": "work_packet_ready",
+          "primary_surface": "codex_local",
+          "fallback_surface": "claude_or_gemini_review",
+          "title": "PII redaction and evidence rooms for regulated contractor workflows technical brief",
+          "runtime_target": "900-1400 words",
+          "audience": "technical reviewers and prospective buyers",
+          "prompt_brief": "Write a technical brief explaining how BosonIT solves pii redaction and evidence rooms for regulated contractor workflows with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+        }
+      ],
+      "supporting_assets": [
+        {
+          "type": "image",
+          "lane_id": "opp-dhs-redaction-003",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_nano_banana",
+          "fallback_surface": "openai_imagegen",
+          "title": "PII redaction and evidence rooms for regulated contractor workflows key art",
+          "runtime_target": "hero still",
+          "audience": "landing pages and social cards",
+          "prompt_brief": "Create reviewer-grade key art for pii redaction and evidence rooms for regulated contractor workflows with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+        },
+        {
+          "type": "music",
+          "lane_id": "opp-dhs-redaction-003",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_lyria",
+          "fallback_surface": "manual_music_direction",
+          "title": "PII redaction and evidence rooms for regulated contractor workflows music bed",
+          "runtime_target": "20-40 seconds",
+          "audience": "video support",
+          "prompt_brief": "Generate a restrained, modern, intelligent music bed for pii redaction and evidence rooms for regulated contractor workflows. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+        }
+      ],
+      "route_summary": {
+        "video": "chrome_gemini_flow_veo",
+        "image": "chrome_gemini_nano_banana",
+        "music": "chrome_gemini_lyria",
+        "audio": "local_voice_agent",
+        "slides": "local_slides_skill",
+        "article": "codex_local"
+      }
+    },
+    {
+      "lane_id": "opp-treasury-mission-004",
+      "lane_title": "Mission rooms for contractor teaming, approvals, and controlled delivery",
+      "priority_rank": 4,
+      "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+      "audience": "subcontractors and teaming partners",
+      "publication_targets": [
+        "opportunity_os_public_page",
+        "startup_proof_page",
+        "control_plane",
+        "nextcloud_control_room",
+        "linkedin",
+        "x",
+        "email_brief"
+      ],
+      "asset_types": [
+        "video",
+        "audio",
+        "slides",
+        "article",
+        "image",
+        "music"
+      ],
+      "featured_assets": [
+        {
+          "type": "video",
+          "lane_id": "opp-treasury-mission-004",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_flow_veo",
+          "fallback_surface": "sora_2",
+          "title": "Mission rooms for contractor teaming, approvals, and controlled delivery teaser",
+          "runtime_target": "60-90 seconds",
+          "audience": "reviewers and contractor buyers",
+          "prompt_brief": "Show the friction of mission rooms for contractor teaming, approvals, and controlled delivery, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: This is already partially dogfooded through Nextcloud control-room operations and object-storage-backed archives."
+        },
+        {
+          "type": "audio",
+          "lane_id": "opp-treasury-mission-004",
+          "status": "work_packet_ready",
+          "primary_surface": "local_voice_agent",
+          "fallback_surface": "openai_speech",
+          "title": "Mission rooms for contractor teaming, approvals, and controlled delivery narrated brief",
+          "runtime_target": "2-4 minutes",
+          "audience": "mobile reviewers and buyers",
+          "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for mission rooms for contractor teaming, approvals, and controlled delivery. Include the proof angle and one concise call to action. Workload: file storage, synchronization, artifact retention, edge access control"
+        },
+        {
+          "type": "slides",
+          "lane_id": "opp-treasury-mission-004",
+          "status": "work_packet_ready",
+          "primary_surface": "local_slides_skill",
+          "fallback_surface": "manual_outline",
+          "title": "Mission rooms for contractor teaming, approvals, and controlled delivery reviewer deck",
+          "runtime_target": "6-10 slides",
+          "audience": "startup-credit reviewers and teaming partners",
+          "prompt_brief": "Build a compact reviewer deck for mission rooms for contractor teaming, approvals, and controlled delivery with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+        },
+        {
+          "type": "article",
+          "lane_id": "opp-treasury-mission-004",
+          "status": "work_packet_ready",
+          "primary_surface": "codex_local",
+          "fallback_surface": "claude_or_gemini_review",
+          "title": "Mission rooms for contractor teaming, approvals, and controlled delivery technical brief",
+          "runtime_target": "900-1400 words",
+          "audience": "technical reviewers and prospective buyers",
+          "prompt_brief": "Write a technical brief explaining how BosonIT solves mission rooms for contractor teaming, approvals, and controlled delivery with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+        }
+      ],
+      "supporting_assets": [
+        {
+          "type": "image",
+          "lane_id": "opp-treasury-mission-004",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_nano_banana",
+          "fallback_surface": "openai_imagegen",
+          "title": "Mission rooms for contractor teaming, approvals, and controlled delivery key art",
+          "runtime_target": "hero still",
+          "audience": "landing pages and social cards",
+          "prompt_brief": "Create reviewer-grade key art for mission rooms for contractor teaming, approvals, and controlled delivery with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+        },
+        {
+          "type": "music",
+          "lane_id": "opp-treasury-mission-004",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_lyria",
+          "fallback_surface": "manual_music_direction",
+          "title": "Mission rooms for contractor teaming, approvals, and controlled delivery music bed",
+          "runtime_target": "20-40 seconds",
+          "audience": "video support",
+          "prompt_brief": "Generate a restrained, modern, intelligent music bed for mission rooms for contractor teaming, approvals, and controlled delivery. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+        }
+      ],
+      "route_summary": {
+        "video": "chrome_gemini_flow_veo",
+        "image": "chrome_gemini_nano_banana",
+        "music": "chrome_gemini_lyria",
+        "audio": "local_voice_agent",
+        "slides": "local_slides_skill",
+        "article": "codex_local"
+      }
+    },
+    {
+      "lane_id": "opp-va-contracting-005",
+      "lane_title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors",
+      "priority_rank": 5,
+      "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+      "audience": "govtech and compliance-heavy software teams",
+      "publication_targets": [
+        "opportunity_os_public_page",
+        "startup_proof_page",
+        "control_plane",
+        "nextcloud_control_room",
+        "linkedin",
+        "x",
+        "email_brief"
+      ],
+      "asset_types": [
+        "video",
+        "audio",
+        "slides",
+        "article",
+        "image",
+        "music"
+      ],
+      "featured_assets": [
+        {
+          "type": "video",
+          "lane_id": "opp-va-contracting-005",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_flow_veo",
+          "fallback_surface": "sora_2",
+          "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors teaser",
+          "runtime_target": "60-90 seconds",
+          "audience": "reviewers and contractor buyers",
+          "prompt_brief": "Show the friction of contract requirement extraction and response-pack generation for health and veteran-focused vendors, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: This turns BosonIT's operator stack into a productized pre-sales and pre-delivery accelerator."
+        },
+        {
+          "type": "audio",
+          "lane_id": "opp-va-contracting-005",
+          "status": "work_packet_ready",
+          "primary_surface": "local_voice_agent",
+          "fallback_surface": "openai_speech",
+          "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors narrated brief",
+          "runtime_target": "2-4 minutes",
+          "audience": "mobile reviewers and buyers",
+          "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for contract requirement extraction and response-pack generation for health and veteran-focused vendors. Include the proof angle and one concise call to action. Workload: retrieval, requirement extraction, scoring, evidence packet generation"
+        },
+        {
+          "type": "slides",
+          "lane_id": "opp-va-contracting-005",
+          "status": "work_packet_ready",
+          "primary_surface": "local_slides_skill",
+          "fallback_surface": "manual_outline",
+          "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors reviewer deck",
+          "runtime_target": "6-10 slides",
+          "audience": "startup-credit reviewers and teaming partners",
+          "prompt_brief": "Build a compact reviewer deck for contract requirement extraction and response-pack generation for health and veteran-focused vendors with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+        },
+        {
+          "type": "article",
+          "lane_id": "opp-va-contracting-005",
+          "status": "work_packet_ready",
+          "primary_surface": "codex_local",
+          "fallback_surface": "claude_or_gemini_review",
+          "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors technical brief",
+          "runtime_target": "900-1400 words",
+          "audience": "technical reviewers and prospective buyers",
+          "prompt_brief": "Write a technical brief explaining how BosonIT solves contract requirement extraction and response-pack generation for health and veteran-focused vendors with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+        }
+      ],
+      "supporting_assets": [
+        {
+          "type": "image",
+          "lane_id": "opp-va-contracting-005",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_nano_banana",
+          "fallback_surface": "openai_imagegen",
+          "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors key art",
+          "runtime_target": "hero still",
+          "audience": "landing pages and social cards",
+          "prompt_brief": "Create reviewer-grade key art for contract requirement extraction and response-pack generation for health and veteran-focused vendors with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+        },
+        {
+          "type": "music",
+          "lane_id": "opp-va-contracting-005",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_lyria",
+          "fallback_surface": "manual_music_direction",
+          "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors music bed",
+          "runtime_target": "20-40 seconds",
+          "audience": "video support",
+          "prompt_brief": "Generate a restrained, modern, intelligent music bed for contract requirement extraction and response-pack generation for health and veteran-focused vendors. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+        }
+      ],
+      "route_summary": {
+        "video": "chrome_gemini_flow_veo",
+        "image": "chrome_gemini_nano_banana",
+        "music": "chrome_gemini_lyria",
+        "audio": "local_voice_agent",
+        "slides": "local_slides_skill",
+        "article": "codex_local"
+      }
+    },
+    {
+      "lane_id": "opp-gsa-sam-006",
+      "lane_title": "Entity, evidence, and compliance readiness automation for new federal vendors",
+      "priority_rank": 6,
+      "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+      "audience": "new federal vendors and subcontractors",
+      "publication_targets": [
+        "opportunity_os_public_page",
+        "startup_proof_page",
+        "control_plane",
+        "nextcloud_control_room",
+        "linkedin",
+        "x",
+        "email_brief"
+      ],
+      "asset_types": [
+        "video",
+        "audio",
+        "slides",
+        "article",
+        "image",
+        "music"
+      ],
+      "featured_assets": [
+        {
+          "type": "video",
+          "lane_id": "opp-gsa-sam-006",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_flow_veo",
+          "fallback_surface": "sora_2",
+          "title": "Entity, evidence, and compliance readiness automation for new federal vendors teaser",
+          "runtime_target": "60-90 seconds",
+          "audience": "reviewers and contractor buyers",
+          "prompt_brief": "Show the friction of entity, evidence, and compliance readiness automation for new federal vendors, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT is living this path right now and can turn it into a credible, high-trust operator product."
+        },
+        {
+          "type": "audio",
+          "lane_id": "opp-gsa-sam-006",
+          "status": "work_packet_ready",
+          "primary_surface": "local_voice_agent",
+          "fallback_surface": "openai_speech",
+          "title": "Entity, evidence, and compliance readiness automation for new federal vendors narrated brief",
+          "runtime_target": "2-4 minutes",
+          "audience": "mobile reviewers and buyers",
+          "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for entity, evidence, and compliance readiness automation for new federal vendors. Include the proof angle and one concise call to action. Workload: artifact storage, workflow automation, review surfaces"
+        },
+        {
+          "type": "slides",
+          "lane_id": "opp-gsa-sam-006",
+          "status": "work_packet_ready",
+          "primary_surface": "local_slides_skill",
+          "fallback_surface": "manual_outline",
+          "title": "Entity, evidence, and compliance readiness automation for new federal vendors reviewer deck",
+          "runtime_target": "6-10 slides",
+          "audience": "startup-credit reviewers and teaming partners",
+          "prompt_brief": "Build a compact reviewer deck for entity, evidence, and compliance readiness automation for new federal vendors with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+        },
+        {
+          "type": "article",
+          "lane_id": "opp-gsa-sam-006",
+          "status": "work_packet_ready",
+          "primary_surface": "codex_local",
+          "fallback_surface": "claude_or_gemini_review",
+          "title": "Entity, evidence, and compliance readiness automation for new federal vendors technical brief",
+          "runtime_target": "900-1400 words",
+          "audience": "technical reviewers and prospective buyers",
+          "prompt_brief": "Write a technical brief explaining how BosonIT solves entity, evidence, and compliance readiness automation for new federal vendors with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+        }
+      ],
+      "supporting_assets": [
+        {
+          "type": "image",
+          "lane_id": "opp-gsa-sam-006",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_nano_banana",
+          "fallback_surface": "openai_imagegen",
+          "title": "Entity, evidence, and compliance readiness automation for new federal vendors key art",
+          "runtime_target": "hero still",
+          "audience": "landing pages and social cards",
+          "prompt_brief": "Create reviewer-grade key art for entity, evidence, and compliance readiness automation for new federal vendors with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+        },
+        {
+          "type": "music",
+          "lane_id": "opp-gsa-sam-006",
+          "status": "work_packet_ready",
+          "primary_surface": "chrome_gemini_lyria",
+          "fallback_surface": "manual_music_direction",
+          "title": "Entity, evidence, and compliance readiness automation for new federal vendors music bed",
+          "runtime_target": "20-40 seconds",
+          "audience": "video support",
+          "prompt_brief": "Generate a restrained, modern, intelligent music bed for entity, evidence, and compliance readiness automation for new federal vendors. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+        }
+      ],
+      "route_summary": {
+        "video": "chrome_gemini_flow_veo",
+        "image": "chrome_gemini_nano_banana",
+        "music": "chrome_gemini_lyria",
+        "audio": "local_voice_agent",
+        "slides": "local_slides_skill",
+        "article": "codex_local"
+      }
+    }
+  ],
+  "top_candidates": [
+    {
+      "priority_rank": 1,
+      "id": "f522478bf8d041b2b1ab678dd1328633",
+      "title": "Naval Air Warfare Center Aircraft Division Lakehurst Mobile Shredding Services",
+      "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVAIR.NAVAIR NAWC AD.NAVAIR WARFARE CTR AIRCRAFT DIV",
+      "buyer_segment": "small federal contractors",
+      "notice_type": "Combined Synopsis/Solicitation",
+      "total_score": 90,
+      "fit_label": "high",
+      "description": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f522478bf8d041b2b1ab678dd1328633",
+      "source_signal": "sam-contract-opportunities",
+      "why_now": "Combined Synopsis/Solicitation with a tracked federal deadline at 2026-03-24T16:00:00.000Z.",
+      "cloud_workload": "LLM extraction, routing, and evidence storage",
+      "proof_value": "Good BosonIT proof value if converted into a scored pilot brief.",
+      "delivery_path": "direct",
+      "subcontracting_path": true,
+      "partner_attach": true,
+      "margin_profile": "high",
+      "keywords": [
+        "ai",
+        "solicitation"
+      ],
+      "score_breakdown": {
+        "domain_fit": 20,
+        "buyer_fit": 15,
+        "urgency_signal": 15,
+        "delivery_readiness": 15,
+        "margin_potential": 15,
+        "novelty_and_proof_value": 10
+      },
+      "creative_bundle": {
+        "lane_id": "opp-gsa-intelligence-001",
+        "lane_title": "Federal opportunity intelligence for small contractors and teaming partners",
+        "priority_rank": 1,
+        "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+        "audience": "small federal contractors",
+        "publication_targets": [
+          "opportunity_os_public_page",
+          "startup_proof_page",
+          "control_plane",
+          "nextcloud_control_room",
+          "linkedin",
+          "x",
+          "email_brief"
+        ],
+        "asset_types": [
+          "video",
+          "audio",
+          "slides",
+          "article",
+          "image",
+          "music"
+        ],
+        "featured_assets": [
+          {
+            "type": "video",
+            "lane_id": "opp-gsa-intelligence-001",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_flow_veo",
+            "fallback_surface": "sora_2",
+            "title": "Federal opportunity intelligence for small contractors and teaming partners teaser",
+            "runtime_target": "60-90 seconds",
+            "audience": "reviewers and contractor buyers",
+            "prompt_brief": "Show the friction of federal opportunity intelligence for small contractors and teaming partners, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT can sell watchlist scoring and response prep before competing as a prime contractor."
+          },
+          {
+            "type": "audio",
+            "lane_id": "opp-gsa-intelligence-001",
+            "status": "work_packet_ready",
+            "primary_surface": "local_voice_agent",
+            "fallback_surface": "openai_speech",
+            "title": "Federal opportunity intelligence for small contractors and teaming partners narrated brief",
+            "runtime_target": "2-4 minutes",
+            "audience": "mobile reviewers and buyers",
+            "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for federal opportunity intelligence for small contractors and teaming partners. Include the proof angle and one concise call to action. Workload: LLM extraction, retrieval, scoring, evidence storage"
+          },
+          {
+            "type": "slides",
+            "lane_id": "opp-gsa-intelligence-001",
+            "status": "work_packet_ready",
+            "primary_surface": "local_slides_skill",
+            "fallback_surface": "manual_outline",
+            "title": "Federal opportunity intelligence for small contractors and teaming partners reviewer deck",
+            "runtime_target": "6-10 slides",
+            "audience": "startup-credit reviewers and teaming partners",
+            "prompt_brief": "Build a compact reviewer deck for federal opportunity intelligence for small contractors and teaming partners with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+          },
+          {
+            "type": "article",
+            "lane_id": "opp-gsa-intelligence-001",
+            "status": "work_packet_ready",
+            "primary_surface": "codex_local",
+            "fallback_surface": "claude_or_gemini_review",
+            "title": "Federal opportunity intelligence for small contractors and teaming partners technical brief",
+            "runtime_target": "900-1400 words",
+            "audience": "technical reviewers and prospective buyers",
+            "prompt_brief": "Write a technical brief explaining how BosonIT solves federal opportunity intelligence for small contractors and teaming partners with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+          }
+        ],
+        "supporting_assets": [
+          {
+            "type": "image",
+            "lane_id": "opp-gsa-intelligence-001",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_nano_banana",
+            "fallback_surface": "openai_imagegen",
+            "title": "Federal opportunity intelligence for small contractors and teaming partners key art",
+            "runtime_target": "hero still",
+            "audience": "landing pages and social cards",
+            "prompt_brief": "Create reviewer-grade key art for federal opportunity intelligence for small contractors and teaming partners with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+          },
+          {
+            "type": "music",
+            "lane_id": "opp-gsa-intelligence-001",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_lyria",
+            "fallback_surface": "manual_music_direction",
+            "title": "Federal opportunity intelligence for small contractors and teaming partners music bed",
+            "runtime_target": "20-40 seconds",
+            "audience": "video support",
+            "prompt_brief": "Generate a restrained, modern, intelligent music bed for federal opportunity intelligence for small contractors and teaming partners. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+          }
+        ],
+        "route_summary": {
+          "video": "chrome_gemini_flow_veo",
+          "image": "chrome_gemini_nano_banana",
+          "music": "chrome_gemini_lyria",
+          "audio": "local_voice_agent",
+          "slides": "local_slides_skill",
+          "article": "codex_local"
+        }
+      }
+    },
+    {
+      "priority_rank": 2,
+      "id": "fa6e1dc144f04886bcf14cd430edbeb8",
+      "title": "Steel Castings Horse Box, Quoin Block, and Quoin Stay",
+      "agency": "DEPT OF DEFENSE.DEPT OF THE ARMY.US ARMY CORPS OF ENGINEERS.ENGINEER DIVISION MISSISSIPPI VALLEY.ENDIST ROCK ISLAND.W07V ENDIST ROCK ISLAND",
+      "buyer_segment": "small federal contractors",
+      "notice_type": "Presolicitation",
+      "total_score": 83,
+      "fit_label": "high",
+      "description": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=fa6e1dc144f04886bcf14cd430edbeb8",
+      "source_signal": "sam-contract-opportunities",
+      "why_now": "Presolicitation with a tracked federal deadline at 2026-03-25T19:00:00.000Z.",
+      "cloud_workload": "LLM extraction, routing, and evidence storage",
+      "proof_value": "Good BosonIT proof value if converted into a scored pilot brief.",
+      "delivery_path": "direct",
+      "subcontracting_path": true,
+      "partner_attach": true,
+      "margin_profile": "medium",
+      "keywords": [
+        "solicitation"
+      ],
+      "score_breakdown": {
+        "domain_fit": 20,
+        "buyer_fit": 15,
+        "urgency_signal": 15,
+        "delivery_readiness": 15,
+        "margin_potential": 8,
+        "novelty_and_proof_value": 10
+      },
+      "creative_bundle": {
+        "lane_id": "opp-nara-evidence-002",
+        "lane_title": "Records and FOIA evidence automation for archives and records-heavy teams",
+        "priority_rank": 2,
+        "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+        "audience": "records and compliance teams",
+        "publication_targets": [
+          "opportunity_os_public_page",
+          "startup_proof_page",
+          "control_plane",
+          "nextcloud_control_room",
+          "linkedin",
+          "x",
+          "email_brief"
+        ],
+        "asset_types": [
+          "video",
+          "audio",
+          "slides",
+          "article",
+          "image",
+          "music"
+        ],
+        "featured_assets": [
+          {
+            "type": "video",
+            "lane_id": "opp-nara-evidence-002",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_flow_veo",
+            "fallback_surface": "sora_2",
+            "title": "Records and FOIA evidence automation for archives and records-heavy teams teaser",
+            "runtime_target": "60-90 seconds",
+            "audience": "reviewers and contractor buyers",
+            "prompt_brief": "Show the friction of records and foia evidence automation for archives and records-heavy teams, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: This directly matches BosonIT strengths in evidence capture, document handling, and secure coordination."
+          },
+          {
+            "type": "audio",
+            "lane_id": "opp-nara-evidence-002",
+            "status": "work_packet_ready",
+            "primary_surface": "local_voice_agent",
+            "fallback_surface": "openai_speech",
+            "title": "Records and FOIA evidence automation for archives and records-heavy teams narrated brief",
+            "runtime_target": "2-4 minutes",
+            "audience": "mobile reviewers and buyers",
+            "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for records and foia evidence automation for archives and records-heavy teams. Include the proof angle and one concise call to action. Workload: document ingestion, semantic retrieval, artifact generation"
+          },
+          {
+            "type": "slides",
+            "lane_id": "opp-nara-evidence-002",
+            "status": "work_packet_ready",
+            "primary_surface": "local_slides_skill",
+            "fallback_surface": "manual_outline",
+            "title": "Records and FOIA evidence automation for archives and records-heavy teams reviewer deck",
+            "runtime_target": "6-10 slides",
+            "audience": "startup-credit reviewers and teaming partners",
+            "prompt_brief": "Build a compact reviewer deck for records and foia evidence automation for archives and records-heavy teams with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+          },
+          {
+            "type": "article",
+            "lane_id": "opp-nara-evidence-002",
+            "status": "work_packet_ready",
+            "primary_surface": "codex_local",
+            "fallback_surface": "claude_or_gemini_review",
+            "title": "Records and FOIA evidence automation for archives and records-heavy teams technical brief",
+            "runtime_target": "900-1400 words",
+            "audience": "technical reviewers and prospective buyers",
+            "prompt_brief": "Write a technical brief explaining how BosonIT solves records and foia evidence automation for archives and records-heavy teams with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+          }
+        ],
+        "supporting_assets": [
+          {
+            "type": "image",
+            "lane_id": "opp-nara-evidence-002",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_nano_banana",
+            "fallback_surface": "openai_imagegen",
+            "title": "Records and FOIA evidence automation for archives and records-heavy teams key art",
+            "runtime_target": "hero still",
+            "audience": "landing pages and social cards",
+            "prompt_brief": "Create reviewer-grade key art for records and foia evidence automation for archives and records-heavy teams with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+          },
+          {
+            "type": "music",
+            "lane_id": "opp-nara-evidence-002",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_lyria",
+            "fallback_surface": "manual_music_direction",
+            "title": "Records and FOIA evidence automation for archives and records-heavy teams music bed",
+            "runtime_target": "20-40 seconds",
+            "audience": "video support",
+            "prompt_brief": "Generate a restrained, modern, intelligent music bed for records and foia evidence automation for archives and records-heavy teams. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+          }
+        ],
+        "route_summary": {
+          "video": "chrome_gemini_flow_veo",
+          "image": "chrome_gemini_nano_banana",
+          "music": "chrome_gemini_lyria",
+          "audio": "local_voice_agent",
+          "slides": "local_slides_skill",
+          "article": "codex_local"
+        }
+      }
+    },
+    {
+      "priority_rank": 3,
+      "id": "db951f28be934f2380f97fef7091efc0",
+      "title": "NNSY - LS/TR DISPOSAL BOX",
+      "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSEA.NAVSEA SHIPYARD.NORFOLK NAVAL SHIPYARD GF",
+      "buyer_segment": "small federal contractors",
+      "notice_type": "Solicitation",
+      "total_score": 83,
+      "fit_label": "high",
+      "description": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=db951f28be934f2380f97fef7091efc0",
+      "source_signal": "sam-contract-opportunities",
+      "why_now": "Solicitation with a tracked federal deadline at 2026-03-26T14:00:00.000Z.",
+      "cloud_workload": "LLM extraction, routing, and evidence storage",
+      "proof_value": "Good BosonIT proof value if converted into a scored pilot brief.",
+      "delivery_path": "direct",
+      "subcontracting_path": true,
+      "partner_attach": true,
+      "margin_profile": "medium",
+      "keywords": [
+        "solicitation"
+      ],
+      "score_breakdown": {
+        "domain_fit": 20,
+        "buyer_fit": 15,
+        "urgency_signal": 15,
+        "delivery_readiness": 15,
+        "margin_potential": 8,
+        "novelty_and_proof_value": 10
+      },
+      "creative_bundle": {
+        "lane_id": "opp-dhs-redaction-003",
+        "lane_title": "PII redaction and evidence rooms for regulated contractor workflows",
+        "priority_rank": 3,
+        "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+        "audience": "regulated smb operations teams",
+        "publication_targets": [
+          "opportunity_os_public_page",
+          "startup_proof_page",
+          "control_plane",
+          "nextcloud_control_room",
+          "linkedin",
+          "x",
+          "email_brief"
+        ],
+        "asset_types": [
+          "video",
+          "audio",
+          "slides",
+          "article",
+          "image",
+          "music"
+        ],
+        "featured_assets": [
+          {
+            "type": "video",
+            "lane_id": "opp-dhs-redaction-003",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_flow_veo",
+            "fallback_surface": "sora_2",
+            "title": "PII redaction and evidence rooms for regulated contractor workflows teaser",
+            "runtime_target": "60-90 seconds",
+            "audience": "reviewers and contractor buyers",
+            "prompt_brief": "Show the friction of pii redaction and evidence rooms for regulated contractor workflows, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT already has approval capture, private rooms, and records discipline that map cleanly to this pain."
+          },
+          {
+            "type": "audio",
+            "lane_id": "opp-dhs-redaction-003",
+            "status": "work_packet_ready",
+            "primary_surface": "local_voice_agent",
+            "fallback_surface": "openai_speech",
+            "title": "PII redaction and evidence rooms for regulated contractor workflows narrated brief",
+            "runtime_target": "2-4 minutes",
+            "audience": "mobile reviewers and buyers",
+            "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for pii redaction and evidence rooms for regulated contractor workflows. Include the proof angle and one concise call to action. Workload: No workload signal recorded."
+          },
+          {
+            "type": "slides",
+            "lane_id": "opp-dhs-redaction-003",
+            "status": "work_packet_ready",
+            "primary_surface": "local_slides_skill",
+            "fallback_surface": "manual_outline",
+            "title": "PII redaction and evidence rooms for regulated contractor workflows reviewer deck",
+            "runtime_target": "6-10 slides",
+            "audience": "startup-credit reviewers and teaming partners",
+            "prompt_brief": "Build a compact reviewer deck for pii redaction and evidence rooms for regulated contractor workflows with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+          },
+          {
+            "type": "article",
+            "lane_id": "opp-dhs-redaction-003",
+            "status": "work_packet_ready",
+            "primary_surface": "codex_local",
+            "fallback_surface": "claude_or_gemini_review",
+            "title": "PII redaction and evidence rooms for regulated contractor workflows technical brief",
+            "runtime_target": "900-1400 words",
+            "audience": "technical reviewers and prospective buyers",
+            "prompt_brief": "Write a technical brief explaining how BosonIT solves pii redaction and evidence rooms for regulated contractor workflows with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+          }
+        ],
+        "supporting_assets": [
+          {
+            "type": "image",
+            "lane_id": "opp-dhs-redaction-003",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_nano_banana",
+            "fallback_surface": "openai_imagegen",
+            "title": "PII redaction and evidence rooms for regulated contractor workflows key art",
+            "runtime_target": "hero still",
+            "audience": "landing pages and social cards",
+            "prompt_brief": "Create reviewer-grade key art for pii redaction and evidence rooms for regulated contractor workflows with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+          },
+          {
+            "type": "music",
+            "lane_id": "opp-dhs-redaction-003",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_lyria",
+            "fallback_surface": "manual_music_direction",
+            "title": "PII redaction and evidence rooms for regulated contractor workflows music bed",
+            "runtime_target": "20-40 seconds",
+            "audience": "video support",
+            "prompt_brief": "Generate a restrained, modern, intelligent music bed for pii redaction and evidence rooms for regulated contractor workflows. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+          }
+        ],
+        "route_summary": {
+          "video": "chrome_gemini_flow_veo",
+          "image": "chrome_gemini_nano_banana",
+          "music": "chrome_gemini_lyria",
+          "audio": "local_voice_agent",
+          "slides": "local_slides_skill",
+          "article": "codex_local"
+        }
+      }
+    },
+    {
+      "priority_rank": 4,
+      "id": "f9b44399b4ea44c8b7b555f337a34eda",
+      "title": "Special Warfare Training Wing (SWTW) Rotary Wing Airlift Support",
+      "agency": "DEPT OF DEFENSE.DEPT OF THE AIR FORCE.AIR EDUCATION AND TRAINING COMMAND.FA3002 338 ESS CC",
+      "buyer_segment": "small federal contractors",
+      "notice_type": "Sources Sought",
+      "total_score": 80,
+      "fit_label": "high",
+      "description": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f9b44399b4ea44c8b7b555f337a34eda",
+      "source_signal": "sam-contract-opportunities",
+      "why_now": "Sources Sought with a tracked federal deadline at 2026-03-31T17:00:00.000Z.",
+      "cloud_workload": "LLM extraction, routing, and evidence storage",
+      "proof_value": "Good BosonIT proof value if converted into a scored pilot brief.",
+      "delivery_path": "direct",
+      "subcontracting_path": true,
+      "partner_attach": true,
+      "margin_profile": "high",
+      "keywords": [
+        "ai"
+      ],
+      "score_breakdown": {
+        "domain_fit": 20,
+        "buyer_fit": 5,
+        "urgency_signal": 15,
+        "delivery_readiness": 15,
+        "margin_potential": 15,
+        "novelty_and_proof_value": 10
+      },
+      "creative_bundle": {
+        "lane_id": "opp-treasury-mission-004",
+        "lane_title": "Mission rooms for contractor teaming, approvals, and controlled delivery",
+        "priority_rank": 4,
+        "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+        "audience": "subcontractors and teaming partners",
+        "publication_targets": [
+          "opportunity_os_public_page",
+          "startup_proof_page",
+          "control_plane",
+          "nextcloud_control_room",
+          "linkedin",
+          "x",
+          "email_brief"
+        ],
+        "asset_types": [
+          "video",
+          "audio",
+          "slides",
+          "article",
+          "image",
+          "music"
+        ],
+        "featured_assets": [
+          {
+            "type": "video",
+            "lane_id": "opp-treasury-mission-004",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_flow_veo",
+            "fallback_surface": "sora_2",
+            "title": "Mission rooms for contractor teaming, approvals, and controlled delivery teaser",
+            "runtime_target": "60-90 seconds",
+            "audience": "reviewers and contractor buyers",
+            "prompt_brief": "Show the friction of mission rooms for contractor teaming, approvals, and controlled delivery, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: This is already partially dogfooded through Nextcloud control-room operations and object-storage-backed archives."
+          },
+          {
+            "type": "audio",
+            "lane_id": "opp-treasury-mission-004",
+            "status": "work_packet_ready",
+            "primary_surface": "local_voice_agent",
+            "fallback_surface": "openai_speech",
+            "title": "Mission rooms for contractor teaming, approvals, and controlled delivery narrated brief",
+            "runtime_target": "2-4 minutes",
+            "audience": "mobile reviewers and buyers",
+            "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for mission rooms for contractor teaming, approvals, and controlled delivery. Include the proof angle and one concise call to action. Workload: file storage, synchronization, artifact retention, edge access control"
+          },
+          {
+            "type": "slides",
+            "lane_id": "opp-treasury-mission-004",
+            "status": "work_packet_ready",
+            "primary_surface": "local_slides_skill",
+            "fallback_surface": "manual_outline",
+            "title": "Mission rooms for contractor teaming, approvals, and controlled delivery reviewer deck",
+            "runtime_target": "6-10 slides",
+            "audience": "startup-credit reviewers and teaming partners",
+            "prompt_brief": "Build a compact reviewer deck for mission rooms for contractor teaming, approvals, and controlled delivery with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+          },
+          {
+            "type": "article",
+            "lane_id": "opp-treasury-mission-004",
+            "status": "work_packet_ready",
+            "primary_surface": "codex_local",
+            "fallback_surface": "claude_or_gemini_review",
+            "title": "Mission rooms for contractor teaming, approvals, and controlled delivery technical brief",
+            "runtime_target": "900-1400 words",
+            "audience": "technical reviewers and prospective buyers",
+            "prompt_brief": "Write a technical brief explaining how BosonIT solves mission rooms for contractor teaming, approvals, and controlled delivery with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+          }
+        ],
+        "supporting_assets": [
+          {
+            "type": "image",
+            "lane_id": "opp-treasury-mission-004",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_nano_banana",
+            "fallback_surface": "openai_imagegen",
+            "title": "Mission rooms for contractor teaming, approvals, and controlled delivery key art",
+            "runtime_target": "hero still",
+            "audience": "landing pages and social cards",
+            "prompt_brief": "Create reviewer-grade key art for mission rooms for contractor teaming, approvals, and controlled delivery with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+          },
+          {
+            "type": "music",
+            "lane_id": "opp-treasury-mission-004",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_lyria",
+            "fallback_surface": "manual_music_direction",
+            "title": "Mission rooms for contractor teaming, approvals, and controlled delivery music bed",
+            "runtime_target": "20-40 seconds",
+            "audience": "video support",
+            "prompt_brief": "Generate a restrained, modern, intelligent music bed for mission rooms for contractor teaming, approvals, and controlled delivery. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+          }
+        ],
+        "route_summary": {
+          "video": "chrome_gemini_flow_veo",
+          "image": "chrome_gemini_nano_banana",
+          "music": "chrome_gemini_lyria",
+          "audio": "local_voice_agent",
+          "slides": "local_slides_skill",
+          "article": "codex_local"
+        }
+      }
+    },
+    {
+      "priority_rank": 5,
+      "id": "f94a85b7f6004b52aa18997be356325e",
+      "title": "Hip Roof Shade Structure for Seba Dalkai Boarding",
+      "agency": "INTERIOR, DEPARTMENT OF THE.BUREAU OF INDIAN AFFAIRS.INDIAN EDUCATION ACQUISITION OFFICE",
+      "buyer_segment": "small federal contractors",
+      "notice_type": "Solicitation",
+      "total_score": 80,
+      "fit_label": "high",
+      "description": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f94a85b7f6004b52aa18997be356325e",
+      "source_signal": "sam-contract-opportunities",
+      "why_now": "Solicitation with a tracked federal deadline at 2026-03-24T21:00:00.000Z.",
+      "cloud_workload": "LLM extraction, routing, and evidence storage",
+      "proof_value": "Good BosonIT proof value if converted into a scored pilot brief.",
+      "delivery_path": "direct",
+      "subcontracting_path": true,
+      "partner_attach": true,
+      "margin_profile": "high",
+      "keywords": [
+        "ai",
+        "solicitation"
+      ],
+      "score_breakdown": {
+        "domain_fit": 20,
+        "buyer_fit": 5,
+        "urgency_signal": 15,
+        "delivery_readiness": 15,
+        "margin_potential": 15,
+        "novelty_and_proof_value": 10
+      },
+      "creative_bundle": {
+        "lane_id": "opp-va-contracting-005",
+        "lane_title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors",
+        "priority_rank": 5,
+        "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+        "audience": "govtech and compliance-heavy software teams",
+        "publication_targets": [
+          "opportunity_os_public_page",
+          "startup_proof_page",
+          "control_plane",
+          "nextcloud_control_room",
+          "linkedin",
+          "x",
+          "email_brief"
+        ],
+        "asset_types": [
+          "video",
+          "audio",
+          "slides",
+          "article",
+          "image",
+          "music"
+        ],
+        "featured_assets": [
+          {
+            "type": "video",
+            "lane_id": "opp-va-contracting-005",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_flow_veo",
+            "fallback_surface": "sora_2",
+            "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors teaser",
+            "runtime_target": "60-90 seconds",
+            "audience": "reviewers and contractor buyers",
+            "prompt_brief": "Show the friction of contract requirement extraction and response-pack generation for health and veteran-focused vendors, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: This turns BosonIT's operator stack into a productized pre-sales and pre-delivery accelerator."
+          },
+          {
+            "type": "audio",
+            "lane_id": "opp-va-contracting-005",
+            "status": "work_packet_ready",
+            "primary_surface": "local_voice_agent",
+            "fallback_surface": "openai_speech",
+            "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors narrated brief",
+            "runtime_target": "2-4 minutes",
+            "audience": "mobile reviewers and buyers",
+            "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for contract requirement extraction and response-pack generation for health and veteran-focused vendors. Include the proof angle and one concise call to action. Workload: retrieval, requirement extraction, scoring, evidence packet generation"
+          },
+          {
+            "type": "slides",
+            "lane_id": "opp-va-contracting-005",
+            "status": "work_packet_ready",
+            "primary_surface": "local_slides_skill",
+            "fallback_surface": "manual_outline",
+            "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors reviewer deck",
+            "runtime_target": "6-10 slides",
+            "audience": "startup-credit reviewers and teaming partners",
+            "prompt_brief": "Build a compact reviewer deck for contract requirement extraction and response-pack generation for health and veteran-focused vendors with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+          },
+          {
+            "type": "article",
+            "lane_id": "opp-va-contracting-005",
+            "status": "work_packet_ready",
+            "primary_surface": "codex_local",
+            "fallback_surface": "claude_or_gemini_review",
+            "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors technical brief",
+            "runtime_target": "900-1400 words",
+            "audience": "technical reviewers and prospective buyers",
+            "prompt_brief": "Write a technical brief explaining how BosonIT solves contract requirement extraction and response-pack generation for health and veteran-focused vendors with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+          }
+        ],
+        "supporting_assets": [
+          {
+            "type": "image",
+            "lane_id": "opp-va-contracting-005",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_nano_banana",
+            "fallback_surface": "openai_imagegen",
+            "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors key art",
+            "runtime_target": "hero still",
+            "audience": "landing pages and social cards",
+            "prompt_brief": "Create reviewer-grade key art for contract requirement extraction and response-pack generation for health and veteran-focused vendors with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+          },
+          {
+            "type": "music",
+            "lane_id": "opp-va-contracting-005",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_lyria",
+            "fallback_surface": "manual_music_direction",
+            "title": "Contract requirement extraction and response-pack generation for health and veteran-focused vendors music bed",
+            "runtime_target": "20-40 seconds",
+            "audience": "video support",
+            "prompt_brief": "Generate a restrained, modern, intelligent music bed for contract requirement extraction and response-pack generation for health and veteran-focused vendors. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+          }
+        ],
+        "route_summary": {
+          "video": "chrome_gemini_flow_veo",
+          "image": "chrome_gemini_nano_banana",
+          "music": "chrome_gemini_lyria",
+          "audio": "local_voice_agent",
+          "slides": "local_slides_skill",
+          "article": "codex_local"
+        }
+      }
+    },
+    {
+      "priority_rank": 6,
+      "id": "f826598e11344b0ca37f2fec4d1fa5d6",
+      "title": "15--COVER,ACCESS,AIRCRA",
+      "agency": "DEPT OF DEFENSE.DEFENSE LOGISTICS AGENCY.DLA AVIATION.DLA AV RICHMOND.DLA AVIATION",
+      "buyer_segment": "small federal contractors",
+      "notice_type": "Combined Synopsis/Solicitation",
+      "total_score": 80,
+      "fit_label": "high",
+      "description": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f826598e11344b0ca37f2fec4d1fa5d6",
+      "source_signal": "sam-contract-opportunities",
+      "why_now": "Combined Synopsis/Solicitation with a tracked federal deadline at 2026-03-25T00:00:00.000Z.",
+      "cloud_workload": "LLM extraction, routing, and evidence storage",
+      "proof_value": "Good BosonIT proof value if converted into a scored pilot brief.",
+      "delivery_path": "direct",
+      "subcontracting_path": true,
+      "partner_attach": true,
+      "margin_profile": "high",
+      "keywords": [
+        "ai",
+        "solicitation"
+      ],
+      "score_breakdown": {
+        "domain_fit": 20,
+        "buyer_fit": 5,
+        "urgency_signal": 15,
+        "delivery_readiness": 15,
+        "margin_potential": 15,
+        "novelty_and_proof_value": 10
+      },
+      "creative_bundle": {
+        "lane_id": "opp-gsa-sam-006",
+        "lane_title": "Entity, evidence, and compliance readiness automation for new federal vendors",
+        "priority_rank": 6,
+        "objective": "turn a scored lane into a buyer-facing and reviewer-facing proof pack",
+        "audience": "new federal vendors and subcontractors",
+        "publication_targets": [
+          "opportunity_os_public_page",
+          "startup_proof_page",
+          "control_plane",
+          "nextcloud_control_room",
+          "linkedin",
+          "x",
+          "email_brief"
+        ],
+        "asset_types": [
+          "video",
+          "audio",
+          "slides",
+          "article",
+          "image",
+          "music"
+        ],
+        "featured_assets": [
+          {
+            "type": "video",
+            "lane_id": "opp-gsa-sam-006",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_flow_veo",
+            "fallback_surface": "sora_2",
+            "title": "Entity, evidence, and compliance readiness automation for new federal vendors teaser",
+            "runtime_target": "60-90 seconds",
+            "audience": "reviewers and contractor buyers",
+            "prompt_brief": "Show the friction of entity, evidence, and compliance readiness automation for new federal vendors, then the governed BosonIT operator loop resolving it. Emphasize approvals, evidence flow, and speed to action. Why now: BosonIT is living this path right now and can turn it into a credible, high-trust operator product."
+          },
+          {
+            "type": "audio",
+            "lane_id": "opp-gsa-sam-006",
+            "status": "work_packet_ready",
+            "primary_surface": "local_voice_agent",
+            "fallback_surface": "openai_speech",
+            "title": "Entity, evidence, and compliance readiness automation for new federal vendors narrated brief",
+            "runtime_target": "2-4 minutes",
+            "audience": "mobile reviewers and buyers",
+            "prompt_brief": "Narrate the buyer pain, BosonIT solution shape, and expected workflow outcome for entity, evidence, and compliance readiness automation for new federal vendors. Include the proof angle and one concise call to action. Workload: artifact storage, workflow automation, review surfaces"
+          },
+          {
+            "type": "slides",
+            "lane_id": "opp-gsa-sam-006",
+            "status": "work_packet_ready",
+            "primary_surface": "local_slides_skill",
+            "fallback_surface": "manual_outline",
+            "title": "Entity, evidence, and compliance readiness automation for new federal vendors reviewer deck",
+            "runtime_target": "6-10 slides",
+            "audience": "startup-credit reviewers and teaming partners",
+            "prompt_brief": "Build a compact reviewer deck for entity, evidence, and compliance readiness automation for new federal vendors with buyer pain, BosonIT system, workflow, proof surfaces, cloud-capacity story, and near-term commercialization path."
+          },
+          {
+            "type": "article",
+            "lane_id": "opp-gsa-sam-006",
+            "status": "work_packet_ready",
+            "primary_surface": "codex_local",
+            "fallback_surface": "claude_or_gemini_review",
+            "title": "Entity, evidence, and compliance readiness automation for new federal vendors technical brief",
+            "runtime_target": "900-1400 words",
+            "audience": "technical reviewers and prospective buyers",
+            "prompt_brief": "Write a technical brief explaining how BosonIT solves entity, evidence, and compliance readiness automation for new federal vendors with opportunity intelligence, evidence automation, and mission-room discipline. Use the current BosonIT stack and keep claims truthful."
+          }
+        ],
+        "supporting_assets": [
+          {
+            "type": "image",
+            "lane_id": "opp-gsa-sam-006",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_nano_banana",
+            "fallback_surface": "openai_imagegen",
+            "title": "Entity, evidence, and compliance readiness automation for new federal vendors key art",
+            "runtime_target": "hero still",
+            "audience": "landing pages and social cards",
+            "prompt_brief": "Create reviewer-grade key art for entity, evidence, and compliance readiness automation for new federal vendors with a premium, technical, federal-modern visual language. Avoid cliches and show governed workflow, documents, and mission-control energy."
+          },
+          {
+            "type": "music",
+            "lane_id": "opp-gsa-sam-006",
+            "status": "work_packet_ready",
+            "primary_surface": "chrome_gemini_lyria",
+            "fallback_surface": "manual_music_direction",
+            "title": "Entity, evidence, and compliance readiness automation for new federal vendors music bed",
+            "runtime_target": "20-40 seconds",
+            "audience": "video support",
+            "prompt_brief": "Generate a restrained, modern, intelligent music bed for entity, evidence, and compliance readiness automation for new federal vendors. It should feel credible, operator-grade, and high-trust rather than cinematic hype."
+          }
+        ],
+        "route_summary": {
+          "video": "chrome_gemini_flow_veo",
+          "image": "chrome_gemini_nano_banana",
+          "music": "chrome_gemini_lyria",
+          "audio": "local_voice_agent",
+          "slides": "local_slides_skill",
+          "article": "codex_local"
+        }
+      }
+    }
+  ],
+  "next_actions": [
+    "Connect the live SAM and subcontracting intake lanes once the API key and watchlists are ready.",
+    "Package the highest-fit lane into a reviewer-grade pilot brief and proof surface.",
+    "Use OpportunityOS as the lead cloud-credit workload story instead of generic agency language."
+  ],
+  "source_paths": {
+    "profile": "/Users/kennethjones/bosonit-habitat-core/config/factory/opportunityos-profile.json",
+    "candidates": "/Users/kennethjones/bosonit-habitat-core/artifacts/opportunity-access/latest/opportunityos-candidates.seed.json",
+    "live_intake": "/Users/kennethjones/bosonit-habitat-core/artifacts/opportunity-access/latest/opportunityos-live-intake.json",
+    "creative_assets": "/Users/kennethjones/bosonit-habitat-core/artifacts/opportunity-access/latest/opportunityos-creative-assets.seed.json"
+  }
+}

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpportunityOS | BosonIT</title>
+  <meta
+    name="description"
+    content="OpportunityOS is BosonIT's lead system for federal opportunity intelligence, evidence automation, and secure mission rooms."
+  />
+  <meta property="og:title" content="OpportunityOS | BosonIT" />
+  <meta
+    property="og:description"
+    content="Federal opportunity intelligence, evidence automation, and secure mission rooms packaged into a governed AI operating system."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bosonit.org/opportunity-os/" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07141e;
+      --panel: rgba(8, 20, 34, 0.82);
+      --panel-strong: rgba(10, 25, 41, 0.94);
+      --line: rgba(164, 191, 219, 0.18);
+      --text: #eaf4ff;
+      --muted: #9eb6cd;
+      --accent: #80f7bf;
+      --accent-strong: #3fd69d;
+      --warn: #ffd479;
+      --bad: #ff8b7a;
+      --max: 1220px;
+      font-family: "SF Pro Display", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(70, 148, 255, 0.34), transparent 34%),
+        radial-gradient(circle at top right, rgba(60, 211, 172, 0.22), transparent 36%),
+        linear-gradient(180deg, #07141e 0%, #0b1625 52%, #0a1320 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 48px;
+    }
+
+    .topbar,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 0.94rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand-mark {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent) 0%, #4ea4ff 100%);
+      box-shadow: 0 0 0 6px rgba(128, 247, 191, 0.12);
+    }
+
+    .topnav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+    }
+
+    .topnav a {
+      color: var(--muted);
+    }
+
+    .topnav a.active,
+    .topnav a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.95fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy,
+    .hero-facts,
+    .section,
+    .proof-card {
+      padding: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 4.6vw, 4.4rem);
+      line-height: 0.97;
+      max-width: 10.5ch;
+      letter-spacing: -0.05em;
+    }
+
+    h1 em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .lede {
+      margin-top: 16px;
+      line-height: 1.8;
+      color: #d7e6f8;
+      max-width: 62ch;
+    }
+
+    .tag-row,
+    .proof-links,
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tag-row {
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(164, 191, 219, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .tag strong {
+      color: var(--text);
+      margin-right: 6px;
+    }
+
+    .actions {
+      margin-top: 20px;
+    }
+
+    .button,
+    .button-ghost {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 48px;
+      padding: 0 16px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .button {
+      background: linear-gradient(135deg, var(--accent) 0%, #59edcb 100%);
+      color: #05231b;
+    }
+
+    .button-ghost {
+      border-color: rgba(164, 191, 219, 0.18);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .footnote {
+      margin-top: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .fact-grid,
+    .section-grid,
+    .signal-grid,
+    .candidate-grid,
+    .media-rail {
+      display: grid;
+      gap: 14px;
+    }
+
+    .fact-grid {
+      margin-top: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fact,
+    .signal,
+    .candidate,
+    .media-card,
+    .section {
+      border: 1px solid rgba(164, 191, 219, 0.14);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .fact,
+    .signal,
+    .candidate,
+    .media-card {
+      padding: 18px;
+    }
+
+    .fact strong,
+    .signal strong,
+    .candidate strong {
+      display: block;
+      font-size: 1.26rem;
+      margin-bottom: 8px;
+    }
+
+    .fact span,
+    .signal small,
+    .candidate p,
+    .candidate small,
+    .media-card small,
+    .section p,
+    .section li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .section-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .section h2,
+    .proof-card h2 {
+      font-size: 1.42rem;
+      margin-bottom: 10px;
+    }
+
+    .section ul,
+    .actions-list {
+      margin: 14px 0 0;
+      padding-left: 20px;
+    }
+
+    .section li,
+    .actions-list li {
+      margin-bottom: 10px;
+    }
+
+    .proof-card {
+      margin-bottom: 18px;
+    }
+
+    .signal-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .candidate-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .media-rail {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 16px;
+    }
+
+    .media-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.12rem;
+    }
+
+    .candidate-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .score-pill {
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #041812;
+      background: linear-gradient(135deg, var(--accent) 0%, #5be0ff 100%);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+    }
+
+    .mono-block {
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(3, 8, 15, 0.38);
+      color: #dce9f7;
+      font-family: "SF Mono", "JetBrains Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      border: 1px solid rgba(164, 191, 219, 0.12);
+    }
+
+    .asset-pack {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .asset-chip {
+      flex: 1 1 190px;
+      min-width: 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(164, 191, 219, 0.16);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .asset-chip label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .asset-chip strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.94rem;
+    }
+
+    .asset-chip small {
+      display: block;
+    }
+
+    .proof-links {
+      margin-top: 16px;
+    }
+
+    .proof-link {
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(164, 191, 219, 0.14);
+      color: var(--text);
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1060px) {
+      .hero,
+      .section-grid,
+      .signal-grid,
+      .candidate-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(var(--max), calc(100% - 20px));
+        padding-top: 16px;
+      }
+
+      .topbar,
+      .hero-copy,
+      .hero-facts,
+      .section,
+      .proof-card {
+        padding: 20px;
+      }
+
+      .button,
+      .button-ghost {
+        width: 100%;
+      }
+
+      .fact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>BosonIT LLC</span>
+      </div>
+      <nav class="topnav" aria-label="Primary">
+        <a href="/startup-proof/">Startup Proof</a>
+        <a href="/streetpulse/">StreetPulse</a>
+        <a class="active" href="/opportunity-os/">OpportunityOS</a>
+        <a href="/innovation-control/">Innovation Control</a>
+        <a href="/control-plane/">Control Plane</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <article class="hero-copy panel">
+        <span class="eyebrow">Lead Commercial System</span>
+        <h1><em>OpportunityOS</em> turns federal friction into revenue systems.</h1>
+        <p id="heroLede" class="lede">
+          Loading the current OpportunityOS position, scored lanes, and cloud-capacity story.
+        </p>
+        <div id="heroTags" class="tag-row"></div>
+        <div class="actions">
+          <a class="button" href="/control-plane/">Open Control Plane</a>
+          <a class="button-ghost" href="/startup-proof/">Startup Proof</a>
+          <a class="button-ghost" href="/innovation-control/">Innovation Control</a>
+        </div>
+        <p class="footnote">
+          Truth boundary: this is the commercialization bridge BosonIT can defend today. The system is built around scored opportunity intake, evidence automation, and secure collaboration rooms rather than inflated prime-contract claims.
+        </p>
+      </article>
+
+      <aside class="hero-facts panel">
+        <span class="eyebrow">Current Read</span>
+        <div id="factGrid" class="fact-grid"></div>
+      </aside>
+    </section>
+
+    <section class="section-grid">
+      <article class="section panel">
+        <span class="eyebrow">Product Pillar</span>
+        <h2>Opportunity Intelligence</h2>
+        <p>Score federal and regulated-team signals into fit, margin, delivery path, and proof value instead of reading every notice by hand.</p>
+        <ul>
+          <li>Bid-no-bid and teaming signals</li>
+          <li>Requirement and clause extraction</li>
+          <li>Ranked motion queue for BosonIT and future buyers</li>
+        </ul>
+      </article>
+
+      <article class="section panel">
+        <span class="eyebrow">Product Pillar</span>
+        <h2>Evidence Automation</h2>
+        <p>Package approvals, redaction, records, and supporting proof into governed flows instead of ad hoc document chaos.</p>
+        <ul>
+          <li>Machine-readable evidence packets</li>
+          <li>Approval-aware audit trails</li>
+          <li>Export surfaces for reviewers, partners, and buyers</li>
+        </ul>
+      </article>
+
+      <article class="section panel">
+        <span class="eyebrow">Product Pillar</span>
+        <h2>Mission Rooms</h2>
+        <p>Deploy secure contractor collaboration rooms with Nextcloud, object storage, approvals, and operational telemetry already dogfooded inside BosonIT.</p>
+        <ul>
+          <li>Teaming and follow-through rooms</li>
+          <li>Artifact archives and records discipline</li>
+          <li>Mobile approval and operator-facing controls</li>
+        </ul>
+      </article>
+    </section>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Current Motion</span>
+      <h2>How OpportunityOS converts habitat power into a buyer-facing system.</h2>
+      <div id="currentMotionGrid" class="signal-grid"></div>
+    </article>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Capacity Story</span>
+      <h2>How BosonIT can credibly consume major cloud-credit capacity.</h2>
+      <div id="cloudStoryGrid" class="signal-grid"></div>
+    </article>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Featured Media</span>
+      <h2>Canonical creative proof generated from the lead lane.</h2>
+      <div id="featuredMediaRail" class="media-rail"></div>
+    </article>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Top Scored Lanes</span>
+      <h2>Seeded opportunities BosonIT can pursue, package, and sell with media packs attached.</h2>
+      <div id="candidateGrid" class="candidate-grid"></div>
+    </article>
+
+    <article class="proof-card panel">
+      <span class="eyebrow">Execution Path</span>
+      <h2>What happens next.</h2>
+      <ul id="nextActionsList" class="actions-list"></ul>
+      <div id="proofLinks" class="proof-links"></div>
+    </article>
+
+    <p id="footerNote" class="footer-note"></p>
+  </main>
+
+  <script>
+    const DATA_URL = "/observatory/opportunityos.latest.json";
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function safeArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function truncate(value, max = 180) {
+      const text = String(value ?? "").trim();
+      if (text.length <= max) return text;
+      return `${text.slice(0, max - 1)}…`;
+    }
+
+    function formatTs(value) {
+      if (!value) return "n/a";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      return date.toLocaleString();
+    }
+
+    function renderEmpty(message) {
+      document.getElementById("heroLede").textContent = message;
+      document.getElementById("heroTags").innerHTML = `<span class="tag">${escapeHtml(message)}</span>`;
+      document.getElementById("factGrid").innerHTML = `<div class="fact"><strong>Unavailable</strong><span>${escapeHtml(message)}</span></div>`;
+      document.getElementById("currentMotionGrid").innerHTML = `<div class="signal"><strong>Unavailable</strong><small>${escapeHtml(message)}</small></div>`;
+      document.getElementById("cloudStoryGrid").innerHTML = `<div class="signal"><strong>Unavailable</strong><small>${escapeHtml(message)}</small></div>`;
+      document.getElementById("candidateGrid").innerHTML = `<div class="candidate"><strong>No lanes loaded</strong><p>${escapeHtml(message)}</p></div>`;
+      document.getElementById("nextActionsList").innerHTML = `<li>${escapeHtml(message)}</li>`;
+      document.getElementById("proofLinks").innerHTML = "";
+      document.getElementById("footerNote").textContent = "";
+    }
+
+    function renderOpportunityOs(data) {
+      const motion = data?.current_motion || {};
+      const metrics = data?.metrics || {};
+      const topCandidates = safeArray(data?.top_candidates);
+      const proofSurfaces = safeArray(data?.proof_surfaces);
+      const capacityStory = data?.credit_capacity_story || {};
+      const intake = data?.intake || {};
+      const featuredMedia = data?.featured_media || null;
+      const creativePipeline = data?.creative_pipeline_status || null;
+
+      document.getElementById("heroLede").textContent =
+        motion.lead_story || data?.intent || "OpportunityOS packages BosonIT's strongest federal and regulated-work motions into a sellable operator system.";
+      document.getElementById("heroTags").innerHTML = [
+        `<span class="tag"><strong>Category</strong>${escapeHtml(data?.category || "AI operating system")}</span>`,
+        `<span class="tag"><strong>Lanes</strong>${escapeHtml(metrics.candidate_count || 0)}</span>`,
+        `<span class="tag"><strong>High Fit</strong>${escapeHtml(metrics.high_fit_count || 0)}</span>`,
+        `<span class="tag"><strong>Entry Offer</strong>${escapeHtml(motion.entry_offer || "unknown")}</span>`,
+      ].join("");
+
+      const factCards = [
+        {
+          title: "Average lane score",
+          body: `${metrics.avg_score || 0}/100 current weighted fit across the seeded opportunity lanes.`,
+        },
+        {
+          title: "Live intake status",
+          body: intake.source === "sam_api"
+            ? `Live SAM feed active with ${intake.live_metrics?.item_count || 0} normalized notices.`
+            : `Seed fallback active. ${intake.live_blocker || intake.live_message || "Live SAM intake is not active yet."}`,
+        },
+        {
+          title: "Direct revenue paths",
+          body: `${metrics.direct_path_count || 0} direct lanes can be sold without waiting for prime federal contract approval.`,
+        },
+        {
+          title: "Subcontract-ready lanes",
+          body: `${metrics.subcontracting_path_count || 0} lanes can be pursued through teaming and subcontractor motion.`,
+        },
+        {
+          title: "Target buyers",
+          body: truncate(safeArray(data?.target_buyers).join(", "), 140),
+        },
+        {
+          title: "Creative pipeline",
+          body: creativePipeline
+            ? `${creativePipeline.queued_bundle_count || 0} media packs queued. ${creativePipeline.best_primary_route || "No routing recorded."}`
+            : "No creative pipeline recorded yet.",
+        },
+      ];
+
+      document.getElementById("factGrid").innerHTML = factCards.map((card) => `
+        <div class="fact">
+          <strong>${escapeHtml(card.title)}</strong>
+          <span>${escapeHtml(card.body)}</span>
+        </div>
+      `).join("");
+
+      document.getElementById("currentMotionGrid").innerHTML = [
+        {
+          title: "Lead system",
+          body: motion.lead_system || data?.system_name || "OpportunityOS",
+        },
+        {
+          title: "Intake source",
+          body: intake.source === "sam_api" ? "Live SAM API intake" : "Seed fallback with explicit blocker reporting",
+        },
+        {
+          title: "Entry offer",
+          body: motion.entry_offer || "unknown",
+        },
+        {
+          title: "Near-term revenue paths",
+          body: truncate(safeArray(motion.near_term_revenue_paths).join(", "), 150),
+        },
+        {
+          title: "Upsell ladder",
+          body: truncate(safeArray(motion.upsell_paths).join(", "), 150),
+        },
+      ].map((card) => `
+        <div class="signal">
+          <strong>${escapeHtml(card.title)}</strong>
+          <small>${escapeHtml(card.body)}</small>
+        </div>
+      `).join("");
+
+      document.getElementById("cloudStoryGrid").innerHTML = Object.entries(capacityStory).map(([platform, details]) => `
+        <div class="signal">
+          <strong>${escapeHtml(platform.toUpperCase())}</strong>
+          <small>${escapeHtml(details.why_it_scales || "No capacity rationale recorded.")}</small>
+          <div class="mono-block">${escapeHtml(safeArray(details.workloads).join(" | "))}</div>
+        </div>
+      `).join("");
+
+      document.getElementById("featuredMediaRail").innerHTML = featuredMedia
+        ? [
+          `<div class="media-card">
+            <strong>${escapeHtml(featuredMedia.headline || "Featured media pack")}</strong>
+            <small>${escapeHtml(featuredMedia.description || "No featured media description recorded.")}</small>
+            <div class="asset-pack">
+              ${safeArray(featuredMedia.featured_assets).map((asset) => `
+                <div class="asset-chip">
+                  <label>${escapeHtml(asset.type || "asset")}</label>
+                  <strong>${escapeHtml(asset.title || "Untitled asset")}</strong>
+                  <small>${escapeHtml(asset.primary_surface || "unknown surface")} · ${escapeHtml(asset.runtime_target || "n/a")}</small>
+                </div>
+              `).join("")}
+            </div>
+          </div>`,
+          `<div class="media-card">
+            <strong>Pipeline posture</strong>
+            <small>${escapeHtml(creativePipeline?.best_primary_route || "No pipeline posture recorded.")}</small>
+            <div class="mono-block">${escapeHtml(safeArray(creativePipeline?.blockers).join(" | ") || "Primary browser and local lanes are available. OpenAI premium lanes activate when the runtime key is present.")}</div>
+          </div>`,
+        ].join("")
+        : `<div class="media-card"><strong>No featured media pack</strong><small>The creative factory has not published a featured media bundle yet.</small></div>`;
+
+      document.getElementById("candidateGrid").innerHTML = topCandidates.map((candidate) => `
+        <article class="candidate">
+          <div class="candidate-header">
+            <strong>${escapeHtml(candidate.title || "Untitled lane")}</strong>
+            <span class="score-pill">${escapeHtml(`${candidate.total_score || 0}/100`)}</span>
+          </div>
+          <div class="meta">${escapeHtml(candidate.agency || "unknown")} · ${escapeHtml(candidate.notice_type || "unknown")} · ${escapeHtml(candidate.buyer_segment || "No buyer segment")}</div>
+          <p>${escapeHtml(truncate(candidate.description || "No description recorded.", 220))}</p>
+          <div class="tag-row">
+            <span class="tag"><strong>Fit</strong>${escapeHtml(candidate.fit_label || "unknown")}</span>
+            <span class="tag"><strong>Margin</strong>${escapeHtml(candidate.margin_profile || "unknown")}</span>
+            <span class="tag"><strong>Path</strong>${escapeHtml(candidate.delivery_path || "unknown")}</span>
+          </div>
+          ${candidate?.creative_bundle ? `
+            <div class="asset-pack">
+              ${safeArray(candidate.creative_bundle.featured_assets).map((asset) => `
+                <div class="asset-chip">
+                  <label>${escapeHtml(asset.type || "asset")}</label>
+                  <strong>${escapeHtml(asset.title || "Untitled asset")}</strong>
+                  <small>${escapeHtml(asset.primary_surface || "unknown surface")} · ${escapeHtml(asset.runtime_target || "n/a")}</small>
+                </div>
+              `).join("")}
+            </div>
+          ` : ""}
+          <div class="mono-block">${escapeHtml(candidate.why_now || candidate.cloud_workload || "No why-now recorded.")}</div>
+        </article>
+      `).join("");
+
+      document.getElementById("nextActionsList").innerHTML = safeArray(data?.next_actions).map((item) => `
+        <li>${escapeHtml(item)}</li>
+      `).join("");
+
+      const proofTargets = Array.from(new Set([
+        ...proofSurfaces.map((url) => String(url || "").replace("https://bosonit.org", "") || url),
+        "/control-plane/",
+        "/startup-proof/",
+      ].filter(Boolean)));
+      document.getElementById("proofLinks").innerHTML = proofTargets.map((url) => {
+        const label = String(url).replace(/^\//u, "");
+        return `<a class="proof-link" href="${escapeHtml(url)}">${escapeHtml(label || "home/")}</a>`;
+      }).join("");
+
+      document.getElementById("footerNote").textContent =
+        `Generated from ${escapeHtml(data?.source_paths?.profile || "unknown profile")} and ${escapeHtml(data?.source_paths?.candidates || "unknown candidates")}. Updated ${escapeHtml(formatTs(data?.generated_at_utc || null))}.`;
+    }
+
+    async function loadData() {
+      try {
+        const response = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`HTTP_${response.status}`);
+        }
+        const data = await response.json();
+        renderOpportunityOs(data);
+      } catch (error) {
+        renderEmpty(`OpportunityOS feed unavailable: ${String(error.message || error)}`);
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

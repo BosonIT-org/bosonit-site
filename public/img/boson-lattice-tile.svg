@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="m" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="fade"><rect width="512" height="512" fill="url(#m)"/></mask>
+  </defs>
+  <rect width="512" height="512" fill="none"/>
+  <g transform="translate(256 256)" fill="#7fc3ff" fill-opacity="0.22" mask="url(#fade)">
+    <!-- small ring texture (repeats seamlessly due to radial fade) -->
+    <g id="ring48">
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(7.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(15)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(22.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(30)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(37.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(45)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(52.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(60)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(67.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(75)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(82.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(90)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(97.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(105)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(112.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(120)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(127.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(135)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(142.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(150)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(157.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(165)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(172.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(180)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(187.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(195)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(202.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(210)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(217.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(225)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(232.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(240)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(247.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(255)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(262.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(270)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(277.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(285)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(292.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(300)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(307.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(315)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(322.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(330)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(337.5)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(345)"/>
+      <rect x="-3.5" y="-110" width="7" height="7" rx="1.5" transform="rotate(352.5)"/>
+    </g>
+    <g transform="scale(0.9)"><use href="#ring48"/></g>
+    <g transform="scale(1.05)"><use href="#ring48"/></g>
+    <g transform="scale(1.2)"><use href="#ring48"/></g>
+  </g>
+</svg>

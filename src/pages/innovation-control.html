@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boson Innovation Control</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070f1c'/%3E%3Cpath d='M18 45L30 19l7 14 9-10' fill='none' stroke='%23ffbe62' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='45' cy='23' r='5' fill='%235af0c8'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #050913;
+      --bg-1: #0b1426;
+      --bg-2: #111f35;
+      --panel: rgba(9, 18, 31, 0.84);
+      --panel-soft: rgba(10, 21, 36, 0.7);
+      --line: rgba(166, 208, 255, 0.18);
+      --line-strong: rgba(188, 223, 255, 0.3);
+      --text-0: #f4f7fd;
+      --text-1: #d0dcee;
+      --text-2: #95aac5;
+      --ok: #65efb4;
+      --warn: #ffd27d;
+      --bad: #ff9790;
+      --cyan: #66cbff;
+      --mint: #56f3c6;
+      --amber: #ffbe62;
+      --rose: #ff93bf;
+      --radius: 24px;
+      --radius-sm: 16px;
+      --shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(70rem 50rem at 0% 0%, rgba(102, 203, 255, 0.2), transparent 62%),
+        radial-gradient(50rem 46rem at 100% 0%, rgba(86, 243, 198, 0.14), transparent 58%),
+        radial-gradient(42rem 30rem at 50% 110%, rgba(255, 190, 98, 0.12), transparent 58%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-0));
+      color: var(--text-0);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.45;
+      padding: 1rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      max-width: 1460px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero,
+    .panel {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: var(--panel);
+    }
+
+    .hero::before,
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: auto auto 66% 68%;
+      width: 22rem;
+      height: 22rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(102, 203, 255, 0.18), transparent 72%);
+      pointer-events: none;
+    }
+
+    .hero {
+      padding: 1.2rem;
+      display: grid;
+      gap: 1rem;
+      background:
+        linear-gradient(145deg, rgba(14, 28, 48, 0.96), rgba(8, 18, 31, 0.9)),
+        var(--panel);
+    }
+
+    .hero-top {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.35rem;
+      color: var(--amber);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(1.7rem, 3.8vw, 3.1rem);
+      line-height: 1.02;
+      max-width: 12ch;
+    }
+
+    .subline {
+      margin: 0.55rem 0 0;
+      max-width: 66ch;
+      color: var(--text-1);
+      font-size: 0.98rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    button,
+    .btn,
+    select,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    .btn {
+      border: 1px solid rgba(172, 220, 255, 0.26);
+      color: #eff9ff;
+      background: linear-gradient(145deg, rgba(18, 42, 72, 0.88), rgba(14, 28, 48, 0.96));
+      border-radius: 12px;
+      padding: 0.55rem 0.88rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+
+    button:hover,
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(205, 238, 255, 0.46);
+    }
+
+    .btn.accent {
+      background: linear-gradient(145deg, rgba(38, 83, 56, 0.96), rgba(14, 46, 34, 0.96));
+      border-color: rgba(101, 239, 180, 0.34);
+    }
+
+    .hero-grid,
+    .dashboard {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.95fr);
+      align-items: start;
+    }
+
+    .chip-row,
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .chip,
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.34rem 0.7rem;
+      font-size: 0.76rem;
+      border: 1px solid rgba(166, 211, 255, 0.2);
+      background: rgba(77, 166, 255, 0.12);
+      color: #e2f2ff;
+    }
+
+    .chip.ok,
+    .tag.ok {
+      border-color: rgba(101, 239, 180, 0.34);
+      background: rgba(101, 239, 180, 0.12);
+      color: #dcffed;
+    }
+
+    .chip.warn,
+    .tag.warn {
+      border-color: rgba(255, 210, 125, 0.34);
+      background: rgba(255, 210, 125, 0.12);
+      color: #fff2d5;
+    }
+
+    .chip.bad,
+    .tag.bad {
+      border-color: rgba(255, 151, 144, 0.34);
+      background: rgba(255, 151, 144, 0.12);
+      color: #ffe1dd;
+    }
+
+    .hero-aside {
+      border-radius: 18px;
+      border: 1px solid rgba(157, 208, 255, 0.16);
+      background: rgba(8, 17, 29, 0.66);
+      padding: 0.95rem;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .hero-aside h2,
+    .panel h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-aside p,
+    .panel p,
+    .muted {
+      margin: 0;
+      color: var(--text-1);
+    }
+
+    .kpi-grid {
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    .kpi {
+      border-radius: 18px;
+      padding: 0.85rem;
+      border: 1px solid rgba(150, 204, 255, 0.18);
+      background: rgba(9, 18, 31, 0.82);
+      display: grid;
+      gap: 0.28rem;
+      min-height: 104px;
+    }
+
+    .kpi label,
+    .metric label,
+    .field label,
+    .block label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-2);
+    }
+
+    .kpi strong,
+    .metric strong,
+    .block strong {
+      font-size: 1.55rem;
+      line-height: 1.05;
+      font-weight: 700;
+    }
+
+    .dashboard {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .panel {
+      padding: 1rem;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .section-subline {
+      margin-top: 0.35rem;
+      color: var(--text-2);
+      max-width: 62ch;
+      font-size: 0.9rem;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field {
+      display: grid;
+      gap: 0.42rem;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(161, 211, 255, 0.18);
+      background: rgba(7, 15, 27, 0.84);
+      color: var(--text-0);
+      padding: 0.78rem 0.88rem;
+      font-size: 0.94rem;
+      outline: none;
+      transition: border-color 0.16s ease, transform 0.16s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(101, 239, 180, 0.42);
+      transform: translateY(-1px);
+    }
+
+    .field textarea {
+      min-height: 132px;
+      resize: vertical;
+    }
+
+    .mini-grid,
+    .lane-grid,
+    .output-grid {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .mini-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .lane-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .output-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric,
+    .lane-card,
+    .block,
+    .output-card {
+      border-radius: 18px;
+      border: 1px solid rgba(156, 208, 255, 0.16);
+      background: rgba(8, 16, 29, 0.76);
+      padding: 0.9rem;
+      display: grid;
+      gap: 0.38rem;
+    }
+
+    .metric small,
+    .lane-card small,
+    .block small,
+    .output-card small {
+      color: var(--text-2);
+    }
+
+    .lane-card.active {
+      border-color: rgba(101, 239, 180, 0.34);
+      background: linear-gradient(180deg, rgba(22, 45, 38, 0.74), rgba(8, 17, 29, 0.8));
+    }
+
+    .lane-card.repurpose {
+      border-color: rgba(255, 210, 125, 0.32);
+      background: linear-gradient(180deg, rgba(54, 37, 15, 0.74), rgba(8, 17, 29, 0.8));
+    }
+
+    .lane-score {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
+      color: var(--text-1);
+      font-size: 0.86rem;
+    }
+
+    .bar {
+      position: relative;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .bar > span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--mint));
+    }
+
+    .decision-panel {
+      background:
+        linear-gradient(145deg, rgba(12, 25, 44, 0.96), rgba(8, 17, 29, 0.9)),
+        var(--panel);
+    }
+
+    .decision-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .decision-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.46rem 0.86rem;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      border: 1px solid rgba(160, 214, 255, 0.2);
+    }
+
+    .decision-badge.ok {
+      color: #d9ffea;
+      border-color: rgba(101, 239, 180, 0.34);
+      background: rgba(101, 239, 180, 0.12);
+    }
+
+    .decision-badge.warn {
+      color: #fff1d7;
+      border-color: rgba(255, 210, 125, 0.34);
+      background: rgba(255, 210, 125, 0.12);
+    }
+
+    .decision-badge.bad {
+      color: #ffe2de;
+      border-color: rgba(255, 151, 144, 0.34);
+      background: rgba(255, 151, 144, 0.12);
+    }
+
+    .decision-text {
+      font-size: 1.02rem;
+      max-width: 68ch;
+      color: var(--text-1);
+    }
+
+    .output-card textarea {
+      min-height: 230px;
+      border-radius: 16px;
+      border: 1px solid rgba(156, 208, 255, 0.16);
+      background: rgba(5, 12, 22, 0.88);
+      color: #dff3ff;
+      padding: 0.9rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .video-shell {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(154, 208, 255, 0.18);
+      background: rgba(6, 14, 25, 0.9);
+      min-height: 218px;
+    }
+
+    .video-placeholder,
+    iframe {
+      width: 100%;
+      min-height: 218px;
+      border: 0;
+    }
+
+    .video-placeholder {
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      color: var(--text-2);
+      text-align: center;
+      background:
+        linear-gradient(155deg, rgba(18, 33, 57, 0.96), rgba(6, 12, 21, 0.96)),
+        rgba(6, 14, 25, 0.92);
+    }
+
+    .footer-note {
+      color: var(--text-2);
+      text-align: center;
+      font-size: 0.8rem;
+      padding-bottom: 0.2rem;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .dashboard,
+      .form-grid,
+      .output-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .span-4,
+      .span-5,
+      .span-6,
+      .span-7,
+      .span-8,
+      .span-12 {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">Governed Seed Intake</p>
+          <h1 class="title">Innovation Control Surface</h1>
+          <p class="subline">Drop in a YouTube link, summarize the mechanism, and score the idea against BosonIT's active wedges, current capacity, and dogfood-first constraints. The output is not just a score. It is a recommendation, a backlog rank band, and a seed packet you can route into the Novel Engine.</p>
+        </div>
+        <div class="controls">
+          <button id="scoreBtn" class="accent" type="button">Score Seed</button>
+          <a class="btn" href="/control-plane">Control Plane</a>
+          <a class="btn" href="/">Home</a>
+        </div>
+      </div>
+      <div class="hero-grid">
+        <div>
+          <div class="chip-row">
+            <span class="chip ok">GPT-5.4 Orchestrator</span>
+            <span class="chip ok">Novel Engine Seed Aligned</span>
+            <span class="chip warn">Human Judgment Preserved</span>
+            <span class="chip">Dogfood-First</span>
+            <span class="chip">Trajectory-Constrained</span>
+          </div>
+          <div id="heroKpis" class="kpi-grid"></div>
+        </div>
+        <aside class="hero-aside">
+          <div>
+            <p class="eyebrow">Current Doctrine</p>
+            <h2>What Gets Through</h2>
+            <p>Ideas win when they deepen active wedges, feel useful within 60 seconds, create a founder-use case, and can be proved in a 14-day prototype without sprawl.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag ok">AI Referral Intelligence</span>
+            <span class="tag ok">Product Friction Intelligence</span>
+            <span class="tag ok">Qualified Booking Intelligence</span>
+            <span class="tag">Workflow + Trust Stacks</span>
+            <span class="tag">Private Collaboration Bundles</span>
+          </div>
+          <p class="muted">Consumer novelty, hardware-heavy bets, and ideas BosonIT would not use should get pushed to backlog or repurposed into a current wedge.</p>
+        </aside>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="panel span-7">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Source Intake</p>
+            <h2>Video Seed Brief</h2>
+            <p class="section-subline">The link is the handle. The summary is the actual seed. This surface treats the video as inspiration, then forces the idea into BosonIT's current operating geometry.</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="videoUrl">Video URL</label>
+            <input id="videoUrl" name="videoUrl" type="url" placeholder="https://youtu.be/..." />
+          </div>
+          <div class="field">
+            <label for="sourceTitle">Source Title</label>
+            <input id="sourceTitle" name="sourceTitle" type="text" placeholder="What is this video actually about?" />
+          </div>
+          <div class="field">
+            <label for="offerShape">Desired Offer Shape</label>
+            <select id="offerShape" name="offerShape">
+              <option value="productized_service">Productized service</option>
+              <option value="self_serve_tool">Self-serve tool</option>
+              <option value="bundle_with_service_attach">Bundle with service attach</option>
+              <option value="operator_surface">Internal operator surface</option>
+              <option value="channel_bundle">Channel bundle</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="buyer">Likely Buyer</label>
+            <input id="buyer" name="buyer" type="text" placeholder="Founder, ops lead, agency owner, rev lead..." />
+          </div>
+          <div class="field">
+            <label for="proofHorizon">Proof Horizon</label>
+            <select id="proofHorizon" name="proofHorizon">
+              <option value="7">7 days</option>
+              <option value="14" selected>14 days</option>
+              <option value="30">30 days</option>
+              <option value="60">60+ days</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dogfoodSurface">Dogfood Surface</label>
+            <select id="dogfoodSurface" name="dogfoodSurface">
+              <option value="bosonit.org">bosonit.org</option>
+              <option value="control-plane">Control Plane</option>
+              <option value="nextcloud">Nextcloud Forms / Tables</option>
+              <option value="windmill">Windmill workflow</option>
+              <option value="vault">Vault trust path</option>
+              <option value="langfuse">Langfuse eval layer</option>
+              <option value="channel">Channel / bundle motion</option>
+              <option value="unknown">Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dependencyLoad">External Dependency Load</label>
+            <select id="dependencyLoad" name="dependencyLoad">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="founderUseCase">Founder Use Case Strength</label>
+            <select id="founderUseCase" name="founderUseCase">
+              <option value="high">High</option>
+              <option value="medium" selected>Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dataClass">Data Class</label>
+            <select id="dataClass" name="dataClass">
+              <option value="public" selected>Public</option>
+              <option value="internal">Internal</option>
+              <option value="confidential">Confidential</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="seedSummary">Idea Summary</label>
+            <textarea id="seedSummary" name="seedSummary" placeholder="What is the mechanism or opportunity in the video? Summarize the idea in plain language."></textarea>
+          </div>
+          <div class="field full">
+            <label for="whyInteresting">Why This Matters To BosonIT</label>
+            <textarea id="whyInteresting" name="whyInteresting" placeholder="Map the idea to a BosonIT pain point, buyer pull, or current wedge."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel span-5">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Source Preview</p>
+            <h2>Video Handle</h2>
+            <p class="section-subline">The page does not depend on transcript extraction yet. It uses the video link as source context and your summary as the actual seed input.</p>
+          </div>
+        </div>
+        <div class="video-shell">
+          <div id="videoPlaceholder" class="video-placeholder">Paste a YouTube link to attach a preview and seed handle.</div>
+          <iframe id="videoFrame" title="Video preview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen hidden></iframe>
+        </div>
+        <div class="mini-grid">
+          <div class="block">
+            <label>Seed Contract</label>
+            <strong>Novel Engine</strong>
+            <small>Outputs a request brief, seed JSON, and ranked recommendation.</small>
+          </div>
+          <div class="block">
+            <label>Decision Mode</label>
+            <strong id="decisionModeLabel">Awaiting input</strong>
+            <small id="decisionModeNote">Fill the brief and score the seed.</small>
+          </div>
+          <div class="block">
+            <label>Backlog Band</label>
+            <strong id="backlogBandLabel">n/a</strong>
+            <small id="backlogBandNote">No rank assigned yet.</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel span-12 decision-panel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Recommendation</p>
+            <h2>Trajectory And Capacity Verdict</h2>
+            <p class="section-subline">This is the operator decision: pursue now, repurpose into an active wedge, or park and backlog. The score is weighted toward concentration, dogfood fit, and fast proof.</p>
+          </div>
+        </div>
+        <div class="decision-line">
+          <span id="decisionBadge" class="decision-badge warn">Waiting for input</span>
+          <span id="recommendationBadge" class="decision-badge">No wedge mapped</span>
+        </div>
+        <p id="decisionText" class="decision-text">Add a source link and a real summary. The recommendation will explain whether the idea deepens the current BosonIT path or needs to be repurposed before it deserves oxygen.</p>
+        <div id="scoreGrid" class="mini-grid"></div>
+      </section>
+
+      <section class="panel span-7">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Wedge Fit</p>
+            <h2>Lane Mapping</h2>
+            <p class="section-subline">The surface scores the seed across active and adjacent BosonIT wedges, then recommends the best fit rather than letting a vague inspiration drift into the backlog.</p>
+          </div>
+        </div>
+        <div id="laneGrid" class="lane-grid"></div>
+      </section>
+
+      <section class="panel span-5">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Implementation Path</p>
+            <h2>Tailored Next Move</h2>
+            <p class="section-subline">The output is implementation-biased. It tells you what to build, where to dogfood it, and what the first 14-day proof should look like.</p>
+          </div>
+        </div>
+        <div id="implementationBlocks" class="mini-grid"></div>
+      </section>
+
+      <section class="panel span-12">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Seed Export</p>
+            <h2>Novel Engine Artifacts</h2>
+            <p class="section-subline">Copy these outputs directly into the factory flow. The JSON stays aligned to the seed template. The brief stays aligned to the Novel Product Request contract.</p>
+          </div>
+          <div class="controls">
+            <button id="copySeedJson" type="button">Copy Seed JSON</button>
+            <button id="copyRequestBrief" type="button">Copy Request Brief</button>
+          </div>
+        </div>
+        <div class="output-grid">
+          <article class="output-card">
+            <label>Novel Engine Seed JSON</label>
+            <small>Seed contract plus intake metadata and recommendation.</small>
+            <textarea id="seedJsonOutput" readonly></textarea>
+          </article>
+          <article class="output-card">
+            <label>Novel Product Request</label>
+            <small>Use this brief when you want the Novel Engine or GPT-5.4 to narrow the idea into a Boson-ready candidate.</small>
+            <textarea id="requestBriefOutput" readonly></textarea>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <p class="footer-note">Innovation Control ranks ideas against BosonIT trajectory, wedge alignment, dogfood fit, and current capacity. It is a seed surface, not a permission slip for sprawl.</p>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "boson-innovation-control:last-seed";
+
+    const CURRENT_PRIORITIES = [
+      "Windmill observability and SLO wiring",
+      "Nextcloud Forms dogfood surface",
+      "Langfuse internal pilot",
+      "Channel and program activation",
+    ];
+
+    const LANES = [
+      {
+        id: "ai_referral",
+        label: "AI Referral Intelligence",
+        blueprint: "AI Referral Radar",
+        className: "active",
+        buyerSegment: "Founders, agencies, publishers, and content-led SaaS teams",
+        implementationSurface: "bosonit.org + analytics events + Langfuse",
+        keywords: ["ai referral", "answer gap", "search", "seo", "traffic", "analytics", "prompt visibility", "referrer", "conversion", "ranking"],
+        bonus: 6,
+      },
+      {
+        id: "product_friction",
+        label: "Product Friction Intelligence",
+        blueprint: "FrictionMap",
+        className: "active",
+        buyerSegment: "Founder-led products, agencies, and product operators",
+        implementationSurface: "control-plane + event telemetry + feedback intake",
+        keywords: ["friction", "churn", "hesitation", "drop-off", "onboarding", "feedback", "session", "retention", "objection", "win loss"],
+        bonus: 5,
+      },
+      {
+        id: "qualified_booking",
+        label: "Qualified Booking Intelligence",
+        blueprint: "Qualified Booking OS",
+        className: "active",
+        buyerSegment: "Founder-led service businesses and BosonIT service intake",
+        implementationSurface: "Nextcloud Forms + booking events + payment capture",
+        keywords: ["booking", "intake", "qualification", "deposit", "reschedule", "calendar", "appointment", "lead form", "consultation", "schedule"],
+        bonus: 5,
+      },
+      {
+        id: "private_collaboration",
+        label: "Private Collaboration Bundles",
+        blueprint: "Nextcloud Operating Room",
+        className: "repurpose",
+        buyerSegment: "Small teams that need private collaboration, trust, and approvals",
+        implementationSurface: "Nextcloud + Vault + client evidence rooms",
+        keywords: ["private", "collaboration", "portal", "client room", "document", "approval", "secure", "nextcloud", "evidence", "workspace"],
+        bonus: 4,
+      },
+      {
+        id: "workflow_trust",
+        label: "Workflow And Trust Stacks",
+        blueprint: "Windmill + Vault Operator Stack",
+        className: "repurpose",
+        buyerSegment: "Operators who need governed automation and trust controls",
+        implementationSurface: "Windmill + Vault + governed browser automation",
+        keywords: ["workflow", "automation", "governance", "approval", "ops", "operator", "compliance", "vault", "windmill", "triage", "control plane"],
+        bonus: 4,
+      },
+    ];
+
+    const CONSUMER_PENALTIES = ["consumer", "viral", "influencer", "metaverse", "nft", "vr", "travel art", "creator economy", "gaming"];
+    const SPRAWL_PENALTIES = ["marketplace", "blockchain", "hardware", "physical device", "social network", "consumer app"];
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function normalize(text) {
+      return String(text ?? "").toLowerCase().replace(/\s+/gu, " ").trim();
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function uniqueCount(items) {
+      return new Set(items).size;
+    }
+
+    function parseYouTubeId(url) {
+      const raw = String(url ?? "").trim();
+      if (!raw) return "";
+      const patterns = [
+        /youtu\.be\/([A-Za-z0-9_-]{6,})/u,
+        /[?&]v=([A-Za-z0-9_-]{6,})/u,
+        /youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/u,
+      ];
+      for (const pattern of patterns) {
+        const match = raw.match(pattern);
+        if (match) return match[1];
+      }
+      return "";
+    }
+
+    function ratingClass(score) {
+      if (score >= 78) return "ok";
+      if (score >= 58) return "warn";
+      return "bad";
+    }
+
+    function backlogBand(score, decision) {
+      if (decision === "Pursue") return score >= 90 ? "#1-2" : "#3-5";
+      if (decision === "Repurpose") return score >= 68 ? "#6-9" : "#10-12";
+      return "#13+";
+    }
+
+    function buildSeedData() {
+      return {
+        videoUrl: document.getElementById("videoUrl").value.trim(),
+        sourceTitle: document.getElementById("sourceTitle").value.trim(),
+        offerShape: document.getElementById("offerShape").value,
+        buyer: document.getElementById("buyer").value.trim(),
+        proofHorizon: document.getElementById("proofHorizon").value,
+        dogfoodSurface: document.getElementById("dogfoodSurface").value,
+        dependencyLoad: document.getElementById("dependencyLoad").value,
+        founderUseCase: document.getElementById("founderUseCase").value,
+        dataClass: document.getElementById("dataClass").value,
+        seedSummary: document.getElementById("seedSummary").value.trim(),
+        whyInteresting: document.getElementById("whyInteresting").value.trim(),
+      };
+    }
+
+    function laneMatches(text, lane) {
+      return lane.keywords.filter((keyword) => text.includes(keyword));
+    }
+
+    function scoreSeed(seed) {
+      const text = normalize([seed.sourceTitle, seed.seedSummary, seed.whyInteresting, seed.buyer].join(" "));
+      const laneScores = LANES.map((lane) => {
+        const matches = laneMatches(text, lane);
+        const score = clamp((uniqueCount(matches) * 14) + lane.bonus, 0, 100);
+        return { ...lane, score, matches };
+      }).sort((left, right) => right.score - left.score);
+
+      const topLane = laneScores[0];
+      const trajectory = clamp(
+        (topLane.score * 0.28) +
+        (seed.dogfoodSurface === "unknown" ? 0 : 16) +
+        (seed.founderUseCase === "high" ? 18 : seed.founderUseCase === "medium" ? 11 : 4),
+        0,
+        100
+      );
+
+      const revenue = clamp(
+        (seed.buyer ? 24 : 0) +
+        (seed.offerShape === "bundle_with_service_attach" || seed.offerShape === "productized_service" ? 24 : 18) +
+        (seed.proofHorizon === "7" ? 28 : seed.proofHorizon === "14" ? 24 : seed.proofHorizon === "30" ? 14 : 6),
+        0,
+        100
+      );
+
+      const capacity = clamp(
+        (seed.dependencyLoad === "low" ? 38 : seed.dependencyLoad === "medium" ? 24 : 8) +
+        (seed.dogfoodSurface === "nextcloud" || seed.dogfoodSurface === "windmill" || seed.dogfoodSurface === "langfuse" || seed.dogfoodSurface === "control-plane" ? 34 : 18) +
+        (seed.offerShape === "operator_surface" ? 22 : 14),
+        0,
+        100
+      );
+
+      const governance = clamp(
+        (seed.dataClass === "public" ? 36 : seed.dataClass === "internal" ? 26 : 14) +
+        (seed.dependencyLoad === "low" ? 32 : seed.dependencyLoad === "medium" ? 22 : 10) +
+        (seed.offerShape === "channel_bundle" ? 14 : 20),
+        0,
+        100
+      );
+
+      const novelty = clamp(
+        (seed.seedSummary.length > 120 ? 18 : 8) +
+        (seed.whyInteresting.length > 90 ? 18 : 8) +
+        (topLane.matches.length >= 2 ? 8 : 16),
+        0,
+        100
+      );
+
+      const penaltyKeywords = CONSUMER_PENALTIES.filter((keyword) => text.includes(keyword));
+      const sprawlKeywords = SPRAWL_PENALTIES.filter((keyword) => text.includes(keyword));
+      const penalty = Math.min(22, (penaltyKeywords.length * 6) + (sprawlKeywords.length * 5));
+
+      const weighted = clamp(
+        (trajectory * 0.3) +
+        (revenue * 0.24) +
+        (capacity * 0.22) +
+        (governance * 0.14) +
+        (novelty * 0.1) -
+        penalty,
+        0,
+        100
+      );
+
+      let decision = "Park";
+      if (weighted >= 82 && trajectory >= 74 && capacity >= 62) {
+        decision = "Pursue";
+      } else if (weighted >= 60 && topLane.score >= 24) {
+        decision = "Repurpose";
+      }
+
+      const band = backlogBand(weighted, decision);
+      const bestSurface = topLane?.implementationSurface || "Control Plane";
+      const blueprint = topLane?.blueprint || "Unassigned blueprint";
+      const tailoredPath = buildImplementationPath(seed, topLane, decision);
+      const nextGate = seed.dataClass === "confidential"
+        ? "Require approval before external model use or outbound action."
+        : "Move into a 14-day dogfood proof and generate the seed packet.";
+
+      return {
+        weighted: Number(weighted.toFixed(1)),
+        metrics: {
+          trajectory: Number(trajectory.toFixed(1)),
+          revenue: Number(revenue.toFixed(1)),
+          capacity: Number(capacity.toFixed(1)),
+          governance: Number(governance.toFixed(1)),
+          novelty: Number(novelty.toFixed(1)),
+          penalty: Number(penalty.toFixed(1)),
+        },
+        topLane,
+        laneScores,
+        decision,
+        band,
+        blueprint,
+        bestSurface,
+        nextGate,
+        tailoredPath,
+      };
+    }
+
+    function buildImplementationPath(seed, lane, decision) {
+      const laneLabel = lane?.label || "No mapped lane";
+      const proofSurface = lane?.implementationSurface || "Control Plane";
+      const seedFocus = seed.seedSummary || "the seed idea";
+      if (decision === "Pursue") {
+        return {
+          action: `Turn this into a ${laneLabel} prototype now.`,
+          path: `Build the first proof on ${proofSurface}. Keep the scope to one obvious win, one buyer, and one 14-day proof.`,
+          proof: `Use ${seedFocus} to define one dogfood workflow BosonIT can run itself before public promotion.`,
+          backlog: `Promote into the active candidate queue in the ${bandText(decision)} band and bind it to ${lane?.blueprint || "the active wedge"}.`,
+        };
+      }
+      if (decision === "Repurpose") {
+        return {
+          action: `Repurpose the seed into ${laneLabel}.`,
+          path: `Do not chase the original framing. Strip it down to the mechanism that strengthens ${proofSurface}.`,
+          proof: `Translate the idea into a founder-use case and a dogfood-first surface before it reaches the Novel Engine.`,
+          backlog: `Keep it in the ${bandText(decision)} band until the repurposed version passes wedge and dogfood checks.`,
+        };
+      }
+      return {
+        action: `Park the seed for now.`,
+        path: `The current form does not fit BosonIT trajectory or near-term capacity.`,
+        proof: `If revisited, narrow it to one buyer, one wedge, one operator surface, and a 14-day proof path.`,
+        backlog: `Move it into the ${bandText(decision)} band and only reopen after a stronger founder-use case appears.`,
+      };
+    }
+
+    function bandText(decision) {
+      if (decision === "Pursue") return "top";
+      if (decision === "Repurpose") return "middle";
+      return "lower";
+    }
+
+    function buildSeedJson(seed, result) {
+      const timeline = seed.proofHorizon === "7"
+        ? "7 days to prototype and 21 days to paid pilot."
+        : seed.proofHorizon === "14"
+          ? "14 days to prototype and 30 days to paid pilot."
+          : seed.proofHorizon === "30"
+            ? "30 days to prototype and 45 days to paid pilot."
+            : "60 days or more; requires narrowing before factory promotion.";
+
+      return {
+        objective: `Turn the seed from "${seed.sourceTitle || seed.videoUrl || "external source"}" into a wedge-aligned BosonIT offer that fits ${result.topLane?.label || "an active lane"} and creates a 14-day proof path.`,
+        audience: seed.buyer || result.topLane?.buyerSegment || "Operators with urgent friction and named budget ownership.",
+        offer: `${seed.offerShape.replaceAll("_", " ")} oriented around ${result.blueprint}.`,
+        timeline,
+        constraints: `Stay aligned to BosonIT trajectory, dogfood-first policy, and current capacity. Use existing habitat resources. Prefer ${result.bestSurface}. Avoid consumer novelty branches and avoid ideas BosonIT would not use.`,
+        success_metrics: `Overall score >= ${result.weighted}; trajectory >= ${result.metrics.trajectory}; named founder use case; one 14-day proof; one 30-day paid pilot path; backlog band ${result.band}.`,
+        intake_metadata: {
+          source_type: "youtube_seed",
+          source_url: seed.videoUrl,
+          source_title: seed.sourceTitle,
+          decision: result.decision,
+          backlog_band: result.band,
+          recommended_lane: result.topLane?.label || null,
+          recommended_blueprint: result.blueprint,
+          dogfood_surface: seed.dogfoodSurface,
+          data_class: seed.dataClass,
+        },
+      };
+    }
+
+    function buildRequestBrief(seed, result) {
+      return [
+        "# Novel Product Request",
+        "",
+        `Objective: Turn the insight from "${seed.sourceTitle || "this video seed"}" into a Boson-ready candidate aligned to ${result.topLane?.label || "an active wedge"}.`,
+        `Audience: ${seed.buyer || result.topLane?.buyerSegment || "Operators with urgent friction and budget ownership."}`,
+        `Offer: ${humanize(seed.offerShape)} using ${result.blueprint}.`,
+        `Timeline: ${seed.proofHorizon} day proof horizon with a 30 day paid pilot path.`,
+        `Constraints: Stay dogfood-first, avoid consumer novelty sprawl, keep the proof on ${result.bestSurface}, and respect ${seed.dataClass} handling.`,
+        `Success Metrics: Score ${result.weighted}, recommendation ${result.decision}, backlog band ${result.band}, one founder-use case, one dogfood proof, one buyer path.`,
+        "",
+        "Notes:",
+        `- Source URL: ${seed.videoUrl || "n/a"}`,
+        `- Summary: ${seed.seedSummary || "n/a"}`,
+        `- Why it matters: ${seed.whyInteresting || "n/a"}`,
+        `- Recommended lane: ${result.topLane?.label || "n/a"}`,
+        `- Tailored action: ${result.tailoredPath.action}`,
+        `- Next gate: ${result.nextGate}`,
+      ].join("\n");
+    }
+
+    function humanize(value) {
+      return String(value ?? "").replaceAll("_", " ");
+    }
+
+    async function copyText(text) {
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "true");
+      textarea.style.position = "absolute";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+
+    function renderHeroKpis() {
+      const items = [
+        { label: "Priority Wedges", value: "3 active", note: "AI referral, friction, qualified booking" },
+        { label: "Dogfood Rule", value: "Mandatory", note: "BosonIT must use it first" },
+        { label: "Proof Horizon", value: "14 days", note: "Default prototype window" },
+        { label: "Decision Output", value: "Seed-ready", note: "Recommendation plus export packet" },
+      ];
+      document.getElementById("heroKpis").innerHTML = items.map((item) => `
+        <div class="kpi">
+          <label>${escapeHtml(item.label)}</label>
+          <strong>${escapeHtml(item.value)}</strong>
+          <small>${escapeHtml(item.note)}</small>
+        </div>
+      `).join("");
+    }
+
+    function renderScorecards(result) {
+      const items = [
+        { label: "Overall Score", value: result.weighted, note: "Weighted toward trajectory, revenue, and capacity" },
+        { label: "Trajectory Fit", value: result.metrics.trajectory, note: "Active wedge fit and founder-use case" },
+        { label: "Revenue Proximity", value: result.metrics.revenue, note: "Buyer clarity, offer shape, and proof horizon" },
+        { label: "Capacity Fit", value: result.metrics.capacity, note: "Can BosonIT build and dogfood this now?" },
+        { label: "Governance Load", value: result.metrics.governance, note: "Lower risk ideas score higher" },
+        { label: "Novelty Value", value: result.metrics.novelty, note: "Distinct mechanism without drift" },
+      ];
+      document.getElementById("scoreGrid").innerHTML = items.map((item) => `
+        <div class="metric">
+          <label>${escapeHtml(item.label)}</label>
+          <strong class="${escapeHtml(ratingClass(item.value))}">${escapeHtml(String(item.value))}</strong>
+          <small>${escapeHtml(item.note)}</small>
+        </div>
+      `).join("");
+    }
+
+    function renderLaneGrid(result) {
+      document.getElementById("laneGrid").innerHTML = result.laneScores.map((lane) => `
+        <article class="lane-card ${escapeHtml(lane.className)}">
+          <label>${escapeHtml(lane.label)}</label>
+          <strong>${escapeHtml(lane.blueprint)}</strong>
+          <small>${escapeHtml(lane.buyerSegment)}</small>
+          <div class="lane-score">
+            <span>${escapeHtml(`${lane.score.toFixed(0)} / 100`)}</span>
+            <span>${escapeHtml(lane.matches.length ? `${lane.matches.length} keyword signals` : "No direct match")}</span>
+          </div>
+          <div class="bar"><span style="width:${Math.max(8, lane.score)}%"></span></div>
+          <small>${escapeHtml(lane.implementationSurface)}</small>
+        </article>
+      `).join("");
+    }
+
+    function renderImplementation(result) {
+      const blocks = [
+        { label: "Action", value: result.tailoredPath.action, note: "What to do with the seed now" },
+        { label: "Implementation Surface", value: result.bestSurface, note: "Where this should live first" },
+        { label: "Proof Path", value: result.tailoredPath.proof, note: "How to validate in 14 days" },
+        { label: "Next Gate", value: result.nextGate, note: "What approval or constraint comes next" },
+      ];
+      document.getElementById("implementationBlocks").innerHTML = blocks.map((block) => `
+        <div class="block">
+          <label>${escapeHtml(block.label)}</label>
+          <strong>${escapeHtml(block.value)}</strong>
+          <small>${escapeHtml(block.note)}</small>
+        </div>
+      `).join("");
+    }
+
+    function renderDecision(seed, result) {
+      const decisionClass = result.decision === "Pursue" ? "ok" : result.decision === "Repurpose" ? "warn" : "bad";
+      const decisionText = result.decision === "Pursue"
+        ? `This seed should move now. It maps cleanly into ${result.topLane?.label || "an active lane"}, fits current capacity, and has a credible dogfood proof path.`
+        : result.decision === "Repurpose"
+          ? `The raw inspiration is not strong enough in its current framing, but the mechanism can be repurposed into ${result.topLane?.label || "a current lane"} without wasting the idea.`
+          : `This seed should be parked for now. It does not currently fit BosonIT trajectory, near-term capacity, or dogfood-first constraints tightly enough.`;
+
+      document.getElementById("decisionBadge").className = `decision-badge ${decisionClass}`;
+      document.getElementById("decisionBadge").textContent = `${result.decision} · ${result.weighted}`;
+      document.getElementById("recommendationBadge").className = `decision-badge ${decisionClass}`;
+      document.getElementById("recommendationBadge").textContent = `${result.topLane?.label || "No lane"} · ${result.blueprint}`;
+      document.getElementById("decisionText").textContent = decisionText;
+      document.getElementById("decisionModeLabel").textContent = `${result.decision} now`;
+      document.getElementById("decisionModeNote").textContent = `Target ${result.topLane?.label || "n/a"} on ${result.bestSurface}.`;
+      document.getElementById("backlogBandLabel").textContent = result.band;
+      document.getElementById("backlogBandNote").textContent = `Route through ${result.decision === "Pursue" ? "active candidate" : result.decision === "Repurpose" ? "repurpose review" : "parked seed"} handling.`;
+    }
+
+    function renderOutputs(seed, result) {
+      const seedJson = JSON.stringify(buildSeedJson(seed, result), null, 2);
+      const requestBrief = buildRequestBrief(seed, result);
+      document.getElementById("seedJsonOutput").value = seedJson;
+      document.getElementById("requestBriefOutput").value = requestBrief;
+    }
+
+    function updatePreview(url) {
+      const frame = document.getElementById("videoFrame");
+      const placeholder = document.getElementById("videoPlaceholder");
+      const videoId = parseYouTubeId(url);
+      if (!videoId) {
+        frame.hidden = true;
+        frame.src = "";
+        placeholder.hidden = false;
+        return;
+      }
+      frame.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`;
+      frame.hidden = false;
+      placeholder.hidden = true;
+    }
+
+    function persist(seed) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+    }
+
+    function restore() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const seed = JSON.parse(raw);
+        Object.entries(seed).forEach(([key, value]) => {
+          const element = document.getElementById(key);
+          if (element && typeof value === "string") {
+            element.value = value;
+          }
+        });
+      } catch {
+      }
+    }
+
+    function scoreCurrentSeed() {
+      const seed = buildSeedData();
+      const result = scoreSeed(seed);
+      persist(seed);
+      renderDecision(seed, result);
+      renderScorecards(result);
+      renderLaneGrid(result);
+      renderImplementation(result);
+      renderOutputs(seed, result);
+      updatePreview(seed.videoUrl);
+    }
+
+    renderHeroKpis();
+    restore();
+    updatePreview(document.getElementById("videoUrl").value);
+    scoreCurrentSeed();
+
+    document.getElementById("scoreBtn").addEventListener("click", scoreCurrentSeed);
+    document.getElementById("videoUrl").addEventListener("input", (event) => updatePreview(event.target.value));
+    document.querySelectorAll("input, select, textarea").forEach((element) => {
+      element.addEventListener("change", scoreCurrentSeed);
+      if (element.tagName === "TEXTAREA" || element.tagName === "INPUT") {
+        element.addEventListener("blur", scoreCurrentSeed);
+      }
+    });
+    document.getElementById("copySeedJson").addEventListener("click", () => copyText(document.getElementById("seedJsonOutput").value));
+    document.getElementById("copyRequestBrief").addEventListener("click", () => copyText(document.getElementById("requestBriefOutput").value));
+  </script>
+</body>
+</html>

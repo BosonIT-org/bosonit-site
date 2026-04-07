@@ -1,80 +1,144 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BosonIT Control Surface</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #091021;
-      --panel: rgba(9, 23, 43, 0.86);
-      --line: rgba(162, 211, 255, 0.24);
-      --text: #eff7ff;
-      --muted: #a5c1dd;
-    }
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 1rem;
-      color: var(--text);
-      background:
-        radial-gradient(50rem 30rem at 0% 0%, rgba(16, 183, 255, 0.26), transparent 55%),
-        radial-gradient(42rem 36rem at 100% 100%, rgba(56, 224, 163, 0.2), transparent 60%),
-        var(--bg);
-      font-family: "Space Grotesk", sans-serif;
-    }
-    .card {
-      width: min(760px, 100%);
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 22px;
-      padding: 1.25rem;
-      box-shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
-      display: grid;
-      gap: 0.85rem;
-    }
-    h1 {
-      margin: 0;
-      font-size: clamp(1.5rem, 3vw, 2.4rem);
-      line-height: 1.1;
-    }
-    p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.96rem;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    a {
-      color: #e4f4ff;
-      text-decoration: none;
-      border: 1px solid rgba(178, 224, 255, 0.36);
-      border-radius: 11px;
-      padding: 0.5rem 0.78rem;
-      font-size: 0.86rem;
-      background: linear-gradient(145deg, rgba(21, 44, 74, 0.9), rgba(15, 29, 49, 0.95));
-    }
-  </style>
-</head>
-<body>
-  <main class="card">
-    <h1>BosonIT Operational Surface</h1>
-    <p>Use the control plane dashboard for a single source of truth on habitat compliance, inflight execution, dispatch health, and model routing.</p>
-    <div class="actions">
-      <a href="/control-plane">Open Control Plane Dashboard</a>
-      <a href="/services/">Services</a>
-    </div>
-  </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BosonIT | Where Ideas Gain Mass</title>
+    <meta
+      name="description"
+      content="BosonIT builds governed AI operator systems. Explore the hero field, then step into OpportunityOS, StreetPulse, Innovation Control, and the public control plane."
+    />
+    <meta property="og:title" content="BosonIT | Where Ideas Gain Mass" />
+    <meta
+      property="og:description"
+      content="A hero-driven public landing surface for BosonIT's governed AI workflow, proof, and commercialization systems."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bosonit.org/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/vendor/spec-kit/tokens.css" />
+    <script type="module" crossorigin src="/assets/index-DJ4LL_Vw.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-hero-rings-v2.css" />
+  </head>
+  <body>
+    <header class="nav" id="home">
+      <div class="nav__inner">
+        <a class="brand" href="#home" aria-label="BosonIT Home">BosonIT</a>
+        <nav class="menu">
+          <a href="#products">Products</a>
+          <a href="#services">Services</a>
+          <a href="/startup-proof/">Proof</a>
+          <a class="btn" href="#contact">Contact</a>
+          <a id="calmToggle" href="#" title="Toggle Calm Mode" style="opacity:.8">Calm</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="hero-lattice">
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+        <svg id="hero-orbit" aria-hidden="true"></svg>
+        <div class="hero__content">
+          <h1>Where ideas gain mass</h1>
+          <p>
+            In physics, the Higgs field gives particles mass. At BosonIT, we design the field behind products:
+            governed AI workflow, evidence, and operator systems that turn motion into revenue instead of noise.
+          </p>
+          <div class="actions">
+            <a class="btn btn--ghost" href="#products">Enter the Field</a>
+            <a class="btn" href="/startup-proof/" style="margin-left:8px">Inspect Operating Proof</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="section lattice-top">
+        <div class="section__inner">
+          <h2>Products <span class="pill">Revenue Paths</span></h2>
+          <p class="lead">
+            The public BosonIT surface should feel alive. These are the current product lanes tied directly to the habitat.
+          </p>
+          <div class="grid" style="margin-top:16px">
+            <div class="card" style="grid-column: 1 / -1; border-color: var(--accent)">
+              <h3>OpportunityOS <span class="pill">Flagship</span></h3>
+              <p>The lead system for federal opportunity intelligence, evidence automation, and secure mission rooms.</p>
+              <p><a class="btn" href="/opportunity-os/">Review OpportunityOS</a></p>
+            </div>
+            <div class="card" style="grid-column: 1 / -1">
+              <h3>StreetPulse <span class="pill">Live</span></h3>
+              <p>Live leave-now intelligence packaged as a public surface with a real pilot offer, not a dead-end brochure.</p>
+              <p><a class="btn btn--ghost" href="/streetpulse/">Review StreetPulse</a></p>
+            </div>
+            <div class="card">
+              <h3>Innovation Control</h3>
+              <p>Route outside ideas into a governed seed and backlog system tied to BosonIT's real operating geometry.</p>
+              <p><a class="btn btn--ghost" href="/innovation-control/">Review System</a></p>
+            </div>
+            <div class="card">
+              <h3>Startup Proof</h3>
+              <p>Reviewer-facing evidence on the operator habitat, commercialization path, and credit-worthy infrastructure posture.</p>
+              <p><a class="btn btn--ghost" href="/startup-proof/">Open Startup Proof</a></p>
+            </div>
+            <div class="card">
+              <h3>Control Plane</h3>
+              <p>Public observability shell for the BosonIT operating room, with current dataset signals and route verification.</p>
+              <p><a class="btn btn--ghost" href="/control-plane/">Inspect Control Plane</a></p>
+            </div>
+            <div class="card">
+              <h3>Commercial Services</h3>
+              <p>Current service plane for buyer-facing offers, packaging, and operator-system commercialization.</p>
+              <p><a class="btn btn--ghost" href="/services/">Open Services</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="section lattice-top">
+        <div class="section__inner">
+          <h2>Services & Infrastructure</h2>
+          <p class="lead">The stack behind the hero is governed delivery, not decorative theater.</p>
+          <div class="grid" style="margin-top:16px">
+            <div class="card">
+              <h3>Private Operator Rooms</h3>
+              <p>Secure mission rooms and approval-first collaboration built around Nextcloud, Cloudflare, and governed access.</p>
+            </div>
+            <div class="card">
+              <h3>Workflow & Evidence Automation</h3>
+              <p>Windmill, approval capture, artifact generation, and public proof surfaces that stay tied to real operations.</p>
+            </div>
+            <div class="card">
+              <h3>Creative Proof Factory</h3>
+              <p>Reviewer-grade decks, media packs, narrated artifacts, and commercialization collateral built from live systems.</p>
+            </div>
+            <div class="card">
+              <h3>Governed AI Execution</h3>
+              <p>Browser-native execution, Vault-backed secrets, operator review, and observability instead of vague chatbot promises.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section lattice-top">
+        <div class="section__inner">
+          <h2>Let’s Build Something Excellent</h2>
+          <p>Start from a live BosonIT surface, then move into a buyer-specific system with governed delivery.</p>
+          <div class="grid" style="margin-top:16px">
+            <div class="card">
+              <h3>Start with Proof</h3>
+              <p>See the actual operating evidence and commercialization logic before we discuss implementation.</p>
+              <p><a class="btn" href="/startup-proof/">Open Startup Proof</a></p>
+            </div>
+            <div class="card">
+              <h3>Talk to BosonIT</h3>
+              <p>Founder-led intake for operator systems, opportunity intelligence, and workflow commercialization.</p>
+              <p><a class="btn btn--ghost" href="mailto:kenneth@bosonit.org">kenneth@bosonit.org</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">© 2026 BosonIT · <a href="#home">Back to Home</a></footer>
+  </body>
 </html>

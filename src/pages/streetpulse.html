@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreetPulse | Leave-Now Intelligence</title>
+  <meta name="description" content="StreetPulse turns public traffic video into a live leave-now answer for fleets, venues, campuses, and anyone navigating the city." />
+  <meta name="theme-color" content="#0e2237" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="StreetPulse" />
+  <link rel="manifest" href="/streetpulse.webmanifest?v=20260310t1038" />
+  <link rel="icon" href="/icons/streetpulse-icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/icons/streetpulse-icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f5f1ea;
+      --paper: rgba(255, 251, 245, 0.84);
+      --ink: #102235;
+      --muted: #5b6775;
+      --line: rgba(16, 34, 53, 0.12);
+      --marine: #0e2237;
+      --teal: #149191;
+      --mint: #31d2a4;
+      --gold: #f2bb51;
+      --rose: #eb7f85;
+      --panel-shadow: 0 24px 60px rgba(10, 22, 32, 0.14);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Space Grotesk", sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(49, 210, 164, 0.18), transparent 20%),
+        radial-gradient(circle at 88% 12%, rgba(14, 34, 55, 0.2), transparent 24%),
+        radial-gradient(circle at 60% 80%, rgba(242, 187, 81, 0.12), transparent 18%),
+        linear-gradient(180deg, #efe8dd 0%, #f8f5f0 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      width: 32rem;
+      height: 32rem;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 16s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      top: -10rem;
+      right: -8rem;
+      background: rgba(20, 145, 145, 0.48);
+    }
+
+    body::after {
+      left: -10rem;
+      bottom: -12rem;
+      background: rgba(242, 187, 81, 0.4);
+      animation-duration: 20s;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(1.5rem, -1rem, 0) scale(1.08); }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      width: min(1280px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 72px;
+    }
+
+    .load-in {
+      animation: rise 0.7s ease forwards;
+    }
+
+    .shell,
+    .panel,
+    .hero-surface,
+    .decision-surface,
+    .camera-card,
+    .use-card,
+    .story-card,
+    .pilot-card,
+    .receipt-card,
+    .track-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--panel-shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .shell {
+      border-radius: 38px;
+      padding: 16px;
+      background: rgba(255, 252, 248, 0.76);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 10px 20px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.86rem;
+    }
+
+    .brand-mark {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--mint));
+      box-shadow: 0 0 0 6px rgba(49, 210, 164, 0.12);
+    }
+
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .top-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+
+    .hero-surface {
+      border-radius: var(--radius-xl);
+      padding: 34px;
+      min-height: 32rem;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 252, 248, 0.92), rgba(246, 241, 234, 0.9)),
+        radial-gradient(circle at 100% 0, rgba(49, 210, 164, 0.14), transparent 38%);
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 22px;
+      max-width: 42rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 2.2rem;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.6;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3.4rem, 9vw, 6.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+      max-width: 11ch;
+    }
+
+    h1 em {
+      display: block;
+      font-style: normal;
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      color: #194463;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+
+    .hero-chips,
+    .city-row,
+    .cta-row,
+    .micro-stats,
+    .signal-pill-row,
+    .pilot-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip,
+    .city-btn,
+    .signal-pill,
+    .pilot-point {
+      border-radius: 999px;
+      border: 1px solid rgba(16, 34, 53, 0.08);
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--ink);
+      padding: 12px 16px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .chip strong,
+    .pilot-point strong {
+      color: var(--marine);
+    }
+
+    .city-btn {
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .city-btn:hover,
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .city-btn.active {
+      background: linear-gradient(135deg, var(--marine), var(--teal));
+      color: white;
+      box-shadow: 0 16px 34px rgba(20, 145, 145, 0.24);
+    }
+
+    .cta-row { align-items: center; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 14px 20px;
+      font-weight: 700;
+      font-size: 0.96rem;
+      font-family: inherit;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--teal), var(--mint));
+      color: white;
+      box-shadow: 0 16px 34px rgba(20, 145, 145, 0.24);
+    }
+
+    .button-disabled {
+      pointer-events: none;
+      opacity: 0.48;
+      box-shadow: none;
+      filter: saturate(0.7);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--ink);
+      border: 1px solid rgba(16, 34, 53, 0.08);
+    }
+
+    .button-ghost {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.94rem;
+      font-weight: 700;
+    }
+
+    .button-install[hidden] {
+      display: none;
+    }
+
+    .micro-stats {
+      margin-top: 4px;
+    }
+
+    .micro-stat {
+      min-width: 10.5rem;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(16, 34, 53, 0.08);
+    }
+
+    .micro-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .micro-stat strong {
+      font-size: 1.3rem;
+      color: var(--marine);
+    }
+
+    .hero-glow {
+      position: absolute;
+      right: -8rem;
+      top: 5rem;
+      width: 20rem;
+      height: 20rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(49, 210, 164, 0.26), transparent 64%);
+      opacity: 0.72;
+      pointer-events: none;
+    }
+
+    body[data-pulse-mode="live"] .hero-glow {
+      background: radial-gradient(circle, rgba(49, 210, 164, 0.34), transparent 62%);
+      opacity: 0.9;
+    }
+
+    body[data-pulse-mode="blocked"] .hero-glow {
+      background: radial-gradient(circle, rgba(235, 127, 133, 0.3), transparent 62%);
+      opacity: 0.8;
+    }
+
+    .decision-surface {
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      display: grid;
+      gap: 18px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(49, 210, 164, 0.16), transparent 28%),
+        linear-gradient(180deg, #102437 0%, #0a1622 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .decision-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 14px;
+    }
+
+    .decision-head p,
+    .decision-subtle,
+    .route-note {
+      color: rgba(232, 238, 244, 0.72);
+    }
+
+    .decision-head h2,
+    .proof-header h2,
+    .field-header h2,
+    .pilot-card h2 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+
+    .decision-badge,
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .status-pill.good { background: rgba(49, 210, 164, 0.18); color: #acffe4; }
+    .status-pill.warn { background: rgba(242, 187, 81, 0.16); color: #ffe0ab; }
+    .status-pill.bad { background: rgba(235, 127, 133, 0.18); color: #ffd0d3; }
+
+    .decision-main {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .decision-main h3 {
+      margin: 0;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .decision-main p {
+      margin: 0;
+      max-width: 46ch;
+      color: rgba(232, 238, 244, 0.8);
+      line-height: 1.65;
+    }
+
+    .metric-grid,
+    .story-grid,
+    .use-grid,
+    .camera-grid,
+    .offer-grid,
+    .track-grid,
+    .proof-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .metric-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .metric-card {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .metric-card span {
+      display: block;
+      color: rgba(232, 238, 244, 0.62);
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .metric-card strong {
+      display: block;
+      font-size: 1.5rem;
+    }
+
+    .story-grid,
+    .use-grid,
+    .offer-grid,
+    .track-grid,
+    .proof-grid,
+    .feed-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .story-card,
+    .use-card,
+    .offer-card,
+    .track-card,
+    .proof-card,
+    .feed-card {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+    }
+
+    .story-card h3,
+    .use-card h3,
+    .offer-card h3,
+    .track-card h3,
+    .proof-card h3,
+    .feed-card h3,
+    .camera-card h3,
+    .receipt-card h3,
+    .pilot-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .story-card p,
+    .use-card p,
+    .offer-card p,
+    .track-card p,
+    .proof-card p,
+    .feed-card p,
+    .camera-card p,
+    .receipt-card p,
+    .pilot-card p,
+    .route-note,
+    .muted {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-shell {
+      margin-top: 18px;
+      padding: 22px;
+      border-radius: 30px;
+      background: rgba(255, 252, 248, 0.65);
+      border: 1px solid rgba(16, 34, 53, 0.08);
+      box-shadow: var(--panel-shadow);
+    }
+
+    .field-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .field-header,
+    .proof-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .camera-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .camera-card {
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .camera-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    .camera-head strong {
+      font-size: 1.08rem;
+    }
+
+    .camera-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(16, 34, 53, 0.06);
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .camera-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-top: 12px;
+      border: 1px solid rgba(16, 34, 53, 0.08);
+      background:
+        linear-gradient(135deg, rgba(20, 145, 145, 0.12), rgba(49, 210, 164, 0.12)),
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.6), transparent 30%);
+    }
+
+    .placeholder-thumb {
+      display: grid;
+      place-items: center;
+      color: rgba(16, 34, 53, 0.42);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .receipt-card,
+    .pilot-card {
+      border-radius: 24px;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .feed-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .feed-card {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .offer-card {
+      display: grid;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .offer-tier {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(16, 34, 53, 0.06);
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .offer-price {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+    }
+
+    .offer-price strong {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      color: var(--marine);
+    }
+
+    .offer-price span {
+      padding-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .feed-kicker {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 8px;
+    }
+
+    .feed-value {
+      display: block;
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      color: var(--marine);
+      font-weight: 700;
+    }
+
+    .route-note strong {
+      color: var(--marine);
+    }
+
+    pre {
+      margin: 12px 0 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: #0d1723;
+      color: #dffef3;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 220px;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .pilot-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(249,245,238,0.92));
+    }
+
+    .pilot-price {
+      display: flex;
+      align-items: end;
+      gap: 12px;
+      margin: 12px 0 14px;
+    }
+
+    .pilot-price strong {
+      font-size: clamp(2.8rem, 7vw, 4rem);
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+    }
+
+    .pilot-price span {
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.76rem;
+      padding-bottom: 8px;
+    }
+
+    .pilot-points {
+      margin: 16px 0 20px;
+    }
+
+    .pilot-point {
+      background: rgba(255, 255, 255, 0.84);
+    }
+
+    .subtle-line {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(16,34,53,0), rgba(16,34,53,0.16), rgba(16,34,53,0));
+      margin: 14px 0;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .field-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .story-grid,
+      .use-grid,
+      .offer-grid,
+      .track-grid,
+      .proof-grid,
+      .feed-grid,
+      .camera-grid,
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shell {
+        padding: 12px;
+      }
+
+      .hero-surface,
+      .decision-surface,
+      .section-shell {
+        padding: 20px;
+      }
+
+      h1 {
+        max-width: 8ch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="topbar load-in" style="animation-delay: 0.02s;">
+      <div class="brand"><span class="brand-mark"></span>StreetPulse Flagship</div>
+      <div class="top-links">
+        <span>Public camera intelligence for the whole city</span>
+        <a href="/services/">Services</a>
+        <a href="/control-plane/">Control plane</a>
+      </div>
+    </div>
+
+    <div class="shell load-in" style="animation-delay: 0.08s;">
+      <section class="hero">
+        <article class="hero-surface">
+          <div class="hero-glow"></div>
+          <div class="hero-grid">
+            <div class="eyebrow">Live city decision layer</div>
+            <h1>See the city move <em>before you do.</em></h1>
+            <p class="lede" id="heroLede">StreetPulse turns public traffic cameras into a leave-now answer for anyone moving through a live city. Singapore demonstrates the strongest live-feeling public-feed experience, with real camera inventory and visible compliance proof.</p>
+            <div class="hero-chips">
+              <div class="chip"><strong>Zero signup</strong> first impression</div>
+              <div class="chip"><strong>Public-feed only</strong> compliance posture</div>
+              <div class="chip"><strong>Buyable now</strong> 14-day paid pilot</div>
+            </div>
+            <div class="city-row" id="cityRow"></div>
+            <div class="cta-row">
+              <a class="button button-primary" id="launchPilotLink" href="https://pay.bosonit.org/?amount=2500&product=StreetPulse+Fleet+Pilot&billing=one_time&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A00i77Wfi8ctj4Wo0Jq0h&utm_source=streetpulse&utm_medium=public_flagship&rv=20260305" target="_blank" rel="noreferrer">Launch 14-day pilot</a>
+              <a class="button button-secondary" href="#proof">See why this converts</a>
+              <button class="button button-secondary button-install" id="installButton" type="button" hidden>Install app</button>
+              <a class="button-ghost" href="/services/">Browse other BosonIT rails</a>
+            </div>
+            <div class="micro-stats">
+              <div class="micro-stat">
+                <span>Signal model</span>
+                <strong id="microSignal">Delay-aware routing</strong>
+              </div>
+              <div class="micro-stat">
+                <span>Primary wedge</span>
+                <strong id="microWedge">Ingress management</strong>
+              </div>
+              <div class="micro-stat">
+                <span>Trust rail</span>
+                <strong id="microTrust">Live public feed + terms</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="decision-surface">
+          <div class="decision-head">
+            <div>
+              <h2>Decision surface</h2>
+              <p class="decision-subtle" id="decisionSubtle">This is the most compelling live-feed corridor in the flagship page right now.</p>
+            </div>
+            <div class="decision-badge status-pill warn" id="decisionPill">Delay advised</div>
+          </div>
+          <div class="decision-main">
+            <h3 id="decisionTitle">Delay 15 min</h3>
+            <p id="decisionRecommendation">Delay 15 minutes if the trip is flexible.</p>
+            <div class="signal-pill-row">
+              <div class="signal-pill" id="signalAudience">Built for venue and transfer ops</div>
+              <div class="signal-pill" id="signalScenario">Live arrival orchestration</div>
+              <div class="signal-pill" id="signalTrust">Live inventory synced</div>
+            </div>
+          </div>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <span>Score</span>
+              <strong id="metricScore">0.503</strong>
+            </div>
+            <div class="metric-card">
+              <span>Confidence</span>
+              <strong id="metricConfidence">80%</strong>
+            </div>
+            <div class="metric-card">
+              <span>Live feed count</span>
+              <strong id="metricLive">90</strong>
+            </div>
+            <div class="metric-card">
+              <span>Freshest capture</span>
+              <strong id="metricFresh">Live sync</strong>
+            </div>
+          </div>
+          <div class="story-grid">
+            <article class="story-card">
+              <h3>What it removes</h3>
+              <p id="storyFriction">Late discovery of compression near pickup, dropoff, or gate windows.</p>
+            </article>
+            <article class="story-card">
+              <h3>What buyers feel</h3>
+              <p id="storyPayoff">Operators can hold or release arrivals with live camera-backed evidence.</p>
+            </article>
+            <article class="story-card">
+              <h3>Why it is sellable</h3>
+              <p id="storyReason">The public LTA feed makes the product feel unmistakably live and immediately credible.</p>
+            </article>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section section-shell load-in" style="animation-delay: 0.12s;">
+        <div class="proof-header">
+          <div>
+            <div class="eyebrow">Premier use cases</div>
+            <h2>One surface, multiple high-friction decisions</h2>
+          </div>
+          <p class="muted">StreetPulse is intentionally broad enough to be compelling on first sight, but narrow enough to buy as a paid pilot.</p>
+        </div>
+        <div class="use-grid">
+          <article class="use-card">
+            <h3>Fleets</h3>
+            <p>Dispatch managers can decide whether to release drivers now, route around compression, or absorb a short delay while keeping the proof trail intact.</p>
+          </article>
+          <article class="use-card">
+            <h3>Campuses</h3>
+            <p>Operators can time staff arrivals, gate holds, and shift handoffs when the last mile around a facility begins to tighten.</p>
+          </article>
+          <article class="use-card">
+            <h3>Venues</h3>
+            <p>Event teams can turn camera-backed ingress checks into cleaner arrival windows, calmer staffing, and fewer line shocks at the curb.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-shell load-in" style="animation-delay: 0.16s;">
+        <div class="field-layout">
+          <div>
+            <div class="field-header">
+              <div>
+                <div class="eyebrow">Camera-backed proof</div>
+                <h2>Inspect the exact sources</h2>
+              </div>
+              <p class="muted" id="cameraHeaderNote">Singapore upgrades the experience with live public LTA camera inventory when the endpoint responds.</p>
+            </div>
+            <div class="camera-grid" id="cameraGrid"></div>
+          </div>
+          <div class="stack">
+            <article class="receipt-card">
+              <div class="eyebrow">Decision receipt</div>
+              <h3>Auditable output, not vibes</h3>
+              <p class="route-note" id="receiptIntro">The receipt carries the camera ids, attribution, and terms rail from Singapore's public LTA feed so the buyer sees a grounded decision, not a synthetic score.</p>
+              <pre id="auditLog"></pre>
+            </article>
+            <article class="receipt-card">
+              <div class="eyebrow">Operator angle</div>
+              <h3 id="operatorTitle">Ingress teams can act before the crush arrives.</h3>
+              <p id="operatorCopy">StreetPulse spots compression early enough to shift staffing, release windows, and driver timing before curbside operations degrade.</p>
+              <div class="subtle-line"></div>
+              <p class="route-note" id="operatorPromise">Pilot promise: Prove that live public video can sharpen one ingress or dispatch workflow in under two weeks.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-shell load-in" style="animation-delay: 0.2s;">
+        <div class="proof-header">
+          <div>
+            <div class="eyebrow">Feed integrity</div>
+            <h2>Ironclad feed rail</h2>
+          </div>
+          <p class="muted">StreetPulse treats feed reliability as product quality: live when possible, cached when needed, explicit when sample-backed.</p>
+        </div>
+        <div class="feed-grid">
+          <article class="feed-card">
+            <span class="feed-kicker">Active source</span>
+            <strong class="feed-value" id="feedSourceMode">Live public endpoint</strong>
+            <p id="feedEndpoint">Singapore live inventory loads after page hydration.</p>
+          </article>
+          <article class="feed-card">
+            <span class="feed-kicker">Fallback rail</span>
+            <strong class="feed-value" id="feedFallback">Browser cache is armed</strong>
+            <p id="feedCache">If the live endpoint stalls, StreetPulse can reuse the last good snapshot instead of failing open.</p>
+          </article>
+          <article class="feed-card">
+            <span class="feed-kicker">Mobile install</span>
+            <strong class="feed-value" id="installStatus">Browser-installable</strong>
+            <p id="installHint">Install StreetPulse to the home screen for a full-screen mobile surface without shipping a separate native app.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="proof" class="section section-shell load-in" style="animation-delay: 0.22s;">
+        <div class="proof-header">
+          <div>
+            <div class="eyebrow">Why this converts</div>
+            <h2>The product shows its own proof</h2>
+          </div>
+          <p class="muted">The experience is designed to remove the three biggest blockers to first revenue: disbelief, login friction, and unclear handoff.</p>
+        </div>
+        <div class="proof-grid">
+          <article class="proof-card">
+            <h3>No signup cliff</h3>
+            <p>Anyone can hit the page, change a corridor, and feel the product without surrendering contact data up front.</p>
+          </article>
+          <article class="proof-card">
+            <h3>Visible evidence</h3>
+            <p>The camera cards and receipt rail show that the answer is grounded in named sources, not a black-box score.</p>
+          </article>
+          <article class="proof-card">
+            <h3>Immediate paid motion</h3>
+            <p>The pilot CTA is live, specific, and attached to a real checkout instead of a “book a demo” dead end.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-shell load-in" style="animation-delay: 0.26s;">
+        <div class="proof-header">
+          <div>
+            <div class="eyebrow">Pilot frame</div>
+            <h2>Sold as a sharp, finite wedge</h2>
+          </div>
+          <p class="muted">StreetPulse does not ask the buyer to buy a platform first. It asks them to buy one fast operational win.</p>
+        </div>
+        <div class="track-grid">
+          <article class="track-card">
+            <h3>Day 1</h3>
+            <p>Agree on one route, venue, or ingress problem where leave-now timing matters and public video can prove value quickly.</p>
+          </article>
+          <article class="track-card">
+            <h3>Day 7</h3>
+            <p>Show a live browser path, route receipts, and operator feedback with no custom app install and no private-feed dependency.</p>
+          </article>
+          <article class="track-card">
+            <h3>Day 14</h3>
+            <p>Decide whether to expand into more corridors, more operating windows, or a deeper API-backed deployment.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-shell load-in" style="animation-delay: 0.30s;">
+        <div class="proof-header">
+          <div>
+            <div class="eyebrow">Offer ladder</div>
+            <h2 id="offerLadderTitle">Start with one workflow. Expand only if it earns it.</h2>
+          </div>
+          <p class="muted" id="offerLadderIntro">The public app proves the experience. The ladder gives the buyer a low-friction diagnostic, a paid pilot, and an optimization path without forcing a platform commitment up front.</p>
+        </div>
+        <div class="offer-grid" id="offerGrid"></div>
+      </section>
+
+      <section class="section section-shell load-in" style="animation-delay: 0.34s;">
+        <article class="pilot-card">
+          <div class="eyebrow">Buy now</div>
+          <h2 id="pilotTitle">StreetPulse Fleet Pilot</h2>
+          <p id="pilotIntro">The first sell is a premium 14-day pilot for routing and ingress intelligence. The public app proves the experience. The paid pilot turns that into a buyer-specific operational workflow.</p>
+          <div class="pilot-price"><strong id="pilotPriceValue">$2,500</strong><span id="pilotBillingNote">one-time</span></div>
+          <div class="pilot-points">
+            <div class="pilot-point"><strong>Included:</strong> <span id="pilotPointIncluded">browser surface + route receipt + buyer-specific wedge</span></div>
+            <div class="pilot-point"><strong>Grounding:</strong> <span id="pilotPointGrounding">public feeds only, attribution shown, missing terms excluded</span></div>
+            <div class="pilot-point"><strong>Outcome:</strong> <span id="pilotPointOutcome">a go/no-go decision for expansion in 14 days</span></div>
+          </div>
+          <div class="cta-row">
+            <a class="button button-primary" id="bottomLaunchPilotLink" href="https://pay.bosonit.org/?amount=2500&product=StreetPulse+Fleet+Pilot&billing=one_time&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A00i77Wfi8ctj4Wo0Jq0h&utm_source=streetpulse&utm_medium=public_flagship&rv=20260305" target="_blank" rel="noreferrer">Start the paid pilot</a>
+            <a class="button button-secondary" href="/services/">Review the BosonIT rails</a>
+          </div>
+        </article>
+      </section>
+
+      <p class="footer-note load-in" id="footerNote" style="animation-delay: 0.38s;">StreetPulse is intentionally public-first: anyone can feel the product, inspect the proof, install it from the browser, and take the paid motion in a single session.</p>
+    </div>
+  </main>
+
+  <script id="sampleData" type="application/json">
+{
+  "providers": [
+    {"id": "sg-lta", "label": "Singapore LTA Traffic Images", "region": "singapore", "attribution_text": "Traffic images from data.gov.sg / Land Transport Authority", "terms_url": "https://api.data.gov.sg/v1/transport/traffic-images"},
+    {"id": "us-txdot", "label": "TxDOT Traffic Cameras", "region": "austin", "attribution_text": "Traffic camera images courtesy of TxDOT", "terms_url": "https://www.txdot.gov/discover/live-traffic-cameras.html"},
+    {"id": "us-511ny", "label": "511NY Traffic Cameras", "region": "manhattan", "attribution_text": "Traffic camera images courtesy of 511NY / NYSDOT", "terms_url": "https://511ny.org/"}
+  ],
+  "cameras": [
+    {"camera_id": "txdot-aus-i35-51st", "provider_id": "us-txdot", "city": "austin", "label": "I-35 at 51st", "location": {"lat": 30.3056, "lng": -97.7241}},
+    {"camera_id": "txdot-aus-mopac-2222", "provider_id": "us-txdot", "city": "austin", "label": "MoPac at 2222", "location": {"lat": 30.3632, "lng": -97.7563}},
+    {"camera_id": "sg-lta-1001", "provider_id": "sg-lta", "city": "singapore", "label": "PIE / Eunos", "location": {"lat": 1.29531332, "lng": 103.871146}},
+    {"camera_id": "sg-lta-1701", "provider_id": "sg-lta", "city": "singapore", "label": "AYE / Alexandra", "location": {"lat": 1.323604823, "lng": 103.8587802}},
+    {"camera_id": "ny-511-fdr-23rd", "provider_id": "us-511ny", "city": "manhattan", "label": "FDR at 23rd", "location": {"lat": 40.7362, "lng": -73.9731}}
+  ],
+  "observations": [
+    {"observation_id": "obs-aus-1", "camera_id": "txdot-aus-i35-51st", "city": "austin", "captured_at_utc": "2026-03-05T23:28:00Z", "motion_score": 0.66, "congestion_score": 0.28, "incident_risk": 0.17, "normalized_speed_index": 0.79},
+    {"observation_id": "obs-aus-2", "camera_id": "txdot-aus-mopac-2222", "city": "austin", "captured_at_utc": "2026-03-05T23:28:00Z", "motion_score": 0.61, "congestion_score": 0.31, "incident_risk": 0.21, "normalized_speed_index": 0.76},
+    {"observation_id": "obs-sg-1", "camera_id": "sg-lta-1001", "city": "singapore", "captured_at_utc": "2026-03-05T23:28:00Z", "motion_score": 0.42, "congestion_score": 0.63, "incident_risk": 0.36, "normalized_speed_index": 0.49},
+    {"observation_id": "obs-sg-2", "camera_id": "sg-lta-1701", "city": "singapore", "captured_at_utc": "2026-03-05T23:28:00Z", "motion_score": 0.39, "congestion_score": 0.58, "incident_risk": 0.34, "normalized_speed_index": 0.55},
+    {"observation_id": "obs-nyc-1", "camera_id": "ny-511-fdr-23rd", "city": "manhattan", "captured_at_utc": "2026-03-05T23:28:00Z", "motion_score": 0.48, "congestion_score": 0.51, "incident_risk": 0.29, "normalized_speed_index": 0.58}
+  ],
+  "fallback_profiles": {
+    "austin": {"score": 0.251, "confidence": 0.80, "recommendation": "Leave now. The corridor is moving cleanly."},
+    "singapore": {"score": 0.503, "confidence": 0.80, "recommendation": "Delay 15 minutes if the trip is flexible."},
+    "manhattan": {"score": 0.531, "confidence": 0.69, "recommendation": "Delay 15 minutes if flexibility exists."},
+    "default": {"score": 0.5, "confidence": 0.42, "recommendation": "Live coverage is sparse. Use historical routing and monitor again shortly."}
+  },
+  "city_profiles": {
+    "austin": {
+      "signal": "Leave-now answer",
+      "wedge": "Fleet dispatch",
+      "audience": "Built for service fleets",
+      "scenario": "Fast curbside routing",
+      "friction": "Blind departure timing and preventable missed slots.",
+      "payoff": "Dispatch sees the route clear enough to release crews confidently.",
+      "reason": "The buyer sees real corridor proof instead of a generic dashboard promise.",
+      "operator_title": "Dispatch teams get an earlier answer.",
+      "operator_copy": "StreetPulse gives the operator a faster release or delay call before downstream compression becomes obvious to everyone else.",
+      "pilot_promise": "Prove that a simple browser answer can improve release timing for one active service corridor.",
+      "header_note": "Austin is sample-backed today, which keeps the experience stable while the offer proves itself.",
+      "hero_lede": "StreetPulse turns public traffic cameras into a leave-now answer for fleets, campuses, venues, and anyone moving through a live city. Austin shows the cleanest low-risk release path.",
+      "subtle": "A calm corridor is still valuable when the buyer can prove it quickly.",
+      "receipt_intro": "The receipt shows exactly which cameras supported the release decision so the buyer can trust a fast go-now call."
+    },
+    "singapore": {
+      "signal": "Delay-aware routing",
+      "wedge": "Ingress management",
+      "audience": "Built for venue and transfer ops",
+      "scenario": "Live arrival orchestration",
+      "friction": "Late discovery of compression near pickup, dropoff, or gate windows.",
+      "payoff": "Operators can hold or release arrivals with live camera-backed evidence.",
+      "reason": "The public LTA feed makes the product feel unmistakably live and immediately credible.",
+      "operator_title": "Ingress teams can act before the crush arrives.",
+      "operator_copy": "StreetPulse spots compression early enough to shift staffing, release windows, and driver timing before curbside operations degrade.",
+      "pilot_promise": "Prove that live public video can sharpen one ingress or dispatch workflow in under two weeks.",
+      "header_note": "Singapore upgrades the experience with live public LTA camera inventory when the endpoint responds.",
+      "hero_lede": "StreetPulse turns public traffic cameras into a leave-now answer for anyone moving through a live city. Singapore demonstrates the strongest live-feeling public-feed experience, with real camera inventory and visible compliance proof.",
+      "subtle": "This is the most compelling live-feed corridor in the flagship page right now.",
+      "receipt_intro": "The receipt carries the camera ids, attribution, and terms rail from Singapore's public LTA feed so the buyer sees a grounded decision, not a synthetic score."
+    },
+    "manhattan": {
+      "signal": "Arrival timing check",
+      "wedge": "Venue ingress",
+      "audience": "Built for event ops",
+      "scenario": "Crowd arrival smoothing",
+      "friction": "Guests, staff, and vendors all hit the last mile without a trusted timing signal.",
+      "payoff": "Venue teams can smooth arrival windows instead of reacting after queues form.",
+      "reason": "Even a single corridor preview makes the venue use case obvious to a buyer fast.",
+      "operator_title": "Venue operators get a cleaner ingress window.",
+      "operator_copy": "StreetPulse helps venue teams avoid the moment when congestion is already visible and expensive to recover from.",
+      "pilot_promise": "Prove that one public corridor can sharpen ingress timing for an event or destination workflow.",
+      "header_note": "Manhattan stays sample-backed, which keeps the city mix broad while the pilot package stays focused.",
+      "hero_lede": "StreetPulse turns public traffic cameras into a leave-now answer for anyone moving through a live city. Manhattan shows how the same product becomes a venue-ingress wedge without changing the buyer's mental model.",
+      "subtle": "A venue buyer should immediately see how this prevents arrival chaos.",
+      "receipt_intro": "The receipt stays explicit even on sample-backed cities: source ids, attribution, and fallback posture are always visible."
+    }
+  }
+}
+  </script>
+  <script>
+    const CHECKOUT_LINKS_URL = "/api/checkout/links";
+    const STREETPULSE_FLAGSHIP_URLS = [
+      "/observatory/streetpulse-flagship.latest.json",
+      "/api/streetpulse/flagship.json"
+    ];
+    const STREETPULSE_FALLBACK_URL = "https://pay.bosonit.org/?amount=2500&product=StreetPulse+Fleet+Pilot&billing=one_time&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A00i77Wfi8ctj4Wo0Jq0h&utm_source=streetpulse&utm_medium=public_flagship&rv=20260305";
+    const fallbackOffers = [
+      {
+        id: "streetpulse-flagship-diagnostic",
+        tier: "entry",
+        name: "StreetPulse Diagnostic",
+        price_usd: 900,
+        billing: "one_time",
+        objective: "Lock the buyer workflow, KPI baseline, and best public-signal corridor before the paid pilot begins.",
+        delivery_outcome: "A tight launch plan, source audit, and success metric sheet.",
+        checkout_url: "https://pay.bosonit.org/?amount=900&product=StreetPulse+Diagnostic&billing=one_time&utm_source=streetpulse&utm_medium=public_flagship",
+      },
+      {
+        id: "streetpulse-fleet-pilot",
+        tier: "core",
+        name: "StreetPulse Fleet Pilot",
+        price_usd: 2500,
+        billing: "one_time",
+        objective: "Put StreetPulse into one live route or ingress workflow with visible camera proof and a paid go/no-go decision in 14 days.",
+        delivery_outcome: "A buyer-specific browser path, route receipt, and proof-backed launch motion.",
+        checkout_url: STREETPULSE_FALLBACK_URL,
+      },
+      {
+        id: "streetpulse-fleet-optimization",
+        tier: "recurring",
+        name: "StreetPulse Fleet Optimization",
+        price_usd: 1200,
+        billing: "subscription",
+        objective: "Tune thresholds, release timing, and rollout quality from live usage after the pilot.",
+        delivery_outcome: "A weekly improvement loop with tracked adoption and routing gains.",
+        checkout_url: "https://pay.bosonit.org/?amount=1200&product=StreetPulse+Fleet+Optimization&billing=subscription&utm_source=streetpulse&utm_medium=public_flagship",
+      }
+    ];
+    const sample = JSON.parse(document.getElementById('sampleData').textContent);
+    const urlParams = new URLSearchParams(window.location.search);
+    const LAB_MODE = urlParams.get('mode') === 'lab';
+    const cityOrder = LAB_MODE ? ['singapore', 'austin', 'manhattan'] : ['singapore'];
+    const DEFAULT_CITY = 'singapore';
+    const MIN_PUBLIC_LIVE_CAMERA_COUNT = 1;
+    const providerById = Object.fromEntries(sample.providers.map((provider) => [provider.id, provider]));
+    const cameraById = Object.fromEntries(sample.cameras.map((camera) => [camera.camera_id, camera]));
+
+    const cityRow = document.getElementById('cityRow');
+    const heroLede = document.getElementById('heroLede');
+    const decisionSubtle = document.getElementById('decisionSubtle');
+    const decisionPill = document.getElementById('decisionPill');
+    const decisionTitle = document.getElementById('decisionTitle');
+    const decisionRecommendation = document.getElementById('decisionRecommendation');
+    const metricScore = document.getElementById('metricScore');
+    const metricConfidence = document.getElementById('metricConfidence');
+    const metricLive = document.getElementById('metricLive');
+    const metricFresh = document.getElementById('metricFresh');
+    const microSignal = document.getElementById('microSignal');
+    const microWedge = document.getElementById('microWedge');
+    const microTrust = document.getElementById('microTrust');
+    const signalAudience = document.getElementById('signalAudience');
+    const signalScenario = document.getElementById('signalScenario');
+    const signalTrust = document.getElementById('signalTrust');
+    const storyFriction = document.getElementById('storyFriction');
+    const storyPayoff = document.getElementById('storyPayoff');
+    const storyReason = document.getElementById('storyReason');
+    const operatorTitle = document.getElementById('operatorTitle');
+    const operatorCopy = document.getElementById('operatorCopy');
+    const operatorPromise = document.getElementById('operatorPromise');
+    const cameraHeaderNote = document.getElementById('cameraHeaderNote');
+    const receiptIntro = document.getElementById('receiptIntro');
+    const cameraGrid = document.getElementById('cameraGrid');
+    const auditLog = document.getElementById('auditLog');
+    const launchPilotLink = document.getElementById('launchPilotLink');
+    const bottomLaunchPilotLink = document.getElementById('bottomLaunchPilotLink');
+    const offerLadderTitle = document.getElementById('offerLadderTitle');
+    const offerLadderIntro = document.getElementById('offerLadderIntro');
+    const offerGrid = document.getElementById('offerGrid');
+    const pilotTitle = document.getElementById('pilotTitle');
+    const pilotIntro = document.getElementById('pilotIntro');
+    const pilotPriceValue = document.getElementById('pilotPriceValue');
+    const pilotBillingNote = document.getElementById('pilotBillingNote');
+    const pilotPointIncluded = document.getElementById('pilotPointIncluded');
+    const pilotPointGrounding = document.getElementById('pilotPointGrounding');
+    const pilotPointOutcome = document.getElementById('pilotPointOutcome');
+    const footerNote = document.getElementById('footerNote');
+    const installButton = document.getElementById('installButton');
+    const feedSourceMode = document.getElementById('feedSourceMode');
+    const feedEndpoint = document.getElementById('feedEndpoint');
+    const feedFallback = document.getElementById('feedFallback');
+    const feedCache = document.getElementById('feedCache');
+    const installStatus = document.getElementById('installStatus');
+    const installHint = document.getElementById('installHint');
+
+    const APP_SHELL_VERSION = '20260310t1038';
+    const FEED_CACHE_KEY = 'streetpulse-live-singapore-cache-v1';
+    const SELECTED_CITY_KEY = 'streetpulse-selected-city-v2';
+    const FEED_TIMEOUT_MS = 4500;
+    let preferredCheckoutOfferIds = ['streetpulse-flagship-pilot', 'streetpulse_fleet_pilot', 'streetpulse-fleet-pilot'];
+    let deferredInstallPrompt = null;
+    let flagshipPayloadStatus = 'pending';
+
+    function setPulseMode(mode) {
+      document.body.dataset.pulseMode = mode;
+    }
+
+    function compliantObservations(city) {
+      return sample.observations
+        .filter((observation) => observation.city === city)
+        .map((observation) => ({ ...observation, camera: cameraById[observation.camera_id], provider: providerById[cameraById[observation.camera_id].provider_id] }))
+        .filter((item) => item.provider?.terms_url && item.provider?.attribution_text);
+    }
+
+    function average(values) {
+      return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+    }
+
+    function formatFresh(value) {
+      if (!value) return 'Sample-backed';
+      try {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return 'Sample-backed';
+        return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      } catch {
+        return 'Sample-backed';
+      }
+    }
+
+    function formatUsd(value) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+      }).format(Number(value) || 0);
+    }
+
+    function formatBillingLabel(value) {
+      const normalized = String(value || '').toLowerCase();
+      if (normalized === 'subscription' || normalized.includes('recurring')) return 'monthly';
+      return 'one-time';
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function renderOfferGrid(offers) {
+      if (!offerGrid) return;
+      if (!Array.isArray(offers) || offers.length === 0) {
+        offerGrid.innerHTML = `
+          <article class="offer-card">
+            <div class="offer-tier">backlog</div>
+            <div>
+              <h3>Public launch paused</h3>
+              <p>StreetPulse stays off the public sales rail until a live feed and flagship contract are both healthy.</p>
+            </div>
+          </article>
+        `;
+        return;
+      }
+      offerGrid.innerHTML = (Array.isArray(offers) ? offers : []).map((offer) => `
+        <article class="offer-card">
+          <div class="offer-tier">${escapeHtml(offer.tier || 'offer')}</div>
+          <div>
+            <h3>${escapeHtml(offer.name || 'StreetPulse Offer')}</h3>
+            <p>${escapeHtml(offer.objective || offer.delivery_outcome || '')}</p>
+          </div>
+          <div class="offer-price">
+            <strong>${escapeHtml(formatUsd(offer.price_usd))}</strong>
+            <span>${escapeHtml(formatBillingLabel(offer.billing || offer.billing_model))}</span>
+          </div>
+          <p>${escapeHtml(offer.delivery_outcome || '')}</p>
+        </article>
+      `).join('');
+    }
+
+    function applyCurrentOffer(offer) {
+      if (!offer) return;
+      const checkoutUrl = offer.checkout_url || STREETPULSE_FALLBACK_URL;
+      launchPilotLink.href = checkoutUrl;
+      bottomLaunchPilotLink.href = checkoutUrl;
+      launchPilotLink.classList.remove('button-disabled');
+      bottomLaunchPilotLink.classList.remove('button-disabled');
+      launchPilotLink.textContent = `Start ${offer.name || 'StreetPulse Pilot'}`;
+      bottomLaunchPilotLink.textContent = `Start ${offer.name || 'StreetPulse Pilot'}`;
+      pilotTitle.textContent = offer.name || 'StreetPulse Fleet Pilot';
+      pilotIntro.textContent = offer.objective || 'Start with one paid pilot that proves StreetPulse inside a real operating workflow.';
+      pilotPriceValue.textContent = formatUsd(offer.price_usd);
+      pilotBillingNote.textContent = formatBillingLabel(offer.billing || offer.billing_model);
+      pilotPointIncluded.textContent = offer.delivery_outcome || 'A buyer-specific browser path, route receipt, and proof-backed launch motion.';
+      pilotPointGrounding.textContent = 'public feeds only, attribution shown, and clean fallback proof';
+      pilotPointOutcome.textContent = 'a go/no-go decision for expansion with visible operating evidence';
+    }
+
+    function applyFlagshipPayload(payload) {
+      if (!payload?.available || !payload.product) {
+        flagshipPayloadStatus = 'missing';
+        return;
+      }
+      flagshipPayloadStatus = 'ready';
+      const product = payload.product;
+      const offers = Array.isArray(payload.offers) && payload.offers.length ? payload.offers : fallbackOffers;
+      const currentOffer = payload.current_offer || offers.find((offer) => offer.tier === 'core') || offers[0];
+      preferredCheckoutOfferIds = [
+        currentOffer?.id,
+        ...(Array.isArray(currentOffer?.legacy_keys) ? currentOffer.legacy_keys : []),
+        'streetpulse-flagship-pilot',
+        'streetpulse_fleet_pilot',
+        'streetpulse-fleet-pilot'
+      ].filter(Boolean).map((value) => String(value).toLowerCase());
+
+      heroLede.textContent = product.lede || heroLede.textContent;
+      decisionSubtle.textContent = product.decision_subtle || decisionSubtle.textContent;
+      storyFriction.textContent = product.story_friction || storyFriction.textContent;
+      storyPayoff.textContent = product.story_payoff || storyPayoff.textContent;
+      storyReason.textContent = product.story_reason || storyReason.textContent;
+      operatorTitle.textContent = product.operator_title || operatorTitle.textContent;
+      operatorCopy.textContent = product.operator_copy || operatorCopy.textContent;
+      operatorPromise.textContent = product.operator_promise || operatorPromise.textContent;
+      offerLadderTitle.textContent = product.offer_ladder_title || offerLadderTitle.textContent;
+      offerLadderIntro.textContent = product.offer_ladder_intro || offerLadderIntro.textContent;
+      footerNote.textContent = product.footer_note || footerNote.textContent;
+      if (product.wedge_label) {
+        microSignal.textContent = product.wedge_label;
+      }
+      renderOfferGrid(offers);
+      applyCurrentOffer(currentOffer);
+    }
+
+    async function hydrateFlagshipPayload() {
+      try {
+        for (const url of STREETPULSE_FLAGSHIP_URLS) {
+          const response = await fetch(url, { cache: 'no-store' });
+          if (!response.ok) continue;
+          const payload = await response.json();
+          applyFlagshipPayload(payload);
+          if (flagshipPayloadStatus === 'ready') return;
+        }
+        throw new Error('flagship lookup failed');
+      } catch {
+        flagshipPayloadStatus = 'missing';
+      }
+    }
+
+    function readCachedLiveSnapshot() {
+      try {
+        const raw = localStorage.getItem(FEED_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        return parsed && Array.isArray(parsed.cameras) ? parsed : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function writeCachedLiveSnapshot(snapshot) {
+      try {
+        localStorage.setItem(FEED_CACHE_KEY, JSON.stringify(snapshot));
+      } catch {
+        // Ignore storage failures; live fetch is still usable.
+      }
+    }
+
+    function readSelectedCity() {
+      try {
+        const city = localStorage.getItem(SELECTED_CITY_KEY);
+        return cityOrder.includes(city) ? city : DEFAULT_CITY;
+      } catch {
+        return DEFAULT_CITY;
+      }
+    }
+
+    function writeSelectedCity(city) {
+      try {
+        localStorage.setItem(SELECTED_CITY_KEY, city);
+      } catch {
+        // Ignore storage restrictions and keep the UI functional.
+      }
+    }
+
+    async function fetchJsonWithTimeout(url, timeoutMs) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(url, { cache: 'no-store', signal: controller.signal });
+        if (!response.ok) throw new Error(`request failed: ${response.status}`);
+        return await response.json();
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    function buildDecision(city, liveSnapshot) {
+      const observations = compliantObservations(city);
+      const fallback = sample.fallback_profiles[city] || sample.fallback_profiles.default;
+      if (!observations.length) {
+        return {
+          audit_id: `audit_${city}_${Date.now()}`,
+          city,
+          decision: 'unknown',
+          score: fallback.score,
+          confidence: fallback.confidence,
+          recommendation: fallback.recommendation,
+          source_camera_ids: [],
+          attribution_served: false,
+          fallback_used: true,
+          freshest_capture_utc: null,
+          live_camera_count: liveSnapshot.camera_count || 0,
+          compliance: { providers_used: [], attribution_texts: [], terms_urls: [] },
+          live_snapshot: liveSnapshot,
+          generated_at_utc: new Date().toISOString()
+        };
+      }
+
+      const score = average(observations.map((observation) => (observation.congestion_score * 0.52) + (observation.incident_risk * 0.33) + ((1 - observation.normalized_speed_index) * 0.15)));
+      let decision = 'low';
+      let recommendation = 'Leave now. The corridor is moving cleanly.';
+      if (score >= 0.56) {
+        decision = 'high';
+        recommendation = 'Hold for 20 minutes or route around the corridor.';
+      } else if (score >= 0.42) {
+        decision = 'medium';
+        recommendation = 'Delay 15 minutes if the trip is flexible.';
+      }
+
+      return {
+        audit_id: `audit_${city}_${Date.now()}`,
+        city,
+        decision,
+        score: Number(score.toFixed(3)),
+        confidence: fallback.confidence,
+        recommendation,
+        source_camera_ids: observations.map((observation) => observation.camera_id),
+        attribution_served: true,
+        fallback_used: false,
+        freshest_capture_utc: liveSnapshot.freshest_capture_utc || observations[0].captured_at_utc,
+        live_camera_count: liveSnapshot.camera_count || 0,
+        compliance: {
+          providers_used: [...new Set(observations.map((observation) => observation.provider.id))],
+          attribution_texts: [...new Set(observations.map((observation) => observation.provider.attribution_text))],
+          terms_urls: [...new Set(observations.map((observation) => observation.provider.terms_url))]
+        },
+        live_snapshot: liveSnapshot,
+        generated_at_utc: new Date().toISOString()
+      };
+    }
+
+    async function fetchSingaporeLiveSnapshot() {
+      const cached = readCachedLiveSnapshot();
+      try {
+        const payload = await fetchJsonWithTimeout('https://api.data.gov.sg/v1/transport/traffic-images', FEED_TIMEOUT_MS);
+        const item = payload.items?.[0];
+        const cameras = Array.isArray(item?.cameras) ? item.cameras : [];
+        const snapshot = {
+          city: 'singapore',
+          provider_id: 'sg-lta',
+          provider_label: 'Singapore LTA Traffic Images',
+          camera_count: cameras.length,
+          freshest_capture_utc: item?.timestamp || null,
+          cameras: cameras.slice(0, 6).map((camera) => ({
+            camera_id: `sg-lta-${camera.camera_id}`,
+            label: `Singapore camera ${camera.camera_id}`,
+            city: 'singapore',
+            captured_at_utc: camera.timestamp || item?.timestamp || null,
+            live_image_url: camera.image,
+            location: camera.location,
+            source: 'live'
+          })),
+          source: 'https://api.data.gov.sg/v1/transport/traffic-images',
+          source_mode: 'live',
+          fallback_note: 'Live public endpoint healthy.',
+          fetched_at_utc: new Date().toISOString()
+        };
+        writeCachedLiveSnapshot(snapshot);
+        return snapshot;
+      } catch {
+        if (cached) {
+          return {
+            ...cached,
+            source_mode: 'cached_live',
+            fallback_note: 'Using last good live snapshot from browser cache.',
+            fetched_at_utc: new Date().toISOString()
+          };
+        }
+        return {
+          city: 'singapore',
+          camera_count: 0,
+          freshest_capture_utc: null,
+          cameras: [],
+          source: 'sample_only',
+          source_mode: 'sample_only',
+          fallback_note: 'Live endpoint unavailable; using contract sample rail.',
+          fetched_at_utc: new Date().toISOString()
+        };
+      }
+    }
+
+    function renderCameraCard(item, liveImageUrl) {
+      const label = item.camera?.label || item.label || item.camera_id;
+      const providerLabel = item.provider?.label || item.provider?.provider_label || 'Verified source';
+      const observationLine = `Congestion ${Math.round(item.congestion_score * 100)}% · Incident ${Math.round(item.incident_risk * 100)}% · Speed index ${Math.round(item.normalized_speed_index * 100)}%`;
+      const thumb = liveImageUrl
+        ? `<img class="camera-thumb" src="${liveImageUrl}" alt="${label}" loading="lazy" />`
+        : `<div class="camera-thumb placeholder-thumb">Source proof</div>`;
+      return `
+        <article class="camera-card">
+          <div class="camera-head">
+            <div>
+              <strong>${label}</strong>
+              <p>${providerLabel}</p>
+            </div>
+            <span class="camera-tag">${item.camera_id}</span>
+          </div>
+          <p>${observationLine}</p>
+          ${thumb}
+        </article>
+      `;
+    }
+
+    function updateStatusPill(decision) {
+      decisionPill.className = 'decision-badge status-pill';
+      if (decision === 'low') {
+        decisionPill.classList.add('good');
+        decisionPill.textContent = 'Leave now';
+        decisionTitle.textContent = 'Leave now';
+      } else if (decision === 'medium') {
+        decisionPill.classList.add('warn');
+        decisionPill.textContent = 'Delay advised';
+        decisionTitle.textContent = 'Delay 15 min';
+      } else {
+        decisionPill.classList.add('bad');
+        decisionPill.textContent = 'Monitor closely';
+        decisionTitle.textContent = 'Hold and re-check';
+      }
+    }
+
+    function applyCityProfile(city, liveSnapshot) {
+      const profile = sample.city_profiles[city] || sample.city_profiles.austin;
+      heroLede.textContent = profile.hero_lede;
+      decisionSubtle.textContent = profile.subtle;
+      microSignal.textContent = profile.signal;
+      microWedge.textContent = profile.wedge;
+      microTrust.textContent = liveSnapshot.camera_count > 0 ? 'Live public feed + terms' : 'Sample-backed + terms';
+      signalAudience.textContent = profile.audience;
+      signalScenario.textContent = profile.scenario;
+      signalTrust.textContent = liveSnapshot.camera_count > 0 ? 'Live inventory synced' : 'Attribution served';
+      storyFriction.textContent = profile.friction;
+      storyPayoff.textContent = profile.payoff;
+      storyReason.textContent = profile.reason;
+      operatorTitle.textContent = profile.operator_title;
+      operatorCopy.textContent = profile.operator_copy;
+      operatorPromise.textContent = `Pilot promise: ${profile.pilot_promise}`;
+      cameraHeaderNote.textContent = profile.header_note;
+      receiptIntro.textContent = profile.receipt_intro;
+    }
+
+    function updateFeedRail(city, liveSnapshot) {
+      if (city !== 'singapore') {
+        feedSourceMode.textContent = 'Contract sample rail';
+        feedEndpoint.textContent = 'This city currently runs on the local contract dataset so the browser experience stays stable.';
+        feedFallback.textContent = 'Sample contract is primary';
+        feedCache.textContent = 'StreetPulse can still fall back to cached live Singapore data when that city is selected.';
+        return;
+      }
+
+      if (liveSnapshot.source_mode === 'live') {
+        feedSourceMode.textContent = 'Live public endpoint';
+        feedEndpoint.textContent = `${liveSnapshot.camera_count} Singapore LTA cameras synced from data.gov.sg.`;
+        feedFallback.textContent = 'Browser cache is armed';
+        feedCache.textContent = 'If the live endpoint stalls, StreetPulse can reuse the last good snapshot instead of failing open.';
+        return;
+      }
+
+      if (liveSnapshot.source_mode === 'cached_live') {
+        feedSourceMode.textContent = 'Cached live snapshot';
+        feedEndpoint.textContent = 'StreetPulse is serving the last known good Singapore snapshot from browser cache.';
+        feedFallback.textContent = 'Live endpoint degraded';
+        feedCache.textContent = 'The UI stayed intact because the cached live rail held the experience together.';
+        return;
+      }
+
+      feedSourceMode.textContent = 'Contract sample fallback';
+      feedEndpoint.textContent = 'The live Singapore endpoint did not respond in time, so StreetPulse stayed up on the contract sample rail.';
+      feedFallback.textContent = 'Sample rail active';
+      feedCache.textContent = 'The user still gets a functioning decision surface instead of a broken screen.';
+    }
+
+    function setSalesMotionEnabled(enabled, reason = '') {
+      const links = [launchPilotLink, bottomLaunchPilotLink];
+      if (enabled) {
+        links.forEach((link) => {
+          link.classList.remove('button-disabled');
+          link.removeAttribute('aria-disabled');
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+        });
+        return;
+      }
+
+      links.forEach((link) => {
+        link.classList.add('button-disabled');
+        link.setAttribute('aria-disabled', 'true');
+        link.removeAttribute('target');
+        link.removeAttribute('rel');
+        link.href = '/control-plane/';
+        link.textContent = 'Track live-ready release';
+      });
+
+      if (reason) {
+        pilotTitle.textContent = 'Public launch paused';
+        pilotIntro.textContent = reason;
+        pilotPriceValue.textContent = '--';
+        pilotBillingNote.textContent = 'backlog';
+        pilotPointIncluded.textContent = 'StreetPulse requires visible live feed proof before it can be sold publicly.';
+        pilotPointGrounding.textContent = 'live public rail required';
+        pilotPointOutcome.textContent = 'resume public launch only after the live rail is verifiably back';
+      }
+    }
+
+    function applyBlockedPublicMode(reason) {
+      setPulseMode('blocked');
+      decisionPill.className = 'decision-badge status-pill bad';
+      decisionPill.textContent = 'Backlog';
+      decisionTitle.textContent = 'Live feed required';
+      decisionRecommendation.textContent = reason;
+      microTrust.textContent = 'Public launch blocked';
+      signalTrust.textContent = 'Live feed required';
+      feedSourceMode.textContent = 'Public release blocked';
+      feedEndpoint.textContent = reason;
+      feedFallback.textContent = 'Moved to backlog';
+      feedCache.textContent = 'StreetPulse returns to the public rail only when the live feed and flagship contract are both healthy.';
+      cameraHeaderNote.textContent = 'The public StreetPulse rail is paused until the live feed is visibly working.';
+      footerNote.textContent = 'StreetPulse is paused on the public rail until live public-feed proof returns.';
+      renderOfferGrid([]);
+      setSalesMotionEnabled(false, reason);
+      cameraGrid.innerHTML = `
+        <article class="camera-card">
+          <div class="camera-head">
+            <div>
+              <strong>Public release paused</strong>
+              <p>StreetPulse requires a visibly live feed before it can sell publicly.</p>
+            </div>
+            <span class="camera-tag">backlog</span>
+          </div>
+          <p>${escapeHtml(reason)}</p>
+          <div class="camera-thumb placeholder-thumb">Live feed required</div>
+        </article>
+      `;
+    }
+
+    function isPublicFeedReady(city, liveSnapshot) {
+      return city === 'singapore'
+        && liveSnapshot?.source_mode === 'live'
+        && Number(liveSnapshot?.camera_count || 0) >= MIN_PUBLIC_LIVE_CAMERA_COUNT
+        && Array.isArray(liveSnapshot?.cameras)
+        && liveSnapshot.cameras.some((camera) => Boolean(camera.live_image_url));
+    }
+
+    function updateInstallAvailability(status, hint, buttonVisible) {
+      installStatus.textContent = status;
+      installHint.textContent = hint;
+      installButton.hidden = !buttonVisible;
+    }
+
+    function initInstallFlow() {
+      const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      if (standalone) {
+        updateInstallAvailability('Installed in app mode', 'StreetPulse is already running in standalone mode on this device.', false);
+      } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+        updateInstallAvailability('Add to Home Screen', 'On iPhone or iPad, use Share → Add to Home Screen to pin StreetPulse without a separate native app.', false);
+      } else {
+        updateInstallAvailability('Browser-installable', 'StreetPulse can be installed from supported mobile browsers for a full-screen home-screen experience.', false);
+      }
+
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+        deferredInstallPrompt = event;
+        updateInstallAvailability('Install ready', 'This browser supports direct installation. Use the install button to pin StreetPulse.', true);
+      });
+
+      installButton.addEventListener('click', async () => {
+        if (!deferredInstallPrompt) return;
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice.catch(() => null);
+        if (choice?.outcome === 'accepted') {
+          updateInstallAvailability('Install accepted', 'StreetPulse was accepted for installation. Launch it from the home screen for app mode.', false);
+        } else {
+          updateInstallAvailability('Install available later', 'You can install StreetPulse later from the browser menu or prompt.', false);
+        }
+        deferredInstallPrompt = null;
+      });
+    }
+
+    async function registerStreetPulseAppShell() {
+      if (!('serviceWorker' in navigator)) {
+        return;
+      }
+      try {
+        await navigator.serviceWorker.register(`/streetpulse-sw.js?v=${APP_SHELL_VERSION}`, { scope: '/' });
+        if (installStatus.textContent === 'Browser-installable') {
+          installHint.textContent = 'StreetPulse app shell is registered. Install it from the browser when the prompt or menu is available.';
+        }
+      } catch {
+        if (installStatus.textContent === 'Browser-installable') {
+          installHint.textContent = 'StreetPulse is working in browser mode, but the install shell could not register in this session.';
+        }
+      }
+    }
+
+    async function renderCity(city) {
+      writeSelectedCity(city);
+      const liveSnapshot = city === 'singapore'
+        ? await fetchSingaporeLiveSnapshot()
+        : {
+            city,
+            camera_count: 0,
+            freshest_capture_utc: null,
+            cameras: [],
+            source: 'sample_only',
+            source_mode: 'contract_sample',
+            fallback_note: 'This city currently uses the local contract sample rail.',
+            fetched_at_utc: new Date().toISOString()
+          };
+
+      const decision = buildDecision(city, liveSnapshot);
+      const observations = compliantObservations(city);
+      const liveCameraMap = Object.fromEntries((liveSnapshot.cameras || []).map((camera) => [camera.camera_id, camera.live_image_url]));
+      const publicFeedReady = isPublicFeedReady(city, liveSnapshot);
+      const publicReady = LAB_MODE || (flagshipPayloadStatus === 'ready' && publicFeedReady);
+
+      updateStatusPill(decision.decision);
+      decisionRecommendation.textContent = decision.recommendation;
+      metricScore.textContent = decision.score.toFixed(3);
+      metricConfidence.textContent = `${Math.round(decision.confidence * 100)}%`;
+      metricLive.textContent = String(decision.live_camera_count || 0);
+      metricFresh.textContent = formatFresh(decision.freshest_capture_utc);
+      applyCityProfile(city, liveSnapshot);
+      updateFeedRail(city, liveSnapshot);
+
+      if (!publicReady) {
+        const reason = flagshipPayloadStatus !== 'ready'
+          ? 'StreetPulse is missing its live flagship contract, so the product is backlogged until the public sales rail is healthy.'
+          : 'StreetPulse requires a visibly live Singapore feed before it can stay on the public sales rail.';
+        applyBlockedPublicMode(reason);
+        auditLog.textContent = JSON.stringify({
+          city,
+          public_ready: false,
+          flagship_payload_status: flagshipPayloadStatus,
+          source_mode: liveSnapshot.source_mode,
+          live_camera_count: liveSnapshot.camera_count || 0,
+          reason,
+          generated_at_utc: new Date().toISOString()
+        }, null, 2);
+        return;
+      }
+
+      setPulseMode('live');
+      setSalesMotionEnabled(true);
+
+      cameraGrid.innerHTML = observations.map((observation) => renderCameraCard(observation, liveCameraMap[observation.camera_id] || null)).join('');
+      auditLog.textContent = JSON.stringify({
+        city: decision.city,
+        audit_id: decision.audit_id,
+        source_camera_ids: decision.source_camera_ids,
+        attribution_served: decision.attribution_served,
+        fallback_used: decision.fallback_used,
+        freshest_capture_utc: decision.freshest_capture_utc,
+        compliance: decision.compliance,
+        generated_at_utc: decision.generated_at_utc
+      }, null, 2);
+    }
+
+    function buildCityButtons() {
+      const selectedCity = readSelectedCity();
+      cityRow.innerHTML = cityOrder.map((city) => `<button class="city-btn${city === selectedCity ? ' active' : ''}" data-city="${city}">${city.charAt(0).toUpperCase() + city.slice(1)}</button>`).join('');
+      cityRow.querySelectorAll('[data-city]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          cityRow.querySelectorAll('[data-city]').forEach((node) => node.classList.toggle('active', node === button));
+          await renderCity(button.dataset.city);
+        });
+      });
+    }
+
+    function candidateOfferIds(offer) {
+      const ids = [offer.id, ...(Array.isArray(offer.legacy_keys) ? offer.legacy_keys : [])];
+      return ids.filter(Boolean).map((value) => String(value).toLowerCase());
+    }
+
+    function findStreetPulseCheckoutUrl(payload) {
+      if (!payload || !Array.isArray(payload.offers)) return null;
+      const offer = payload.offers.find((item) => preferredCheckoutOfferIds.some((id) => candidateOfferIds(item).includes(id)))
+        || payload.offers.find((item) => candidateOfferIds(item).includes('streetpulse-fleet-pilot') || candidateOfferIds(item).includes('streetpulse_fleet_pilot'));
+      if (!offer) return null;
+      if (offer.checkout_by_rail?.card) return offer.checkout_by_rail.card;
+      if (offer.checkout_url) return offer.checkout_url;
+      return null;
+    }
+
+    async function hydrateCheckoutUrl() {
+      try {
+        const response = await fetch(CHECKOUT_LINKS_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error('checkout lookup failed');
+        const payload = await response.json();
+        const url = findStreetPulseCheckoutUrl(payload)
+          || payload.legacy_aliases?.streetpulse_flagship_pilot
+          || payload.legacy_aliases?.streetpulse_fleet_pilot
+          || STREETPULSE_FALLBACK_URL;
+        launchPilotLink.href = url;
+        bottomLaunchPilotLink.href = url;
+      } catch {
+        launchPilotLink.href = STREETPULSE_FALLBACK_URL;
+        bottomLaunchPilotLink.href = STREETPULSE_FALLBACK_URL;
+      }
+    }
+
+    renderOfferGrid(fallbackOffers);
+    applyCurrentOffer(fallbackOffers.find((offer) => offer.tier === 'core') || fallbackOffers[0]);
+    buildCityButtons();
+    initInstallFlow();
+    registerStreetPulseAppShell();
+    (async () => {
+      await hydrateFlagshipPayload();
+      await hydrateCheckoutUrl();
+      await renderCity(readSelectedCity());
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+{
+  "schema_version": "2026-03-05.checkout-links.v1",
+  "generated_at_utc": "2026-03-17T16:03:15.993Z",
+  "tracking_defaults": {
+    "rv": "20260317",
+    "utm_source": "bosonit",
+    "utm_medium": "checkout_api"
+  },
+  "offer_count": 7,
+  "offers": [
+    {
+      "id": "revenue-leak-audit",
+      "name": "Revenue Leak Audit",
+      "billing": "one_time",
+      "price_usd": 500,
+      "checkout_url": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&payment_rail=card&payment_method=card&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+        "agent_token": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+        "bnpl": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna&rv=20260317&utm_source=bosonit&utm_medium=checkout_api"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Fast qualification and paid diagnosis.",
+      "legacy_keys": [
+        "revenue_leak_audit",
+        "roi_audit",
+        "audit_500"
+      ]
+    },
+    {
+      "id": "booked-call-engine-sprint",
+      "name": "Booked-Call Engine Sprint",
+      "billing": "one_time",
+      "price_usd": 2500,
+      "checkout_url": "https://pay.bosonit.org/?amount=2500&product=Booked+Call+Engine+Sprint&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=2500&product=Booked+Call+Engine+Sprint&billing=one_time&payment_rail=card&payment_method=card&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+        "agent_token": "https://pay.bosonit.org/?amount=2500&product=Booked+Call+Engine+Sprint&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+        "bnpl": "https://pay.bosonit.org/?amount=2500&product=Booked+Call+Engine+Sprint&billing=one_time&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna&rv=20260317&utm_source=bosonit&utm_medium=checkout_api"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Conversion and pipeline acceleration.",
+      "legacy_keys": [
+        "booked_call_engine_sprint",
+        "market_to_revenue_sprint"
+      ]
+    },
+    {
+      "id": "revenue-ops-pod",
+      "name": "Revenue Ops Pod",
+      "billing": "subscription",
+      "price_usd": 1200,
+      "checkout_url": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&payment_rail=card&payment_method=card&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+        "agent_token": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+        "bnpl": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna&rv=20260317&utm_source=bosonit&utm_medium=checkout_api"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Recurring MRR with sustainment.",
+      "legacy_keys": [
+        "revenue_ops_pod_monthly",
+        "pro_monthly",
+        "monthly"
+      ]
+    },
+    {
+      "id": "pro-yearly",
+      "name": "Revenue Ops Pod - Yearly",
+      "billing": "subscription",
+      "price_usd": 12000,
+      "checkout_url": "https://pay.bosonit.org/?amount=12000&product=Revenue+Ops+Pod&billing=subscription&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A5kC0Jy5HyeBrewY0Jq07&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=12000&product=Revenue+Ops+Pod&billing=subscription&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A5kC0Jy5HyeBrewY0Jq07&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=card&payment_method=card",
+        "agent_token": "https://pay.bosonit.org/?amount=12000&product=Revenue+Ops+Pod&billing=subscription&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A5kC0Jy5HyeBrewY0Jq07&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token",
+        "bnpl": "https://pay.bosonit.org/?amount=12000&product=Revenue+Ops+Pod&billing=subscription&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A5kC0Jy5HyeBrewY0Jq07&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Annual commitment and lower-friction renewals.",
+      "legacy_keys": [
+        "pro_yearly",
+        "yearly"
+      ]
+    },
+    {
+      "id": "streetpulse-flagship-diagnostic",
+      "name": "StreetPulse Diagnostic",
+      "billing": "one_time",
+      "price_usd": 1676,
+      "checkout_url": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=card&payment_method=card",
+        "agent_token": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token",
+        "bnpl": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Audit the current leave-now intelligence workflow, quantify friction, and identify the fastest ROI path.",
+      "legacy_keys": [
+        "streetpulse_flagship_diagnostic",
+        "streetpulse_diagnostic"
+      ]
+    },
+    {
+      "id": "streetpulse-fleet-pilot",
+      "name": "StreetPulse Fleet Pilot",
+      "billing": "one_time",
+      "price_usd": 4877,
+      "checkout_url": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=card&payment_method=card",
+        "agent_token": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token",
+        "bnpl": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Put streetpulse fleet release into live use across public traffic cameras, maps, browser install surface, and camera inventories with tracked ROI and human fallback.",
+      "legacy_keys": [
+        "streetpulse_fleet_pilot",
+        "streetpulse_flagship_pilot"
+      ]
+    },
+    {
+      "id": "streetpulse-fleet-optimization",
+      "name": "StreetPulse Fleet Optimization",
+      "billing": "subscription",
+      "price_usd": 1372,
+      "checkout_url": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+      "checkout_by_rail": {
+        "card": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=card&payment_method=card",
+        "agent_token": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token",
+        "bnpl": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=bnpl&payment_method=bnpl&bnpl_providers=affirm%2Cklarna"
+      },
+      "payment_capabilities": {
+        "card": true,
+        "agent_token": true,
+        "bnpl": true,
+        "bnpl_providers": [
+          "affirm",
+          "klarna"
+        ],
+        "network_agent_token_programs": [
+          "visa_intelligent_commerce",
+          "mastercard_agent_pay"
+        ]
+      },
+      "preferred_rail": "agent_token",
+      "best_for": "Tune rules, thresholds, routing quality, and operator handoffs from live production data.",
+      "legacy_keys": [
+        "streetpulse_fleet_optimization",
+        "streetpulse_flagship_optimization"
+      ]
+    }
+  ],
+  "legacy_aliases": {
+    "revenue_leak_audit": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "roi_audit": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "audit_500": "https://pay.bosonit.org/?amount=500&product=Revenue+Leak+Audit&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "booked_call_engine_sprint": "https://pay.bosonit.org/?amount=2500&product=Booked+Call+Engine+Sprint&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "market_to_revenue_sprint": "https://pay.bosonit.org/?amount=2500&product=Booked+Call+Engine+Sprint&billing=one_time&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "revenue_ops_pod_monthly": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "pro_monthly": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "monthly": "https://pay.bosonit.org/?amount=1200&product=Revenue+Ops+Pod&billing=subscription&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "pro_yearly": "https://pay.bosonit.org/?amount=12000&product=Revenue+Ops+Pod&billing=subscription&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A5kC0Jy5HyeBrewY0Jq07&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token",
+    "yearly": "https://pay.bosonit.org/?amount=12000&product=Revenue+Ops+Pod&billing=subscription&card_url=https%3A%2F%2Fbuy.stripe.com%2F14A5kC0Jy5HyeBrewY0Jq07&rv=20260317&utm_source=bosonit&utm_medium=checkout_api&payment_rail=agent_token&payment_method=agent_token&token_class=network_agent_token",
+    "streetpulse_flagship_diagnostic": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "streetpulse_diagnostic": "https://pay.bosonit.org/?amount=1676&product=StreetPulse+Diagnostic&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "streetpulse_fleet_pilot": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "streetpulse_flagship_pilot": "https://pay.bosonit.org/?amount=4877&product=StreetPulse+Fleet+Pilot&billing=one_time&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "streetpulse_fleet_optimization": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "streetpulse_flagship_optimization": "https://pay.bosonit.org/?amount=1372&product=StreetPulse+Fleet+Optimization&billing=subscription&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "revenue_signal_audit": "https://pay.bosonit.org/?amount=900&product=Revenue+Signal+Audit&billing=one_time&card_url=https%3A%2F%2Fbuy.stripe.com%2F14AaEWboc9XO78Z2Og0Jq02&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "market_publish_sprint": "https://pay.bosonit.org/?amount=1800&product=Market+Publish+Sprint&billing=one_time&card_url=https%3A%2F%2Fbuy.stripe.com%2FbJebJ0eAofi8eBrdsU0Jq04&rv=20260317&utm_source=bosonit&utm_medium=checkout_api",
+    "architecture_sprint": "https://pay.bosonit.org/?amount=1800&product=Market+Publish+Sprint&billing=one_time&card_url=https%3A%2F%2Fbuy.stripe.com%2FbJebJ0eAofi8eBrdsU0Jq04&rv=20260317&utm_source=bosonit&utm_medium=checkout_api"
+  }
+}
