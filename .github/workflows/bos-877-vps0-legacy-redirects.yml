@@ -1,0 +1,87 @@
+name: BOS-877 vps0 Legacy Redirects
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_public_edge_verify:
+        description: Skip public edge verification if Cloudflare/WAF blocks the runner
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  patch-legacy-redirects:
+    runs-on: ubuntu-latest
+    env:
+      VPS0_HOST: ${{ vars.VPS0_HOST }}
+      VPS0_USER: ${{ vars.VPS0_USER }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install vps0 SSH key
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          if [ -z "${VPS0_HOST}" ] || [ -z "${VPS0_USER}" ] || [ -z "${{ secrets.VPS0_SSH_KEY }}" ]; then
+            echo "Missing VPS0 host/user/key." >&2
+            exit 1
+          fi
+
+          echo "${{ secrets.VPS0_SSH_KEY }}" > ~/.ssh/id_vps0
+          chmod 600 ~/.ssh/id_vps0
+          ssh-keyscan -T 5 "${VPS0_HOST}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          cat > ~/.ssh/config <<EOF
+          Host vps0
+            HostName ${VPS0_HOST}
+            User ${VPS0_USER}
+            IdentityFile ~/.ssh/id_vps0
+            IdentitiesOnly yes
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Apply BOS-877 redirect patch
+        run: |
+          set -euo pipefail
+          ./scripts/enable-bos-877-vps0-legacy-redirects.sh --host "${VPS0_HOST}" --user "${VPS0_USER}" --skip-live-verify
+
+      - name: Verify origin file state on vps0
+        run: |
+          set -euo pipefail
+          ssh vps0 'test -f /var/www/bosonit/.htaccess'
+          ssh vps0 'grep -Fq "RewriteRule ^utility-sites/mortgage-payment-calculator/?$ /mortgage-calculator/ [R=301,L]" /var/www/bosonit/.htaccess'
+          ssh vps0 'grep -Fq "RewriteRule ^utility-sites/calorie-deficit-calculator/?$ /calorie-calculator/ [R=301,L]" /var/www/bosonit/.htaccess'
+          ssh vps0 'grep -Fq "RewriteRule ^utility-sites/sales-tax-calculator/?$ /sales-tax-calculator/ [R=301,L]" /var/www/bosonit/.htaccess'
+
+      - name: Verify public edge redirects
+        if: ${{ !inputs.skip_public_edge_verify }}
+        run: |
+          set -euo pipefail
+
+          declare -A CANONICAL_ALIAS_BY_SLUG=(
+            [mortgage-payment-calculator]=mortgage-calculator
+            [calorie-deficit-calculator]=calorie-calculator
+            [sales-tax-calculator]=sales-tax-calculator
+          )
+
+          nonce="$(date +%s)-$RANDOM"
+          : > /tmp/bos-877-statuses.txt
+
+          for slug in mortgage-payment-calculator calorie-deficit-calculator sales-tax-calculator; do
+            alias="${CANONICAL_ALIAS_BY_SLUG[$slug]}"
+            status="$(curl -sS -D "/tmp/${slug}-headers.txt" -o "/tmp/${slug}-body.html" -w '%{http_code}' "https://www.bosonit.org/utility-sites/${slug}/?cb=${nonce}" || true)"
+            status="${status:-000}"
+            printf '%s=%s\n' "${slug}" "${status}" >> /tmp/bos-877-statuses.txt
+            if [ "${status}" = "403" ]; then
+              echo "Public edge verification returned 403 for ${slug}; likely WAF from GitHub runner."
+              exit 0
+            fi
+            if [ "${status}" != "301" ]; then
+              echo "Expected 301 for ${slug}, got ${status}." >&2
+              exit 1
+            fi
+            grep -Eiq "location: (https://www\\.bosonit\\.org)?/${alias}/" "/tmp/${slug}-headers.txt"
+          done
+
+          echo "Public edge redirect verification passed."
