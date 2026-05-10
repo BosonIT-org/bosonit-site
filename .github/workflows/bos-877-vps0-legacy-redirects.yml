@@ -33,7 +33,7 @@ jobs:
           chmod 600 ~/.ssh/id_vps0
           ssh-keyscan -T 5 "${VPS0_HOST}" >> ~/.ssh/known_hosts 2>/dev/null || true
           cat > ~/.ssh/config <<EOF
-          Host vps0
+          Host vps0 ${VPS0_HOST}
             HostName ${VPS0_HOST}
             User ${VPS0_USER}
             IdentityFile ~/.ssh/id_vps0
