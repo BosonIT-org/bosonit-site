@@ -44,7 +44,7 @@ jobs:
       - name: Apply BOS-877 redirect patch
         run: |
           set -euo pipefail
-          ./scripts/enable-bos-877-vps0-legacy-redirects.sh --host "${VPS0_HOST}" --user "${VPS0_USER}" --skip-live-verify
+          bash ./scripts/enable-bos-877-vps0-legacy-redirects.sh --host "${VPS0_HOST}" --user "${VPS0_USER}" --skip-live-verify
 
       - name: Verify origin file state on vps0
         run: |
