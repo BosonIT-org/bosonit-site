@@ -18,6 +18,7 @@ jobs:
 
     - run: npm ci
     - run: npm run build
+    - run: bash ./scripts/apply-bos-121-canonical-payload.sh
 
     - name: Install SSH keys
       run: |
@@ -87,7 +88,8 @@ jobs:
           exit 0
         fi
 
-        rsync -avz --delete \
+        # Keep the mirror additive until repo/live utility inventory is reconciled.
+        rsync -avz \
           --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
           dist/ "stackcp:~/public_html/bosonit.org/"
 
@@ -99,27 +101,108 @@ jobs:
           exit 1
         fi
 
+        declare -A CANONICAL_ALIAS_BY_SLUG=(
+          [mortgage-payment-calculator]=mortgage-calculator
+          [calorie-deficit-calculator]=calorie-calculator
+          [sales-tax-calculator]=sales-tax-calculator
+        )
+
         ssh vps0 'grep -q "Revenue Leak Audit" /var/www/bosonit/services/index.html'
         ssh vps0 'grep -q "\"schema_version\"" /var/www/bosonit/observatory/control-plane.latest.json'
+        ssh vps0 'test -f /var/www/bosonit/.htaccess'
+        ssh vps0 'test -f /var/www/bosonit/utility-sites/index.html'
+        ssh vps0 'test -f /var/www/bosonit/observatory/utility-sites.latest.json'
+        ssh vps0 'test -f /var/www/bosonit/sitemap.xml'
+        ssh vps0 'grep -q "href=\"/mortgage-calculator/\"" /var/www/bosonit/utility-sites/index.html'
+        ssh vps0 'grep -q "href=\"/calorie-calculator/\"" /var/www/bosonit/utility-sites/index.html'
+        ssh vps0 'grep -q "href=\"/sales-tax-calculator/\"" /var/www/bosonit/utility-sites/index.html'
+        ssh vps0 'grep -q "\"preview_url\": \"/mortgage-calculator/\"" /var/www/bosonit/observatory/utility-sites.latest.json'
+        ssh vps0 'grep -q "\"preview_url\": \"/calorie-calculator/\"" /var/www/bosonit/observatory/utility-sites.latest.json'
+        ssh vps0 'grep -q "\"preview_url\": \"/sales-tax-calculator/\"" /var/www/bosonit/observatory/utility-sites.latest.json'
+        ssh vps0 'grep -q "https://www.bosonit.org/utility-sites/" /var/www/bosonit/sitemap.xml'
+        ssh vps0 'grep -q "https://www.bosonit.org/mortgage-calculator/" /var/www/bosonit/sitemap.xml'
+        ssh vps0 'grep -q "https://www.bosonit.org/calorie-calculator/" /var/www/bosonit/sitemap.xml'
+        ssh vps0 'grep -q "https://www.bosonit.org/sales-tax-calculator/" /var/www/bosonit/sitemap.xml'
+
+        for slug in mortgage-payment-calculator calorie-deficit-calculator sales-tax-calculator; do
+          alias="${CANONICAL_ALIAS_BY_SLUG[$slug]}"
+          ssh vps0 "test -f /var/www/bosonit/${alias}/index.html"
+          ssh vps0 "test -f /var/www/bosonit/${alias}/tool.js"
+          ssh vps0 "test -f /var/www/bosonit/${alias}/styles.css"
+          ssh vps0 "test -f /var/www/bosonit/${alias}/faq-schema.json"
+          ssh vps0 "grep -q \"rel=\\\"canonical\\\" href=\\\"https://www.bosonit.org/${alias}/\\\"\" /var/www/bosonit/${alias}/index.html"
+          ssh vps0 "test -f /var/www/bosonit/utility-sites/${slug}/index.html"
+          ssh vps0 "test -f /var/www/bosonit/utility-sites/${slug}/tool.js"
+          ssh vps0 "test -f /var/www/bosonit/utility-sites/${slug}/styles.css"
+          ssh vps0 "test -f /var/www/bosonit/utility-sites/${slug}/faq-schema.json"
+          ssh vps0 "grep -q \"RewriteRule \\^utility-sites/${slug}/?\\$ /${alias}/ \\[R=301,L\\]\" /var/www/bosonit/.htaccess"
+          ssh vps0 "grep -q \"RewriteRule \\^utility-sites/${slug}/index\\\\.html\\$ /${alias}/ \\[R=301,L\\]\" /var/www/bosonit/.htaccess"
+        done
         echo "Origin verification passed on vps0."
 
         nonce="$(date +%s)-$RANDOM"
         services_status="$(curl -sS -o /tmp/services-response.html -w '%{http_code}' "https://www.bosonit.org/services/?cb=${nonce}" || true)"
         observatory_status="$(curl -sS -o /tmp/observatory-response.json -w '%{http_code}' "https://www.bosonit.org/observatory/control-plane.latest.json?cb=${nonce}" || true)"
+        utility_observatory_status="$(curl -sS -o /tmp/utility-sites-response.json -w '%{http_code}' "https://www.bosonit.org/observatory/utility-sites.latest.json?cb=${nonce}" || true)"
+        utility_hub_status="$(curl -sS -o /tmp/utility-sites-hub-response.html -w '%{http_code}' "https://www.bosonit.org/utility-sites/?cb=${nonce}" || true)"
+        sitemap_status="$(curl -sS -o /tmp/sitemap.xml -w '%{http_code}' "https://www.bosonit.org/sitemap.xml?cb=${nonce}" || true)"
         services_status="${services_status:-000}"
         observatory_status="${observatory_status:-000}"
+        utility_observatory_status="${utility_observatory_status:-000}"
+        utility_hub_status="${utility_hub_status:-000}"
+        sitemap_status="${sitemap_status:-000}"
 
-        if [ "$services_status" = "200" ] && [ "$observatory_status" = "200" ]; then
+        canonical_statuses=""
+        legacy_statuses=""
+        : > /tmp/canonical-route-statuses.txt
+        : > /tmp/legacy-route-statuses.txt
+        : > /tmp/legacy-route-locations.txt
+        for slug in mortgage-payment-calculator calorie-deficit-calculator sales-tax-calculator; do
+          alias="${CANONICAL_ALIAS_BY_SLUG[$slug]}"
+          canonical_status="$(curl -sS -o "/tmp/${alias}-response.html" -w '%{http_code}' "https://www.bosonit.org/${alias}/?cb=${nonce}" || true)"
+          legacy_status="$(curl -sS -D "/tmp/${slug}-headers.txt" -o "/tmp/${slug}-response.html" -w '%{http_code}' "https://www.bosonit.org/utility-sites/${slug}/?cb=${nonce}" || true)"
+          canonical_status="${canonical_status:-000}"
+          legacy_status="${legacy_status:-000}"
+          canonical_statuses="${canonical_statuses} ${alias}=${canonical_status}"
+          legacy_statuses="${legacy_statuses} ${slug}=${legacy_status}"
+          printf '%s=%s\n' "${alias}" "${canonical_status}" >> /tmp/canonical-route-statuses.txt
+          printf '%s=%s\n' "${slug}" "${legacy_status}" >> /tmp/legacy-route-statuses.txt
+          awk 'BEGIN{IGNORECASE=1} /^location:/ {print}' "/tmp/${slug}-headers.txt" >> /tmp/legacy-route-locations.txt
+        done
+
+        if [ "$services_status" = "200" ] && [ "$observatory_status" = "200" ] && [ "$utility_observatory_status" = "200" ] && [ "$utility_hub_status" = "200" ] && [ "$sitemap_status" = "200" ] && ! grep -vq '=200$' /tmp/canonical-route-statuses.txt && ! grep -vq '=301$' /tmp/legacy-route-statuses.txt; then
           grep -q "Revenue Leak Audit" /tmp/services-response.html
-          grep -q "\"schema_version\"" /tmp/observatory-response.json
-          echo "Public edge verification passed."
+          grep -q '"schema_version"' /tmp/observatory-response.json
+          grep -q '"preview_url": "/mortgage-calculator/"' /tmp/utility-sites-response.json
+          grep -q '"preview_url": "/calorie-calculator/"' /tmp/utility-sites-response.json
+          grep -q '"preview_url": "/sales-tax-calculator/"' /tmp/utility-sites-response.json
+          grep -q 'href="/mortgage-calculator/"' /tmp/utility-sites-hub-response.html
+          grep -q 'href="/calorie-calculator/"' /tmp/utility-sites-hub-response.html
+          grep -q 'href="/sales-tax-calculator/"' /tmp/utility-sites-hub-response.html
+          grep -q 'https://www.bosonit.org/utility-sites/' /tmp/sitemap.xml
+          grep -q 'https://www.bosonit.org/mortgage-calculator/' /tmp/sitemap.xml
+          grep -q 'https://www.bosonit.org/calorie-calculator/' /tmp/sitemap.xml
+          grep -q 'https://www.bosonit.org/sales-tax-calculator/' /tmp/sitemap.xml
+          for slug in mortgage-payment-calculator calorie-deficit-calculator sales-tax-calculator; do
+            alias="${CANONICAL_ALIAS_BY_SLUG[$slug]}"
+            case "${slug}" in
+              mortgage-payment-calculator) grep -q 'Mortgage Payment Calculator' "/tmp/${alias}-response.html" ;;
+              calorie-deficit-calculator) grep -q 'Calorie Deficit Calculator' "/tmp/${alias}-response.html" ;;
+              sales-tax-calculator) grep -q 'Sales Tax Calculator' "/tmp/${alias}-response.html" ;;
+            esac
+            grep -q "rel=\"canonical\" href=\"https://www.bosonit.org/${alias}/\"" "/tmp/${alias}-response.html"
+            grep -q "${alias}=200" /tmp/canonical-route-statuses.txt
+            grep -q "${slug}=301" /tmp/legacy-route-statuses.txt
+            grep -Eiq "location: (https://www\.bosonit\.org)?/${alias}/" "/tmp/${slug}-headers.txt"
+          done
+          echo "Public edge verification passed. canonical=${canonical_statuses} legacy=${legacy_statuses}"
           exit 0
         fi
 
-        if [ "$services_status" = "403" ] || [ "$observatory_status" = "403" ]; then
+        if [ "$services_status" = "403" ] || [ "$observatory_status" = "403" ] || [ "$utility_observatory_status" = "403" ] || [ "$utility_hub_status" = "403" ] || [ "$sitemap_status" = "403" ] || grep -q '=403$' /tmp/canonical-route-statuses.txt || grep -q '=403$' /tmp/legacy-route-statuses.txt; then
           echo "Public edge verification returned 403 (likely WAF from GitHub runner); treated as non-blocking."
           exit 0
         fi
 
-        echo "Public edge verification failed with statuses services=${services_status} observatory=${observatory_status}."
+        echo "Public edge verification failed with statuses services=${services_status} observatory=${observatory_status} utility_observatory=${utility_observatory_status} utility_hub=${utility_hub_status} sitemap=${sitemap_status} canonical_routes=${canonical_statuses} legacy_routes=${legacy_statuses}."
         exit 1
