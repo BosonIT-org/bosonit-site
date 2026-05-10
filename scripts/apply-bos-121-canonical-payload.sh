@@ -41,7 +41,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-for required in curl mkdir mktemp perl rg cp; do
+for required in curl mkdir mktemp perl grep cp; do
   if ! command -v "${required}" >/dev/null 2>&1; then
     echo "Missing required command: ${required}" >&2
     exit 1
@@ -377,22 +377,22 @@ fetch_route_bundle() {
 }
 
 verify_output() {
-  rg -Fq 'href="/mortgage-calculator/"' "${dist_root}/utility-sites/index.html"
-  rg -Fq 'href="/calorie-calculator/"' "${dist_root}/utility-sites/index.html"
-  rg -Fq 'href="/sales-tax-calculator/"' "${dist_root}/utility-sites/index.html"
-  rg -Fq 'rel="canonical" href="https://www.bosonit.org/mortgage-calculator/"' "${dist_root}/mortgage-calculator/index.html"
-  rg -Fq 'rel="canonical" href="https://www.bosonit.org/calorie-calculator/"' "${dist_root}/calorie-calculator/index.html"
-  rg -Fq 'rel="canonical" href="https://www.bosonit.org/sales-tax-calculator/"' "${dist_root}/sales-tax-calculator/index.html"
-  rg -Fq 'RewriteRule ^utility-sites/mortgage-payment-calculator/?$ /mortgage-calculator/ [R=301,L]' "${dist_root}/.htaccess"
-  rg -Fq 'RewriteRule ^utility-sites/calorie-deficit-calculator/?$ /calorie-calculator/ [R=301,L]' "${dist_root}/.htaccess"
-  rg -Fq 'RewriteRule ^utility-sites/sales-tax-calculator/?$ /sales-tax-calculator/ [R=301,L]' "${dist_root}/.htaccess"
-  rg -Fq '"preview_url": "/mortgage-calculator/"' "${dist_root}/observatory/utility-sites.latest.json"
-  rg -Fq '"preview_url": "/calorie-calculator/"' "${dist_root}/observatory/utility-sites.latest.json"
-  rg -Fq '"preview_url": "/sales-tax-calculator/"' "${dist_root}/observatory/utility-sites.latest.json"
-  rg -Fq 'https://www.bosonit.org/utility-sites/' "${dist_root}/sitemap.xml"
-  rg -Fq 'https://www.bosonit.org/mortgage-calculator/' "${dist_root}/sitemap.xml"
-  rg -Fq 'https://www.bosonit.org/calorie-calculator/' "${dist_root}/sitemap.xml"
-  rg -Fq 'https://www.bosonit.org/sales-tax-calculator/' "${dist_root}/sitemap.xml"
+  grep -Fq 'href="/mortgage-calculator/"' "${dist_root}/utility-sites/index.html"
+  grep -Fq 'href="/calorie-calculator/"' "${dist_root}/utility-sites/index.html"
+  grep -Fq 'href="/sales-tax-calculator/"' "${dist_root}/utility-sites/index.html"
+  grep -Fq 'rel="canonical" href="https://www.bosonit.org/mortgage-calculator/"' "${dist_root}/mortgage-calculator/index.html"
+  grep -Fq 'rel="canonical" href="https://www.bosonit.org/calorie-calculator/"' "${dist_root}/calorie-calculator/index.html"
+  grep -Fq 'rel="canonical" href="https://www.bosonit.org/sales-tax-calculator/"' "${dist_root}/sales-tax-calculator/index.html"
+  grep -Fq 'RewriteRule ^utility-sites/mortgage-payment-calculator/?$ /mortgage-calculator/ [R=301,L]' "${dist_root}/.htaccess"
+  grep -Fq 'RewriteRule ^utility-sites/calorie-deficit-calculator/?$ /calorie-calculator/ [R=301,L]' "${dist_root}/.htaccess"
+  grep -Fq 'RewriteRule ^utility-sites/sales-tax-calculator/?$ /sales-tax-calculator/ [R=301,L]' "${dist_root}/.htaccess"
+  grep -Fq '"preview_url": "/mortgage-calculator/"' "${dist_root}/observatory/utility-sites.latest.json"
+  grep -Fq '"preview_url": "/calorie-calculator/"' "${dist_root}/observatory/utility-sites.latest.json"
+  grep -Fq '"preview_url": "/sales-tax-calculator/"' "${dist_root}/observatory/utility-sites.latest.json"
+  grep -Fq 'https://www.bosonit.org/utility-sites/' "${dist_root}/sitemap.xml"
+  grep -Fq 'https://www.bosonit.org/mortgage-calculator/' "${dist_root}/sitemap.xml"
+  grep -Fq 'https://www.bosonit.org/calorie-calculator/' "${dist_root}/sitemap.xml"
+  grep -Fq 'https://www.bosonit.org/sales-tax-calculator/' "${dist_root}/sitemap.xml"
 }
 
 fetch_route_bundle "mortgage-payment-calculator" "mortgage-calculator"
